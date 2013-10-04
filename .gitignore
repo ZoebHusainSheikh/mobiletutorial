@@ -16,3 +16,5 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+mobiletutorial/MobileTutorialApp/RestKit/Build/
+mobiletutorial/MobileTutorialApp/RestKit/RestKit.xcodeproj/xcuserdata/
