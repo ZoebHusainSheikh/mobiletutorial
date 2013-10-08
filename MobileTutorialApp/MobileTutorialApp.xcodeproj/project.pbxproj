@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		890C5DE01803F3E2002F6BCB /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DDF1803F3E2002F6BCB /* CoreLocation.framework */; };
+		890C5DE41803F40D002F6BCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DE31803F40D002F6BCB /* AudioToolbox.framework */; };
+		890C5DE61803F424002F6BCB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DE51803F424002F6BCB /* CoreMedia.framework */; };
+		890C5DE81803F430002F6BCB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DE71803F430002F6BCB /* Accelerate.framework */; };
+		890C5DEA1803F449002F6BCB /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DE91803F449002F6BCB /* CoreVideo.framework */; };
+		890C5DEC1803F45E002F6BCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DEB1803F45E002F6BCB /* AVFoundation.framework */; };
+		890C5DEE1803F48C002F6BCB /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DED1803F48C002F6BCB /* libz.1.1.3.dylib */; };
+		890C5DF01803F49E002F6BCB /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DEF1803F49E002F6BCB /* libresolv.dylib */; };
 		894BEABC17FD9FBC00E16CFD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 894BEABB17FD9FBC00E16CFD /* Default-568h@2x.png */; };
 		895745FE17FD9AE40073CCBE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895745FD17FD9AE40073CCBE /* Foundation.framework */; };
 		8957460017FD9AE40073CCBE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895745FF17FD9AE40073CCBE /* CoreGraphics.framework */; };
@@ -30,6 +38,9 @@
 		8957465617FDB4A40073CCBE /* libRestKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8957464F17FDB1830073CCBE /* libRestKit.a */; };
 		8957466017FDC1310073CCBE /* AppsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8957465E17FDC1310073CCBE /* AppsListViewController.m */; };
 		8957466117FDC1310073CCBE /* AppsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8957465F17FDC1310073CCBE /* AppsListViewController.xib */; };
+		89A01F591803ECA30083F780 /* Quickblox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89A01F581803ECA30083F780 /* Quickblox.framework */; };
+		89A01FC1180461660083F780 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 89A01FBF180461650083F780 /* SignUpViewController.m */; };
+		89A01FC2180461660083F780 /* SignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89A01FC0180461650083F780 /* SignUpViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,23 +65,17 @@
 			remoteGlobalIDString = 25160D2614564E820060A5C5;
 			remoteInfo = RestKitTests;
 		};
-		8957465217FDB1830073CCBE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8957464717FDB1820073CCBE /* RestKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 25160E62145651060060A5C5;
-			remoteInfo = RestKitFramework;
-		};
-		8957465417FDB1830073CCBE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8957464717FDB1820073CCBE /* RestKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 25160E78145651060060A5C5;
-			remoteInfo = RestKitFrameworkTests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		890C5DDF1803F3E2002F6BCB /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		890C5DE31803F40D002F6BCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		890C5DE51803F424002F6BCB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		890C5DE71803F430002F6BCB /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		890C5DE91803F449002F6BCB /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		890C5DEB1803F45E002F6BCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		890C5DED1803F48C002F6BCB /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
+		890C5DEF1803F49E002F6BCB /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		894BEABB17FD9FBC00E16CFD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		895745FA17FD9AE40073CCBE /* MobileTutorialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileTutorialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		895745FD17FD9AE40073CCBE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -101,6 +106,11 @@
 		8957465D17FDC1310073CCBE /* AppsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsListViewController.h; sourceTree = "<group>"; };
 		8957465E17FDC1310073CCBE /* AppsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppsListViewController.m; sourceTree = "<group>"; };
 		8957465F17FDC1310073CCBE /* AppsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppsListViewController.xib; sourceTree = "<group>"; };
+		89A01F581803ECA30083F780 /* Quickblox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Quickblox.framework; sourceTree = "<group>"; };
+		89A01F62180403EF0083F780 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
+		89A01FBE180461650083F780 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
+		89A01FBF180461650083F780 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+		89A01FC0180461650083F780 /* SignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +118,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				890C5DF01803F49E002F6BCB /* libresolv.dylib in Frameworks */,
+				890C5DEE1803F48C002F6BCB /* libz.1.1.3.dylib in Frameworks */,
+				890C5DEC1803F45E002F6BCB /* AVFoundation.framework in Frameworks */,
+				890C5DEA1803F449002F6BCB /* CoreVideo.framework in Frameworks */,
+				890C5DE81803F430002F6BCB /* Accelerate.framework in Frameworks */,
+				890C5DE61803F424002F6BCB /* CoreMedia.framework in Frameworks */,
+				890C5DE41803F40D002F6BCB /* AudioToolbox.framework in Frameworks */,
+				890C5DE01803F3E2002F6BCB /* CoreLocation.framework in Frameworks */,
 				8957465617FDB4A40073CCBE /* libRestKit.a in Frameworks */,
 				8957464617FDA9E30073CCBE /* SystemConfiguration.framework in Frameworks */,
 				8957464417FDA9C10073CCBE /* Security.framework in Frameworks */,
@@ -119,6 +137,7 @@
 				8957460017FD9AE40073CCBE /* CoreGraphics.framework in Frameworks */,
 				8957460217FD9AE40073CCBE /* UIKit.framework in Frameworks */,
 				895745FE17FD9AE40073CCBE /* Foundation.framework in Frameworks */,
+				89A01F591803ECA30083F780 /* Quickblox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +157,7 @@
 		895745F117FD9AE30073CCBE = {
 			isa = PBXGroup;
 			children = (
+				89A01F62180403EF0083F780 /* libxml2.2.dylib */,
 				8957464717FDB1820073CCBE /* RestKit.xcodeproj */,
 				894BEABB17FD9FBC00E16CFD /* Default-568h@2x.png */,
 				8957460317FD9AE40073CCBE /* MobileTutorialApp */,
@@ -159,6 +179,15 @@
 		895745FC17FD9AE40073CCBE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				890C5DEF1803F49E002F6BCB /* libresolv.dylib */,
+				890C5DED1803F48C002F6BCB /* libz.1.1.3.dylib */,
+				890C5DEB1803F45E002F6BCB /* AVFoundation.framework */,
+				890C5DE91803F449002F6BCB /* CoreVideo.framework */,
+				890C5DE71803F430002F6BCB /* Accelerate.framework */,
+				890C5DE51803F424002F6BCB /* CoreMedia.framework */,
+				890C5DE31803F40D002F6BCB /* AudioToolbox.framework */,
+				890C5DDF1803F3E2002F6BCB /* CoreLocation.framework */,
+				89A01F581803ECA30083F780 /* Quickblox.framework */,
 				8957464517FDA9E30073CCBE /* SystemConfiguration.framework */,
 				8957464317FDA9C10073CCBE /* Security.framework */,
 				8957464117FDA9B70073CCBE /* QuartzCore.framework */,
@@ -224,8 +253,6 @@
 			children = (
 				8957464F17FDB1830073CCBE /* libRestKit.a */,
 				8957465117FDB1830073CCBE /* RestKitTests.octest */,
-				8957465317FDB1830073CCBE /* RestKit.framework */,
-				8957465517FDB1830073CCBE /* RestKitFrameworkTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -234,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				8957465F17FDC1310073CCBE /* AppsListViewController.xib */,
+				89A01FC0180461650083F780 /* SignUpViewController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -250,6 +278,8 @@
 			children = (
 				8957465D17FDC1310073CCBE /* AppsListViewController.h */,
 				8957465E17FDC1310073CCBE /* AppsListViewController.m */,
+				89A01FBE180461650083F780 /* SignUpViewController.h */,
+				89A01FBF180461650083F780 /* SignUpViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -346,20 +376,6 @@
 			remoteRef = 8957465017FDB1830073CCBE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8957465317FDB1830073CCBE /* RestKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = RestKit.framework;
-			remoteRef = 8957465217FDB1830073CCBE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8957465517FDB1830073CCBE /* RestKitFrameworkTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = RestKitFrameworkTests.octest;
-			remoteRef = 8957465417FDB1830073CCBE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -371,6 +387,7 @@
 				8957460817FD9AE40073CCBE /* InfoPlist.strings in Resources */,
 				8957466117FDC1310073CCBE /* AppsListViewController.xib in Resources */,
 				894BEABC17FD9FBC00E16CFD /* Default-568h@2x.png in Resources */,
+				89A01FC2180461660083F780 /* SignUpViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,6 +409,7 @@
 				8957460E17FD9AE40073CCBE /* AppDelegate.m in Sources */,
 				8957460A17FD9AE40073CCBE /* main.m in Sources */,
 				8957466017FDC1310073CCBE /* AppsListViewController.m in Sources */,
+				89A01FC1180461660083F780 /* SignUpViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +531,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MobileTutorialApp/MobileTutorialApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -523,7 +545,10 @@
 				INFOPLIST_FILE = "MobileTutorialApp/MobileTutorialApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC,",
+					"-lstdc++",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -536,6 +561,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MobileTutorialApp/MobileTutorialApp-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -546,7 +575,10 @@
 				INFOPLIST_FILE = "MobileTutorialApp/MobileTutorialApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC,",
+					"-lstdc++",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

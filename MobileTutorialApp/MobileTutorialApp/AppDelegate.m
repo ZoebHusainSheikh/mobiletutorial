@@ -14,6 +14,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    // Set QuickBlox credentials. Register at admin.quickblox.com for create a new app
+    [QBSettings setApplicationID:4406];
+    [QBSettings setAuthorizationKey:@"jKzvFUYT4h7B4wu"];
+    [QBSettings setAuthorizationSecret:@"kauggwxKXQ9Ap4p"];
+    [QBAuth createSessionWithDelegate:self];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] ;
     
     AppsListViewController *rootController = [[AppsListViewController alloc]     initWithNibName:@"AppsListViewController" bundle:nil];
