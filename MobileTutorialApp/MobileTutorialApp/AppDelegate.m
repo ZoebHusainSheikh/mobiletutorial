@@ -19,6 +19,8 @@
     [QBSettings setApplicationID:4406];
     [QBSettings setAuthorizationKey:@"jKzvFUYT4h7B4wu"];
     [QBSettings setAuthorizationSecret:@"kauggwxKXQ9Ap4p"];
+    [QBSettings setRestAPIVersion:@"1.7.2"];
+
     [QBAuth createSessionWithDelegate:self];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] ;

@@ -38,6 +38,7 @@
 		8957465617FDB4A40073CCBE /* libRestKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8957464F17FDB1830073CCBE /* libRestKit.a */; };
 		8957466017FDC1310073CCBE /* AppsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8957465E17FDC1310073CCBE /* AppsListViewController.m */; };
 		8957466117FDC1310073CCBE /* AppsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8957465F17FDC1310073CCBE /* AppsListViewController.xib */; };
+		898E7ADC18052FEB00BEFBB7 /* facebook_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 898E7ADB18052FEB00BEFBB7 /* facebook_login.png */; };
 		89A01F591803ECA30083F780 /* Quickblox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89A01F581803ECA30083F780 /* Quickblox.framework */; };
 		89A01FC1180461660083F780 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 89A01FBF180461650083F780 /* SignUpViewController.m */; };
 		89A01FC2180461660083F780 /* SignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89A01FC0180461650083F780 /* SignUpViewController.xib */; };
@@ -106,6 +107,7 @@
 		8957465D17FDC1310073CCBE /* AppsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsListViewController.h; sourceTree = "<group>"; };
 		8957465E17FDC1310073CCBE /* AppsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppsListViewController.m; sourceTree = "<group>"; };
 		8957465F17FDC1310073CCBE /* AppsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppsListViewController.xib; sourceTree = "<group>"; };
+		898E7ADB18052FEB00BEFBB7 /* facebook_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_login.png; sourceTree = "<group>"; };
 		89A01F581803ECA30083F780 /* Quickblox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Quickblox.framework; sourceTree = "<group>"; };
 		89A01F62180403EF0083F780 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		89A01FBE180461650083F780 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
@@ -260,8 +262,9 @@
 		8957466217FDC2930073CCBE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8982E0AE1806C9D4007A3648 /* Xibs */,
+				898E7AD818052FCA00BEFBB7 /* Images */,
 				8957465F17FDC1310073CCBE /* AppsListViewController.xib */,
-				89A01FC0180461650083F780 /* SignUpViewController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 		8957466317FDC3600073CCBE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8982E0AC1806C9AA007A3648 /* ChatApp */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -276,12 +280,59 @@
 		8957466417FDC3A00073CCBE /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				8982E0AB1806C984007A3648 /* ChatApp */,
 				8957465D17FDC1310073CCBE /* AppsListViewController.h */,
 				8957465E17FDC1310073CCBE /* AppsListViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		8982E0AB1806C984007A3648 /* ChatApp */ = {
+			isa = PBXGroup;
+			children = (
 				89A01FBE180461650083F780 /* SignUpViewController.h */,
 				89A01FBF180461650083F780 /* SignUpViewController.m */,
 			);
-			name = Controller;
+			name = ChatApp;
+			sourceTree = "<group>";
+		};
+		8982E0AC1806C9AA007A3648 /* ChatApp */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ChatApp;
+			sourceTree = "<group>";
+		};
+		8982E0AD1806C9B8007A3648 /* ChatApp */ = {
+			isa = PBXGroup;
+			children = (
+				898E7ADB18052FEB00BEFBB7 /* facebook_login.png */,
+			);
+			name = ChatApp;
+			sourceTree = "<group>";
+		};
+		8982E0AE1806C9D4007A3648 /* Xibs */ = {
+			isa = PBXGroup;
+			children = (
+				8982E0AF1806D01B007A3648 /* ChatApp */,
+			);
+			name = Xibs;
+			sourceTree = "<group>";
+		};
+		8982E0AF1806D01B007A3648 /* ChatApp */ = {
+			isa = PBXGroup;
+			children = (
+				89A01FC0180461650083F780 /* SignUpViewController.xib */,
+			);
+			name = ChatApp;
+			sourceTree = "<group>";
+		};
+		898E7AD818052FCA00BEFBB7 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				8982E0AD1806C9B8007A3648 /* ChatApp */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -388,6 +439,7 @@
 				8957466117FDC1310073CCBE /* AppsListViewController.xib in Resources */,
 				894BEABC17FD9FBC00E16CFD /* Default-568h@2x.png in Resources */,
 				89A01FC2180461660083F780 /* SignUpViewController.xib in Resources */,
+				898E7ADC18052FEB00BEFBB7 /* facebook_login.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
