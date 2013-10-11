@@ -36,6 +36,8 @@
 		8957464417FDA9C10073CCBE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8957464317FDA9C10073CCBE /* Security.framework */; };
 		8957464617FDA9E30073CCBE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8957464517FDA9E30073CCBE /* SystemConfiguration.framework */; };
 		8957465617FDB4A40073CCBE /* libRestKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8957464F17FDB1830073CCBE /* libRestKit.a */; };
+		89601E03180859930029DEDD /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 89601E02180859930029DEDD /* UserCell.m */; };
+		89601E0518085A830029DEDD /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89601E0418085A830029DEDD /* UserCell.xib */; };
 		8982E1801806E7C3007A3648 /* NSArray+convert.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E1771806E7C3007A3648 /* NSArray+convert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E1811806E7C3007A3648 /* NSObject+performer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E1791806E7C3007A3648 /* NSObject+performer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E1821806E7C3007A3648 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E17B1806E7C3007A3648 /* NSString+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -160,6 +162,9 @@
 		8957464317FDA9C10073CCBE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		8957464517FDA9E30073CCBE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8957464717FDB1820073CCBE /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
+		89601E01180859930029DEDD /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
+		89601E02180859930029DEDD /* UserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
+		89601E0418085A830029DEDD /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		8982E1761806E7C3007A3648 /* NSArray+convert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+convert.h"; sourceTree = "<group>"; };
 		8982E1771806E7C3007A3648 /* NSArray+convert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+convert.m"; sourceTree = "<group>"; };
 		8982E1781806E7C3007A3648 /* NSObject+performer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+performer.h"; sourceTree = "<group>"; };
@@ -389,6 +394,7 @@
 		8957460317FD9AE40073CCBE /* MobileTutorialApp */ = {
 			isa = PBXGroup;
 			children = (
+				89601DFF180858E60029DEDD /* TableViewCell */,
 				8957460C17FD9AE40073CCBE /* AppDelegate.h */,
 				8957460D17FD9AE40073CCBE /* AppDelegate.m */,
 				8982E1751806E7C2007A3648 /* Categories */,
@@ -440,6 +446,23 @@
 				8957465117FDB1830073CCBE /* RestKitTests.octest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		89601DFF180858E60029DEDD /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				89601E00180858E80029DEDD /* ChatApp */,
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
+		89601E00180858E80029DEDD /* ChatApp */ = {
+			isa = PBXGroup;
+			children = (
+				89601E01180859930029DEDD /* UserCell.h */,
+				89601E02180859930029DEDD /* UserCell.m */,
+			);
+			path = ChatApp;
 			sourceTree = "<group>";
 		};
 		8982E1751806E7C2007A3648 /* Categories */ = {
@@ -740,6 +763,7 @@
 			children = (
 				8982E2341806EC14007A3648 /* SignUpViewController.xib */,
 				899BAC6E1807D1FD00236472 /* UsersListViewController.xib */,
+				89601E0418085A830029DEDD /* UserCell.xib */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -904,6 +928,7 @@
 				8982E23D1806ED81007A3648 /* AppsListViewController.xib in Resources */,
 				899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */,
 				899107161807D90C00714FA1 /* profile_pic.png in Resources */,
+				89601E0518085A830029DEDD /* UserCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -978,6 +1003,7 @@
 				8982E2621807159D007A3648 /* DatetimeConverter.m in Sources */,
 				8982E2631807159D007A3648 /* NumberToLetterConverter.m in Sources */,
 				899BAC6F1807D1FD00236472 /* UsersListViewController.m in Sources */,
+				89601E03180859930029DEDD /* UserCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

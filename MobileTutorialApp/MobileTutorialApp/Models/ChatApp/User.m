@@ -59,6 +59,11 @@
 	[defaults synchronize];
     
     self.accessToken = nil;
+    
+    // reset user
+    self.currentFBUser = nil;
+    self.currentQBUser = nil;
+    self.currentFBUserId = nil;
 }
 
 - (NSDictionary *)fbUserTokenAndDate

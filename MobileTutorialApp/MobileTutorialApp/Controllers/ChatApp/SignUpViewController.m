@@ -58,6 +58,12 @@
                                                  name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self showLoginButton:YES];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -284,7 +290,7 @@
             user.login = userLogin;
             user.password = passwordHash;
             user.facebookID = [[User sharedInstance].currentFBUser objectForKey:kId];
-            user.tags = [NSArray arrayWithObject:@"Chattar"];
+            user.tags = [NSArray arrayWithObject:@"Systango"];
             
             // Create user
             [QBUsers signUp:user delegate:self];

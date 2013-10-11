@@ -2,18 +2,18 @@
 //  UsersListViewController.m
 //  MobileTutorialApp
 //
-//  Created by MAC1 on 10/11/13.
+//  Created by Systango on 10/11/13.
 //  Copyright (c) 2013 Systango. All rights reserved.
 //
 
 #import "UsersListViewController.h"
-
+#import "FBService.h"
+#import "User.h"
+#import "UserCell.h"
 @interface UsersListViewController ()
 
 @property (weak, nonatomic) QBUUser *currentUser;
 @property (strong, nonatomic) NSMutableArray *searchUsers;
-@property (strong, nonatomic) IBOutlet UITableViewCell *userCell;
-@property (weak, nonatomic) IBOutlet UILabel *userName;
 @property (strong, nonatomic) NSArray *users;
 @property (weak, nonatomic) IBOutlet UITableView *usersTable;
 
@@ -33,7 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [self retrieveUsers];
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,7 +66,6 @@
             self.users = usersSearchRes.users;
             self.searchUsers = [self.users mutableCopy];
             [self.usersTable reloadData];
-            
             // Errors
         }else{
             NSLog(@"Errors=%@", result.errors);
@@ -99,15 +98,34 @@
 // Making table view using custom cells
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    QBUUser* obtainedUser = [self.searchUsers objectAtIndex:[indexPath row]];
-    if(obtainedUser.login != nil){
-        self.userName.text = obtainedUser.login;
+    static NSString *CellIdentifier = @"UserCell";
+
+	UserCell *cell = (UserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+	if (cell == nil) {
+		NSArray *nibObjects;
+         nibObjects = [[NSBundle mainBundle] loadNibNamed:@"UserCell"
+													   owner:self
+													 options:nil];
+		cell = [nibObjects objectAtIndex:0];
+	}
+
+    QBUUser *obtainedUser = [self.searchUsers objectAtIndex:[indexPath row]];
+    
+    if(obtainedUser.login != nil) {
+        cell.userName.text = obtainedUser.login;
     }
     else{
-        self.userName.text = obtainedUser.email;
+        cell.userName.text = obtainedUser.email;
     }
     
-    return self.userCell;
+    return cell;
+}
+- (IBAction)logoutMe:(id)sender {
+    // logout
+    [[User sharedInstance] clearFBAccess];
+    [[FBService shared].facebook logout];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
