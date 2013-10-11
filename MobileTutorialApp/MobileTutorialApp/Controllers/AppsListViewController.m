@@ -32,6 +32,7 @@
 {
     [super viewDidLoad];
     self.navigationItem.title = @"Mobile Tutorial";
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -108,5 +109,5 @@
     [self.navigationController pushViewController:signUpViewController animated:YES];
 }
 
-
 @end
+

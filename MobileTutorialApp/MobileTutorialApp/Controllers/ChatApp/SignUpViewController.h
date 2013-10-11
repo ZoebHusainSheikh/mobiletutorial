@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Facebook.h"
+#import "FBServiceResultDelegate.h"
 
-@interface SignUpViewController : UIViewController
+@interface SignUpViewController : UIViewController <QBActionStatusDelegate, FBServiceResultDelegate, FBSessionDelegate> {
+    
+}
 
 @end

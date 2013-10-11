@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import "Constants.h"
 
 @implementation User
 
@@ -38,4 +39,40 @@
     return self;
 }
 
+
+#pragma mark -
+#pragma mark FB access
+
+- (void)saveFBToken:(NSString *)token andDate:(NSDate *)date{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:token forKey:FBAccessTokenKey];
+    [defaults setObject:date forKey:FBExpirationDateKey];
+	[defaults synchronize];
+    
+    self.accessToken = token;
+}
+
+- (void)clearFBAccess{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObjectForKey:FBAccessTokenKey];
+    [defaults removeObjectForKey:FBExpirationDateKey];
+	[defaults synchronize];
+    
+    self.accessToken = nil;
+}
+
+- (NSDictionary *)fbUserTokenAndDate
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	if ([defaults objectForKey:FBAccessTokenKey] && [defaults objectForKey:FBExpirationDateKey]){
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+		[dict setObject:[defaults objectForKey:FBAccessTokenKey] forKey:FBAccessTokenKey];
+		[dict setObject:[defaults objectForKey:FBExpirationDateKey] forKey:FBExpirationDateKey];
+        
+		return dict;
+    }
+    
+    return nil;
+}
 @end

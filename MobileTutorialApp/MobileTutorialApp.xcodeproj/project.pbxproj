@@ -92,6 +92,11 @@
 		8982E2361806EC14007A3648 /* SignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8982E2341806EC14007A3648 /* SignUpViewController.xib */; };
 		8982E23D1806ED81007A3648 /* AppsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8982E23C1806ED81007A3648 /* AppsListViewController.xib */; };
 		8982E2521806F0B5007A3648 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E2511806F0B5007A3648 /* User.m */; };
+		8982E2621807159D007A3648 /* DatetimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E25F1807159D007A3648 /* DatetimeConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		8982E2631807159D007A3648 /* NumberToLetterConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E2611807159D007A3648 /* NumberToLetterConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		899107161807D90C00714FA1 /* profile_pic.png in Resources */ = {isa = PBXBuildFile; fileRef = 899107151807D90C00714FA1 /* profile_pic.png */; };
+		899BAC6F1807D1FD00236472 /* UsersListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 899BAC6D1807D1FD00236472 /* UsersListViewController.m */; };
+		899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 899BAC6E1807D1FD00236472 /* UsersListViewController.xib */; };
 		89A01F591803ECA30083F780 /* Quickblox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89A01F581803ECA30083F780 /* Quickblox.framework */; };
 /* End PBXBuildFile section */
 
@@ -276,6 +281,14 @@
 		8982E23C1806ED81007A3648 /* AppsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppsListViewController.xib; sourceTree = "<group>"; };
 		8982E2501806F0B5007A3648 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		8982E2511806F0B5007A3648 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		8982E25E1807159D007A3648 /* DatetimeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatetimeConverter.h; sourceTree = "<group>"; };
+		8982E25F1807159D007A3648 /* DatetimeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatetimeConverter.m; sourceTree = "<group>"; };
+		8982E2601807159D007A3648 /* NumberToLetterConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberToLetterConverter.h; sourceTree = "<group>"; };
+		8982E2611807159D007A3648 /* NumberToLetterConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberToLetterConverter.m; sourceTree = "<group>"; };
+		899107151807D90C00714FA1 /* profile_pic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_pic.png; sourceTree = "<group>"; };
+		899BAC6C1807D1FD00236472 /* UsersListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersListViewController.h; sourceTree = "<group>"; };
+		899BAC6D1807D1FD00236472 /* UsersListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersListViewController.m; sourceTree = "<group>"; };
+		899BAC6E1807D1FD00236472 /* UsersListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UsersListViewController.xib; path = ../../../Controllers/ChatApp/UsersListViewController.xib; sourceTree = "<group>"; };
 		89A01F581803ECA30083F780 /* Quickblox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Quickblox.framework; sourceTree = "<group>"; };
 		89A01F62180403EF0083F780 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -386,6 +399,7 @@
 				8982E23A1806ECB2007A3648 /* Models */,
 				8982E22E1806EC13007A3648 /* Resources */,
 				8957460417FD9AE40073CCBE /* Supporting Files */,
+				8982E25C1807159C007A3648 /* Utility */,
 			);
 			path = MobileTutorialApp;
 			sourceTree = "<group>";
@@ -460,6 +474,8 @@
 			children = (
 				8982E1891806EAB7007A3648 /* SignUpViewController.h */,
 				8982E18A1806EAB7007A3648 /* SignUpViewController.m */,
+				899BAC6C1807D1FD00236472 /* UsersListViewController.h */,
+				899BAC6D1807D1FD00236472 /* UsersListViewController.m */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -704,6 +720,7 @@
 		8982E2301806EC13007A3648 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				899107151807D90C00714FA1 /* profile_pic.png */,
 				8982E2311806EC13007A3648 /* facebook_login.png */,
 			);
 			path = ChatApp;
@@ -722,6 +739,7 @@
 			isa = PBXGroup;
 			children = (
 				8982E2341806EC14007A3648 /* SignUpViewController.xib */,
+				899BAC6E1807D1FD00236472 /* UsersListViewController.xib */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -757,6 +775,25 @@
 				8982E2511806F0B5007A3648 /* User.m */,
 			);
 			path = ChatApp;
+			sourceTree = "<group>";
+		};
+		8982E25C1807159C007A3648 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				8982E25D1807159D007A3648 /* Converters */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		8982E25D1807159D007A3648 /* Converters */ = {
+			isa = PBXGroup;
+			children = (
+				8982E25E1807159D007A3648 /* DatetimeConverter.h */,
+				8982E25F1807159D007A3648 /* DatetimeConverter.m */,
+				8982E2601807159D007A3648 /* NumberToLetterConverter.h */,
+				8982E2611807159D007A3648 /* NumberToLetterConverter.m */,
+			);
+			path = Converters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -865,6 +902,8 @@
 				8982E2351806EC14007A3648 /* facebook_login.png in Resources */,
 				8982E2361806EC14007A3648 /* SignUpViewController.xib in Resources */,
 				8982E23D1806ED81007A3648 /* AppsListViewController.xib in Resources */,
+				899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */,
+				899107161807D90C00714FA1 /* profile_pic.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -936,6 +975,9 @@
 				8982E22C1806EB47007A3648 /* XMPPSRVResolver.m in Sources */,
 				8982E22D1806EB47007A3648 /* XMPPXFacebookPlatformAuthentication.m in Sources */,
 				8982E2521806F0B5007A3648 /* User.m in Sources */,
+				8982E2621807159D007A3648 /* DatetimeConverter.m in Sources */,
+				8982E2631807159D007A3648 /* NumberToLetterConverter.m in Sources */,
+				899BAC6F1807D1FD00236472 /* UsersListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

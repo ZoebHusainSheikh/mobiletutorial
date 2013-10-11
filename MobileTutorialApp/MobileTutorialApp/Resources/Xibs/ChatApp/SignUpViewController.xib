@@ -12,6 +12,7 @@
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
+			<string>IBUIActivityIndicatorView</string>
 			<string>IBUIButton</string>
 			<string>IBUIView</string>
 		</array>
@@ -39,9 +40,9 @@
 						<reference key="NSNextResponder" ref="446862359"/>
 						<int key="NSvFlags">1325</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
-						<string key="NSFrame">{{22, 257}, {276, 34}}</string>
+						<string key="NSFrame">{{22, 249}, {276, 50}}</string>
 						<reference key="NSSuperview" ref="446862359"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="785828913"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -72,6 +73,17 @@
 							<double key="NSSize">15</double>
 							<int key="NSfFlags">16</int>
 						</object>
+					</object>
+					<object class="IBUIActivityIndicatorView" id="785828913">
+						<reference key="NSNextResponder" ref="446862359"/>
+						<int key="NSvFlags">1316</int>
+						<string key="NSFrame">{{141, 256}, {37, 37}}</string>
+						<reference key="NSSuperview" ref="446862359"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<bool key="IBUIHidesWhenStopped">NO</bool>
+						<int key="IBUIStyle">0</int>
 					</object>
 				</array>
 				<object class="NSPSMatrix" key="NSFrameMatrix"/>
@@ -117,6 +129,31 @@
 					</object>
 					<string key="id">3</string>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">loginButton</string>
+						<reference key="source" ref="588013151"/>
+						<reference key="destination" ref="514343847"/>
+					</object>
+					<string key="id">mUf-wy-8V0</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">activityIndicator</string>
+						<reference key="source" ref="588013151"/>
+						<reference key="destination" ref="785828913"/>
+					</object>
+					<string key="id">U2e-7d-z0I</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">login:</string>
+						<reference key="source" ref="514343847"/>
+						<reference key="destination" ref="588013151"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<string key="id">yPO-Mg-2uh</string>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -142,6 +179,7 @@
 						<reference key="object" ref="446862359"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="514343847"/>
+							<reference ref="785828913"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -150,6 +188,12 @@
 						<reference key="object" ref="514343847"/>
 						<reference key="parent" ref="446862359"/>
 						<string key="objectName">Button - Login</string>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">dCB-4a-5LE</string>
+						<reference key="object" ref="785828913"/>
+						<reference key="parent" ref="446862359"/>
+						<string key="objectName">Login Activity Indicator</string>
 					</object>
 				</array>
 			</object>
@@ -166,6 +210,7 @@
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<reference key="7.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="7.showNotes"/>
+				<string key="dCB-4a-5LE.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
