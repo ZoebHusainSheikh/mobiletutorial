@@ -79,14 +79,27 @@
 }
 - (void)createSessionWithDelegate:(id)delegate{
   	// Create extended application authorization request (for push notifications)
-	QBASessionCreationRequest *extendedAuthRequest = [[QBASessionCreationRequest alloc] init];
+	/*QBASessionCreationRequest *extendedAuthRequest = [[QBASessionCreationRequest alloc] init];
         
 	if([User sharedInstance].currentQBUser){
         extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
         extendedAuthRequest.userPassword = [NSString stringWithFormat:@"%u", [[User sharedInstance].currentQBUser.password hash]];
     }
 	// QuickBlox application authorization
-	[QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:delegate];
+	[QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:delegate];*/
+    
+    
+    
+    // Your app connects to QuickBlox server here.
+    //
+    // Create extended session request with user authorization
+    //
+    QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
+    extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
+    extendedAuthRequest.userPassword = [NSString stringWithFormat:@"%u", [[User sharedInstance].currentQBUser.password hash]];
+    [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
+    
+
 }
 
 #pragma mark -

@@ -74,6 +74,14 @@
     [NSTimer scheduledTimerWithTimeInterval:30 target:[QBChat instance] selector:@selector(sendPresence) userInfo:nil repeats:YES];
 }
 
+
+- (void)viewDidUnload{
+    // release video chat
+    //
+    [[QBChat instance] unregisterVideoChatInstance:self.videoChat];
+    self.videoChat = nil;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -185,8 +193,7 @@
 //        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 //        NSString *message = [NSString stringWithFormat:@"%@ is calling. Would you like to answer?", appDelegate.currentUser == 1 ? @"User 2" : @"User 1"];
         
-        NSString *message = [NSString stringWithFormat:@"%@ is calling. Would you like to answer?", [User sharedInstance
-                                                                                                     ].currentQBUser.login];
+        NSString *message = [NSString stringWithFormat:@"%@ is calling. Would you like to answer?", [User sharedInstance].currentQBUser.login];
         self.callAlert = [[UIAlertView alloc] initWithTitle:@"Call" message:message delegate:self cancelButtonTitle:@"Decline" otherButtonTitles:@"Accept", nil];
         [self.callAlert show];
     }
