@@ -10,4 +10,6 @@
 
 @interface UsersListViewController : UIViewController <QBActionStatusDelegate, UITextFieldDelegate,UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
+@property (weak, nonatomic) QBUUser *currentUser;
+
 @end

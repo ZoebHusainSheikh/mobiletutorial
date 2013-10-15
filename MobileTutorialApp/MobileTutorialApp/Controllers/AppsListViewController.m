@@ -7,6 +7,7 @@
 //
 
 #import "AppsListViewController.h"
+#import "LoginViewController.h"
 #import "SignUpViewController.h"
 
 #define kNumberOfAppsInTutorial 1;
@@ -104,9 +105,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    // Create the Signup view controller.
+//    SignUpViewController *signUpViewController = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
+//    [self.navigationController pushViewController:signUpViewController animated:YES];
+    
     // Create the Signup view controller.
-    SignUpViewController *signUpViewController = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
-    [self.navigationController pushViewController:signUpViewController animated:YES];
+    LoginViewController *loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+    [self.navigationController pushViewController:loginViewController animated:YES];
 }
 
 @end

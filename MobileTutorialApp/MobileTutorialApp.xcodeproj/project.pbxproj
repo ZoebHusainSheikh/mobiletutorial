@@ -97,6 +97,17 @@
 		8982E2621807159D007A3648 /* DatetimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E25F1807159D007A3648 /* DatetimeConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E2631807159D007A3648 /* NumberToLetterConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E2611807159D007A3648 /* NumberToLetterConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		899107161807D90C00714FA1 /* profile_pic.png in Resources */ = {isa = PBXBuildFile; fileRef = 899107151807D90C00714FA1 /* profile_pic.png */; };
+		8998D60F180D152500E6B5D9 /* UserDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8998D60E180D152500E6B5D9 /* UserDetailViewController.m */; };
+		8998D613180D155800E6B5D9 /* UserDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8998D612180D155800E6B5D9 /* UserDetailViewController.xib */; };
+		8998D616180D158200E6B5D9 /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8998D615180D158200E6B5D9 /* VideoCallViewController.m */; };
+		8998D618180D159200E6B5D9 /* VideoCallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8998D617180D159200E6B5D9 /* VideoCallViewController.xib */; };
+		8998D61C180D15E900E6B5D9 /* callAccept.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8998D619180D15E900E6B5D9 /* callAccept.jpg */; };
+		8998D61D180D15EA00E6B5D9 /* callReject.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8998D61A180D15E900E6B5D9 /* callReject.jpg */; };
+		8998D61E180D15EA00E6B5D9 /* person.png in Resources */ = {isa = PBXBuildFile; fileRef = 8998D61B180D15E900E6B5D9 /* person.png */; };
+		8998D622180D164700E6B5D9 /* ringing.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8998D621180D164700E6B5D9 /* ringing.wav */; };
+		8998D627180D173F00E6B5D9 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8998D626180D173F00E6B5D9 /* LoginViewController.xib */; };
+		8998D640180D1C3E00E6B5D9 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8998D63F180D1C3D00E6B5D9 /* LoginViewController.m */; };
+		8998D647180D269F00E6B5D9 /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8998D641180D231D00E6B5D9 /* libc++.1.dylib */; };
 		899BAC6F1807D1FD00236472 /* UsersListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 899BAC6D1807D1FD00236472 /* UsersListViewController.m */; };
 		899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 899BAC6E1807D1FD00236472 /* UsersListViewController.xib */; };
 		89A01F591803ECA30083F780 /* Quickblox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89A01F581803ECA30083F780 /* Quickblox.framework */; };
@@ -291,6 +302,22 @@
 		8982E2601807159D007A3648 /* NumberToLetterConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberToLetterConverter.h; sourceTree = "<group>"; };
 		8982E2611807159D007A3648 /* NumberToLetterConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberToLetterConverter.m; sourceTree = "<group>"; };
 		899107151807D90C00714FA1 /* profile_pic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_pic.png; sourceTree = "<group>"; };
+		8998D60D180D152500E6B5D9 /* UserDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDetailViewController.h; sourceTree = "<group>"; };
+		8998D60E180D152500E6B5D9 /* UserDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDetailViewController.m; sourceTree = "<group>"; };
+		8998D612180D155800E6B5D9 /* UserDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserDetailViewController.xib; sourceTree = "<group>"; };
+		8998D614180D158200E6B5D9 /* VideoCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCallViewController.h; sourceTree = "<group>"; };
+		8998D615180D158200E6B5D9 /* VideoCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCallViewController.m; sourceTree = "<group>"; };
+		8998D617180D159200E6B5D9 /* VideoCallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCallViewController.xib; sourceTree = "<group>"; };
+		8998D619180D15E900E6B5D9 /* callAccept.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = callAccept.jpg; sourceTree = "<group>"; };
+		8998D61A180D15E900E6B5D9 /* callReject.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = callReject.jpg; sourceTree = "<group>"; };
+		8998D61B180D15E900E6B5D9 /* person.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = person.png; sourceTree = "<group>"; };
+		8998D621180D164700E6B5D9 /* ringing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringing.wav; sourceTree = "<group>"; };
+		8998D626180D173F00E6B5D9 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		8998D63E180D1C3D00E6B5D9 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		8998D63F180D1C3D00E6B5D9 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		8998D641180D231D00E6B5D9 /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "usr/lib/libc++.1.dylib"; sourceTree = SDKROOT; };
+		8998D643180D23AC00E6B5D9 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		8998D645180D24DF00E6B5D9 /* libc++abi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++abi.dylib"; path = "usr/lib/libc++abi.dylib"; sourceTree = SDKROOT; };
 		899BAC6C1807D1FD00236472 /* UsersListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersListViewController.h; sourceTree = "<group>"; };
 		899BAC6D1807D1FD00236472 /* UsersListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersListViewController.m; sourceTree = "<group>"; };
 		899BAC6E1807D1FD00236472 /* UsersListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UsersListViewController.xib; path = ../../../Controllers/ChatApp/UsersListViewController.xib; sourceTree = "<group>"; };
@@ -303,6 +330,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8998D647180D269F00E6B5D9 /* libc++.1.dylib in Frameworks */,
 				890C5DF01803F49E002F6BCB /* libresolv.dylib in Frameworks */,
 				890C5DEE1803F48C002F6BCB /* libz.1.1.3.dylib in Frameworks */,
 				890C5DEC1803F45E002F6BCB /* AVFoundation.framework in Frameworks */,
@@ -343,6 +371,9 @@
 		895745F117FD9AE30073CCBE = {
 			isa = PBXGroup;
 			children = (
+				8998D645180D24DF00E6B5D9 /* libc++abi.dylib */,
+				8998D643180D23AC00E6B5D9 /* libc++.dylib */,
+				8998D641180D231D00E6B5D9 /* libc++.1.dylib */,
 				89A01F62180403EF0083F780 /* libxml2.2.dylib */,
 				8957464717FDB1820073CCBE /* RestKit.xcodeproj */,
 				894BEABB17FD9FBC00E16CFD /* Default-568h@2x.png */,
@@ -495,10 +526,16 @@
 		8982E1881806EAB7007A3648 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				8998D63E180D1C3D00E6B5D9 /* LoginViewController.h */,
+				8998D63F180D1C3D00E6B5D9 /* LoginViewController.m */,
 				8982E1891806EAB7007A3648 /* SignUpViewController.h */,
 				8982E18A1806EAB7007A3648 /* SignUpViewController.m */,
 				899BAC6C1807D1FD00236472 /* UsersListViewController.h */,
 				899BAC6D1807D1FD00236472 /* UsersListViewController.m */,
+				8998D60D180D152500E6B5D9 /* UserDetailViewController.h */,
+				8998D60E180D152500E6B5D9 /* UserDetailViewController.m */,
+				8998D614180D158200E6B5D9 /* VideoCallViewController.h */,
+				8998D615180D158200E6B5D9 /* VideoCallViewController.m */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -726,6 +763,7 @@
 		8982E22E1806EC13007A3648 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8998D621180D164700E6B5D9 /* ringing.wav */,
 				8982E22F1806EC13007A3648 /* Images */,
 				8982E2321806EC13007A3648 /* Xibs */,
 			);
@@ -743,6 +781,9 @@
 		8982E2301806EC13007A3648 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				8998D619180D15E900E6B5D9 /* callAccept.jpg */,
+				8998D61A180D15E900E6B5D9 /* callReject.jpg */,
+				8998D61B180D15E900E6B5D9 /* person.png */,
 				899107151807D90C00714FA1 /* profile_pic.png */,
 				8982E2311806EC13007A3648 /* facebook_login.png */,
 			);
@@ -761,9 +802,12 @@
 		8982E2331806EC13007A3648 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				8998D626180D173F00E6B5D9 /* LoginViewController.xib */,
+				8998D612180D155800E6B5D9 /* UserDetailViewController.xib */,
 				8982E2341806EC14007A3648 /* SignUpViewController.xib */,
 				899BAC6E1807D1FD00236472 /* UsersListViewController.xib */,
 				89601E0418085A830029DEDD /* UserCell.xib */,
+				8998D617180D159200E6B5D9 /* VideoCallViewController.xib */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -929,6 +973,13 @@
 				899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */,
 				899107161807D90C00714FA1 /* profile_pic.png in Resources */,
 				89601E0518085A830029DEDD /* UserCell.xib in Resources */,
+				8998D613180D155800E6B5D9 /* UserDetailViewController.xib in Resources */,
+				8998D618180D159200E6B5D9 /* VideoCallViewController.xib in Resources */,
+				8998D61C180D15E900E6B5D9 /* callAccept.jpg in Resources */,
+				8998D61D180D15EA00E6B5D9 /* callReject.jpg in Resources */,
+				8998D61E180D15EA00E6B5D9 /* person.png in Resources */,
+				8998D622180D164700E6B5D9 /* ringing.wav in Resources */,
+				8998D627180D173F00E6B5D9 /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1004,6 +1055,9 @@
 				8982E2631807159D007A3648 /* NumberToLetterConverter.m in Sources */,
 				899BAC6F1807D1FD00236472 /* UsersListViewController.m in Sources */,
 				89601E03180859930029DEDD /* UserCell.m in Sources */,
+				8998D60F180D152500E6B5D9 /* UserDetailViewController.m in Sources */,
+				8998D616180D158200E6B5D9 /* VideoCallViewController.m in Sources */,
+				8998D640180D1C3E00E6B5D9 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1146,8 +1200,8 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
-					"-ObjC,",
 					"-lstdc++",
+					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1182,8 +1236,8 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
-					"-ObjC,",
 					"-lstdc++",
+					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;

@@ -10,9 +10,10 @@
 #import "FBService.h"
 #import "User.h"
 #import "UserCell.h"
+#import "UserDetailViewController.h"
+
 @interface UsersListViewController ()
 
-@property (weak, nonatomic) QBUUser *currentUser;
 @property (strong, nonatomic) NSMutableArray *searchUsers;
 @property (strong, nonatomic) NSArray *users;
 @property (weak, nonatomic) IBOutlet UITableView *usersTable;
@@ -72,7 +73,21 @@
         }
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    }
+        
+    }else if([result isKindOfClass:[QBUUserLogOutResult class]]){
+        
+		QBUUserLogOutResult *res = (QBUUserLogOutResult *)result;
+        
+		if(res.success){
+		    NSLog(@"LogOut successful.");
+            self.currentUser = nil;
+            [User sharedInstance].currentQBUser = nil;
+            [self.navigationController popToRootViewControllerAnimated:YES];
+		}else{
+            NSLog(@"errors=%@", result.errors);
+		}
+	}
+
 }
 
 
@@ -88,6 +103,13 @@
     [self presentModalViewController:detailsController animated:YES];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];*/
+    
+    // show user details
+    UserDetailViewController *userDetailViewController = [[UserDetailViewController alloc] initWithNibName:@"UserDetailViewController" bundle:nil];
+    userDetailViewController.selectedUser = [self.searchUsers objectAtIndex:[indexPath row]];
+    [self.navigationController pushViewController:userDetailViewController animated:YES];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -123,9 +145,15 @@
 }
 - (IBAction)logoutMe:(id)sender {
     // logout
-    [[User sharedInstance] clearFBAccess];
+    /*[[User sharedInstance] clearFBAccess];
     [[FBService shared].facebook logout];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];*/
+    
+    // logout user
+    if ([[QBChat instance]isLoggedIn]) {
+        [[QBChat instance] logout];
+    }
+    [QBUsers logOutWithDelegate:self];
 }
 
 @end
