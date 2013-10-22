@@ -109,6 +109,7 @@
     
     VideoCallViewController *videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
     videoCallViewController.receiver = self.selectedUser;
+    videoCallViewController.usersListViewController = self.usersListViewController;
     [self.navigationController pushViewController:videoCallViewController animated:YES];
 }
 

@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "UsersListViewController.h"
 
-@interface VideoCallViewController : UIViewController  <QBChatDelegate, AVAudioPlayerDelegate, UIAlertViewDelegate>
+@interface VideoCallViewController : UIViewController  <VideoChatDelegate>
 
 @property (nonatomic, strong) QBUUser *receiver;
+@property (nonatomic, strong) UsersListViewController *usersListViewController;
 @end

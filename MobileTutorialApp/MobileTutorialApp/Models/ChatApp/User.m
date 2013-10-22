@@ -12,7 +12,7 @@
 @implementation User
 
 
-+ (User*)sharedInstance {
++ (User *)sharedInstance {
     static User* singleton = nil;
     
     @synchronized (self) {

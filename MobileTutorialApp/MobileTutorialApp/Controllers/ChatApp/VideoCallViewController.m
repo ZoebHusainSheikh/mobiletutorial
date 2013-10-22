@@ -18,15 +18,9 @@
 @property (nonatomic, weak) IBOutlet UIImageView *opponentVideoView;
 @property (nonatomic, weak) IBOutlet UIImageView *myVideoView;
 @property (nonatomic, weak) IBOutlet UINavigationBar *navBar;
-@property (nonatomic, strong) AVAudioPlayer *ringingPlayer;
 
-@property (nonatomic, weak) QBVideoChat *videoChat;
-@property (nonatomic, strong) UIAlertView *callAlert;
 
 - (IBAction)call:(id)sender;
-- (void)reject;
-- (void)accept;
-
 
 @end
 
@@ -44,13 +38,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSMutableDictionary *videoChatConfiguration = [[QBSettings videoChatConfiguration] mutableCopy];
-    [videoChatConfiguration setObject:@20 forKey:kQBVideoChatCallTimeout];
-    [videoChatConfiguration setObject:AVCaptureSessionPresetLow forKey:kQBVideoChatFrameQualityPreset];
-    [videoChatConfiguration setObject:@10 forKey:kQBVideoChatVideoFramesPerSecond];
-    [QBSettings setVideoChatConfiguration:videoChatConfiguration];
-    
+    self.usersListViewController.delegate = self;
     self.opponentVideoView.layer.borderWidth = 1;
     self.opponentVideoView.layer.borderColor = [[UIColor grayColor] CGColor];
     self.opponentVideoView.layer.cornerRadius = 5;
@@ -60,27 +48,16 @@
     [self.callButton setTitle:[NSString stringWithFormat:@"Call to %@", self.receiver.login] forState:UIControlStateNormal];
 
     // Setup video chat
-    self.videoChat = [[QBChat instance] createAndRegisterVideoChatInstance];
-    self.videoChat.viewToRenderOpponentVideoStream = self.opponentVideoView;
-    self.videoChat.viewToRenderOwnVideoStream = self.myVideoView;
+    self.usersListViewController.videoChat.viewToRenderOpponentVideoStream = self.opponentVideoView;
+    self.usersListViewController.videoChat.viewToRenderOwnVideoStream = self.myVideoView;
+    
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
-    // Start sending chat presence
-    //
-    [QBChat instance].delegate = self;
-    [NSTimer scheduledTimerWithTimeInterval:30 target:[QBChat instance] selector:@selector(sendPresence) userInfo:nil repeats:YES];
 }
 
-
-- (void)viewDidUnload{
-    // release video chat
-    //
-    [[QBChat instance] unregisterVideoChatInstance:self.videoChat];
-    self.videoChat = nil;
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -90,9 +67,7 @@
 
 - (IBAction)backButtonPressed:(id)sender {
     
-    [self.videoChat finishCall];
-    [[QBChat instance] unregisterVideoChatInstance: self.videoChat];
-
+    [self.usersListViewController.videoChat finishCall];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -103,12 +78,11 @@
         
         // Call user by ID
         //
-        [self.videoChat callUser:[[NSNumber numberWithInt:self.receiver.ID] integerValue] conferenceType:QBVideoChatConferenceTypeAudioAndVideo];
+        [self.usersListViewController.videoChat callUser:[[NSNumber numberWithInt:self.receiver.ID] integerValue] conferenceType:QBVideoChatConferenceTypeAudioAndVideo];
         
         self.callButton.hidden = YES;
         self.ringigngLabel.hidden = NO;
         self.ringigngLabel.text = @"Calling...";
-       // self.ringigngLabel.frame = CGRectMake(128, 375, 90, 37);
         self.callingActivityIndicator.hidden = NO;
         
         // Finish
@@ -117,13 +91,11 @@
         
         // Finish call
         //
-        [self.videoChat finishCall];
+        [self.usersListViewController.videoChat finishCall];
         
         self.myVideoView.hidden = YES;
         self.opponentVideoView.layer.contents = (id)[[UIImage imageNamed:@"person.png"] CGImage];
         self.opponentVideoView.image = [UIImage imageNamed:@"person.png"];
-        //AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        //[self.callButton setTitle:appDelegate.currentUser == 1 ? @"Call User2" : @"Call User1" forState:UIControlStateNormal];
         [self.callButton setTitle:self.receiver.login forState:UIControlStateNormal];
         self.opponentVideoView.layer.borderWidth = 1;
         
@@ -131,23 +103,18 @@
     }
 }
 
-- (void)reject{
-    // Reject call
-    //
-    [self.videoChat rejectCall];
-    
+- (void)callRejected{
     self.callButton.hidden = NO;
-    
-    
     self.ringigngLabel.hidden = YES;
-    
-    self.ringingPlayer = nil;
+    self.callingActivityIndicator.hidden = YES;
+    self.callButton.tag = 101;
+    [self.startingCallActivityIndicator stopAnimating];
 }
 
-- (void)accept{
+- (void)callAccepted{
     // Accept call
     //
-    [self.videoChat acceptCall];
+    //[self.videoChat acceptCall];
     
     self.ringigngLabel.hidden = YES;
     self.callButton.hidden = NO;
@@ -156,20 +123,33 @@
     
     self.opponentVideoView.layer.borderWidth = 0;
     
-    [self.startingCallActivityIndicator startAnimating];
+    //[self.startingCallActivityIndicator startAnimating];
     
     self.myVideoView.hidden = NO;
-    
-    self.ringingPlayer = nil;
 }
 
+
+- (void)callDidStopByUser{
+    self.myVideoView.hidden = YES;
+    self.opponentVideoView.layer.contents = (id)[[UIImage imageNamed:@"person.png"] CGImage];
+    self.opponentVideoView.layer.borderWidth = 1;
+    [self.callButton setTitle:self.receiver.login forState:UIControlStateNormal];
+    self.callButton.tag = 101;
+}
+
+-(void)callDidStartWithUser{
+    [self.startingCallActivityIndicator stopAnimating];
+}
+
+
+/*
 - (void)hideCallAlert{
     [self.callAlert dismissWithClickedButtonIndex:-1 animated:YES];
     self.callAlert = nil;
 }
 
-#pragma mark -
-#pragma mark AVAudioPlayerDelegate
+//#pragma mark -
+//#pragma mark AVAudioPlayerDelegate
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
     self.ringingPlayer = nil;
@@ -312,7 +292,7 @@
     }
     
     self.callAlert = nil;
-}
+}*/
 @end
 
 // ============Methods that may be requered in Future===========

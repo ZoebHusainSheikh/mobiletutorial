@@ -19,7 +19,7 @@
 @property (nonatomic, strong) NSString				*currentFBUserId;
 @property (nonatomic, strong) QBUUser				*currentQBUser;
 
-+ (User*)sharedInstance;
++ (User *)sharedInstance;
 
 #pragma mark -
 #pragma mark FB

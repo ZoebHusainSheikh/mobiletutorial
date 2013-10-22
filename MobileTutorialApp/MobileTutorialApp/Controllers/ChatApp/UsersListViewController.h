@@ -8,8 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UsersListViewController : UIViewController <QBActionStatusDelegate, UITextFieldDelegate,UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
+@protocol VideoChatDelegate <NSObject>
+
+- (void)callAccepted;
+- (void)callRejected;
+- (void)callDidStopByUser;
+- (void)callDidStartWithUser;
+@end
+
+@interface UsersListViewController : UIViewController <QBActionStatusDelegate, QBChatDelegate, UITextFieldDelegate,UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, AVAudioPlayerDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) QBUUser *currentUser;
+@property (nonatomic, weak) QBVideoChat *videoChat;
+@property (nonatomic, strong) id<VideoChatDelegate> delegate;
 
 @end

@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "UsersListViewController.h"
 @interface UserDetailViewController : UIViewController
+
 @property (nonatomic, strong) QBUUser *selectedUser;
+@property (nonatomic, strong) UsersListViewController *usersListViewController;
 
 @end
