@@ -7,17 +7,18 @@
 //
 
 #import "UserDetailViewController.h"
+#import "User.h"
 #import "VideoCallViewController.h"
 
 @interface UserDetailViewController ()
 
-@property (nonatomic, retain) IBOutlet UILabel *lastRequestAtLabel;
-@property (nonatomic, retain) IBOutlet UILabel *loginLabel;
-@property (nonatomic, retain) IBOutlet UILabel *fullNameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *phoneLabel;
-@property (nonatomic, retain) IBOutlet UILabel *emailLabel;
-@property (nonatomic, retain) IBOutlet UILabel *websiteLabel;
-@property (nonatomic, retain) IBOutlet UILabel *tagLabel;
+@property (weak, nonatomic) IBOutlet UILabel *lastRequestAtLabel;
+@property (weak, nonatomic) IBOutlet UILabel *loginLabel;
+@property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *phoneLabel;
+@property (weak, nonatomic) IBOutlet UILabel *emailLabel;
+@property (weak, nonatomic) IBOutlet UILabel *websiteLabel;
+@property (weak, nonatomic) IBOutlet UILabel *tagLabel;
 
 - (IBAction)back:(id)sender;
 - (IBAction)callButtonPressed:(id)sender;
@@ -25,6 +26,8 @@
 @end
 
 @implementation UserDetailViewController
+
+#pragma mark init method
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,16 +38,16 @@
     return self;
 }
 
+#pragma mark - View lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -52,9 +55,7 @@
 {
     [super viewWillAppear:animated];
     
-    // Show User's details
     self.loginLabel.text = self.selectedUser.login;
-    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     self.lastRequestAtLabel.text = [dateFormatter stringFromDate:self.selectedUser.lastRequestAt ?
@@ -100,6 +101,8 @@
     }
 }
 
+#pragma mark IBAction
+
 - (IBAction)back:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -108,8 +111,9 @@
 - (IBAction)callButtonPressed:(id)sender {
     
     VideoCallViewController *videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
-    videoCallViewController.receiver = self.selectedUser;
-    videoCallViewController.usersListViewController = self.usersListViewController;
+    [User sharedInstance].opponent = self.selectedUser;
+    videoCallViewController.videoChat = self.usersListViewController.videoChat;
+    self.usersListViewController.videoCallViewController = videoCallViewController;
     [self.navigationController pushViewController:videoCallViewController animated:YES];
 }
 

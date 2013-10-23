@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSMutableDictionary	*currentFBUser;
 @property (nonatomic, strong) NSString				*currentFBUserId;
 @property (nonatomic, strong) QBUUser				*currentQBUser;
+@property (strong, nonatomic) QBUUser               *opponent;
 
 + (User *)sharedInstance;
 

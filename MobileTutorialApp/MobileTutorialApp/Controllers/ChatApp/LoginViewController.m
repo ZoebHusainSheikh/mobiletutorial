@@ -16,11 +16,14 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *fbLoginButton;
+
 - (IBAction)loginWithFaceBook:(id)sender;
 
 @end
 
 @implementation LoginViewController
+
+#pragma mark init method
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,6 +33,8 @@
     }
     return self;
 }
+
+#pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
@@ -47,17 +52,47 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
+#pragma mark IBAction
 
 - (IBAction)loginWithFaceBook:(id)sender {
     
     [QBUsers logInWithSocialProvider:@"facebook" scope:nil delegate:self];
-    [self.activityIndicator setHidden:NO];
-    [self.activityIndicator startAnimating];
+    [self startStopActivityIndicator:YES];
 }
 
+#pragma mark Private methods.
 
+- (void)createSession
+{
+    [self createSessionWithDelegate:nil];
+}
+
+- (void)createSessionWithDelegate:(id)delegate{
+  	// Create extended application authorization request (for push notifications)
+	/*QBASessionCreationRequest *extendedAuthRequest = [[QBASessionCreationRequest alloc] init];
+     
+     if([User sharedInstance].currentQBUser){
+     extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
+     extendedAuthRequest.userPassword = [NSString stringWithFormat:@"%u", [[User sharedInstance].currentQBUser.password hash]];
+     }
+     // QuickBlox application authorization
+     [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:delegate];*/
+    
+    
+    
+    // Your app connects to QuickBlox server here.
+    //
+    // Create extended session request with user authorization
+    //
+    QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
+    extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
+    extendedAuthRequest.userPassword = [NSString stringWithFormat:@"%u", [[User sharedInstance].currentQBUser.password hash]];
+    [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
+    
+    
+}
 
 - (void)startApplication{
     
@@ -73,40 +108,19 @@
 	
 }
 
-- (void)createSession
-{
-    [self createSessionWithDelegate:nil];
+- (void)startStopActivityIndicator:(BOOL)start{
+    [self.activityIndicator setHidden:!start];
+    self.fbLoginButton.userInteractionEnabled = !start;
+    start ? [self.activityIndicator startAnimating] : [self.activityIndicator stopAnimating];
 }
-- (void)createSessionWithDelegate:(id)delegate{
-  	// Create extended application authorization request (for push notifications)
-	/*QBASessionCreationRequest *extendedAuthRequest = [[QBASessionCreationRequest alloc] init];
-        
-	if([User sharedInstance].currentQBUser){
-        extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
-        extendedAuthRequest.userPassword = [NSString stringWithFormat:@"%u", [[User sharedInstance].currentQBUser.password hash]];
-    }
-	// QuickBlox application authorization
-	[QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:delegate];*/
-    
-    
-    
-    // Your app connects to QuickBlox server here.
-    //
-    // Create extended session request with user authorization
-    //
-    QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
-    extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
-    extendedAuthRequest.userPassword = [NSString stringWithFormat:@"%u", [[User sharedInstance].currentQBUser.password hash]];
-    [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
-    
 
-}
 
 #pragma mark -
 #pragma mark QBActionStatusDelegate
 
 // QuickBlox API queries delegate
--(void)completedWithResult:(Result *)result  context:(void *)contextInfo{
+-(void)completedWithResult:(Result *)result  context:(void *)contextInfo
+{
     
     // QuickBlox User authentication result
     if([result isKindOfClass:[QBUUserLogInResult class]]){
@@ -131,8 +145,7 @@
                                                   otherButtonTitles: nil];
             alert.tag = 1;
             [alert show];
-            
-            [self.activityIndicator stopAnimating];
+            [self startStopActivityIndicator:NO];
         }
     }
 }
@@ -172,8 +185,7 @@
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles: nil];
             [alert show];
-            [self.activityIndicator setHidden:YES];
-            [self.activityIndicator stopAnimating];
+           [self startStopActivityIndicator:NO];
         }
     }
 }
@@ -191,26 +203,24 @@
 #pragma mark -
 #pragma mark QBChatDelegate
 
-// Chat delegate
--(void)chatDidLogin{
+-(void)chatDidLogin
+{
     
     UsersListViewController *usersListViewController = [[UsersListViewController alloc] initWithNibName:@"UsersListViewController" bundle:nil];
-    usersListViewController.currentUser = [User sharedInstance].currentQBUser;
     [self.navigationController pushViewController:usersListViewController animated:YES];
-    [self.activityIndicator setHidden:YES];
-    [self.activityIndicator stopAnimating];
+    [self startStopActivityIndicator:NO];
 }
 
 - (void)chatDidNotLogin{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Authentification Fail"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Chat Authentification Fail"
                                                     message:nil
                                                    delegate:self
                                           cancelButtonTitle:@"Ok"
                                           otherButtonTitles: nil];
     //alert.tag = 1;
     [alert show];
-    [self.activityIndicator setHidden:YES];
-    [self.activityIndicator stopAnimating];
+    [self startStopActivityIndicator:NO];
 }
+
 
 @end

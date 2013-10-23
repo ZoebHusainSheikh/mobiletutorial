@@ -15,8 +15,8 @@
 
 @interface UsersListViewController ()
 
-@property (strong, nonatomic) AVAudioPlayer *ringingPlayer;
 @property (strong, nonatomic) UIAlertView *callAlert;
+@property (strong, nonatomic) AVAudioPlayer *ringingPlayer;
 @property (strong, nonatomic) NSMutableArray *searchUsers;
 @property (strong, nonatomic) NSArray *users;
 @property (weak, nonatomic) IBOutlet UITableView *usersTable;
@@ -24,6 +24,8 @@
 @end
 
 @implementation UsersListViewController
+
+#pragma mark init method
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,9 +36,12 @@
     return self;
 }
 
+#pragma mark - View lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController.navigationBar setHidden:YES];
     [self retrieveUsers];
     
     NSMutableDictionary *videoChatConfiguration = [[QBSettings videoChatConfiguration] mutableCopy];
@@ -59,7 +64,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload{
+- (void)viewDidUnload
+{
      // release video chat
      //
      [[QBChat instance] unregisterVideoChatInstance:self.videoChat];
@@ -68,16 +74,19 @@
 
 
 // Retrieve QuickBlox Users
-- (void) retrieveUsers{
+- (void) retrieveUsers
+{
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     // retrieve 100 users
     PagedRequest* request = [[PagedRequest alloc] init];
     request.perPage = 100;
+    
 	[QBUsers usersWithPagedRequest:request delegate:self];
 }
 
-// QuickBlox API queries delegate
+#pragma mark -QuickBlox API queries delegate
+
 - (void)completedWithResult:(Result *)result
 {
     // Retrieve Users result
@@ -104,13 +113,16 @@
         
 		if(res.success){
 		    NSLog(@"LogOut successful.");
-            self.currentUser = nil;
             [User sharedInstance].currentQBUser = nil;
+            [User sharedInstance].opponent = nil;
             [self.navigationController popToRootViewControllerAnimated:YES];
 		}else{
             NSLog(@"errors=%@", result.errors);
 		}
-	}
+	} else if([result isKindOfClass:[QBUUserResult class]]) {
+        
+        //TODO retrive opponent and assign in [User sharedInstance].opponent 
+    }
 
 }
 
@@ -120,14 +132,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*[self.searchBar resignFirstResponder];
-    
-    // show user details
-    detailsController.choosedUser = [self.searchUsers objectAtIndex:[indexPath row]];
-    [self presentModalViewController:detailsController animated:YES];
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];*/
-    
+
     // show user details
     UserDetailViewController *userDetailViewController = [[UserDetailViewController alloc] initWithNibName:@"UserDetailViewController" bundle:nil];
     userDetailViewController.selectedUser = [self.searchUsers objectAtIndex:[indexPath row]];
@@ -168,42 +173,32 @@
     
     return cell;
 }
-- (IBAction)logoutMe:(id)sender {
-    // logout
-    /*[[User sharedInstance] clearFBAccess];
-    [[FBService shared].facebook logout];
-    [self.navigationController popViewControllerAnimated:YES];*/
-    
+
+#pragma mark Private methods.
+
+- (IBAction)logoutMe:(id)sender
+{
     // logout user
-    if ([[QBChat instance]isLoggedIn]) {
+    if ([[QBChat instance] isLoggedIn]) {
         [[QBChat instance] unregisterVideoChatInstance: self.videoChat];
         [[QBChat instance] logout];
       }
     [QBUsers logOutWithDelegate:self];
 }
 
-
-- (void)reject{
-    // Reject call
-    //
-    [self.videoChat rejectCall];
-    [self.delegate callRejected];
-    
-    self.ringingPlayer = nil;
-}
-
-- (void)accept{
+- (void)accept
+{
 
     if (![self.navigationController.visibleViewController isKindOfClass:[VideoCallViewController class]]) {
-        VideoCallViewController *videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
-        videoCallViewController.usersListViewController = self;
-        [self.navigationController pushViewController:videoCallViewController animated:YES];
+        self.videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
+        self.videoCallViewController.videoChat = self.videoChat;
+        [self.navigationController pushViewController:self.videoCallViewController animated:YES];
     }
 
     // Accept call
     //
     [self.videoChat acceptCall];
-    [self.delegate callAccepted];
+    [self.videoCallViewController callAccepted];
     self.ringingPlayer = nil;
 }
 
@@ -212,29 +207,42 @@
     self.callAlert = nil;
 }
 
+- (void)reject
+{
+    // Reject call
+    [self.videoChat rejectCall];
+    [self.videoCallViewController callRejected];
+    
+    self.ringingPlayer = nil;
+}
+
 #pragma mark -
 #pragma mark AVAudioPlayerDelegate
 
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
     self.ringingPlayer = nil;
 }
 
 
 #pragma mark -
 #pragma mark QBChatDelegate
-//
-// VideoChat delegate
 
 // Called in case when anyone is calling to you
--(void)chatDidReceiveCallRequestFromUser:(NSUInteger)userID conferenceType:(enum QBVideoChatConferenceType)conferenceType{
+-(void)chatDidReceiveCallRequestFromUser:(NSUInteger)userID conferenceType:(enum QBVideoChatConferenceType)conferenceType customParameters:(NSDictionary *)customParameters
+{
     NSLog(@"chatDidReceiveCallRequestFromUser %d", userID);
     
-    //self.callButton.hidden = YES;
+    [User sharedInstance].opponent = [[QBUUser alloc] init];
+    [User sharedInstance].opponent.ID = userID;
+    [User sharedInstance].opponent.login = [customParameters objectForKey:@"login"];
     
+    //TODO retrive opponent for more information like showing pics
+    //[QBUsers userWithID:userID delegate:self];
+   
     // show call alert
-    //
     if (self.callAlert == nil) {
-        NSString *message = [NSString stringWithFormat:@"%@ is calling. Would you like to answer?", [User sharedInstance].currentQBUser.login];
+        NSString *message = [NSString stringWithFormat:@"%@ is calling. Would you like to answer?",[User sharedInstance].opponent.login];
         self.callAlert = [[UIAlertView alloc] initWithTitle:@"Call" message:message delegate:self cancelButtonTitle:@"Decline" otherButtonTitles:@"Accept", nil];
         [self.callAlert show];
     }
@@ -244,7 +252,6 @@
     [self performSelector:@selector(hideCallAlert) withObject:nil afterDelay:3];
     
     // play call music
-    //
     if(self.ringingPlayer == nil){
         NSString *path =[[NSBundle mainBundle] pathForResource:@"ringing" ofType:@"wav"];
         NSURL *url = [NSURL fileURLWithPath:path];
@@ -256,29 +263,19 @@
 }
 
 // Called in case when you are calling to user, but he hasn't answered
-
 -(void)chatCallUserDidNotAnswer:(NSUInteger)userID{
     NSLog(@"chatCallUserDidNotAnswer %d", userID);
-    
-    /* self.callButton.hidden = NO;
-     self.ringigngLabel.hidden = YES;
-     self.callingActivityIndicator.hidden = YES;
-     self.callButton.tag = 101;*/
-    [self.delegate callRejected];
+
+    [self.videoCallViewController callRejected];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"VideoChat" message:@"User isn't answering. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [alert show];
 }
 
--(void)chatCallDidRejectByUser:(NSUInteger)userID {
+-(void)chatCallDidRejectByUser:(NSUInteger)userID
+{
     NSLog(@"chatCallDidRejectByUser %d", userID);
-    
-    /*self.callButton.hidden = NO;
-     self.ringigngLabel.hidden = YES;
-     self.callingActivityIndicator.hidden = YES;
-     
-     self.callButton.tag = 101;*/
-    [self.delegate callRejected];
+    [self.videoCallViewController callRejected];
     
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Systango VideoChat" message:@"User has rejected your call." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -288,30 +285,26 @@
 -(void)chatCallDidAcceptByUser:(NSUInteger)userID{
     NSLog(@"chatCallDidAcceptByUser %d", userID);
     
-    [self.delegate callAccepted];
+    [self.videoCallViewController callAccepted];
 }
 
--(void)chatCallDidStopByUser:(NSUInteger)userID status:(NSString *)status{
+-(void)chatCallDidStopByUser:(NSUInteger)userID status:(NSString *)status
+{
     NSLog(@"chatCallDidStopByUser %d purpose %@", userID, status);
     
     if([status isEqualToString:kStopVideoChatCallStatus_OpponentDidNotAnswer]){
-        // self.callButton.hidden = NO;
-        
         self.callAlert.delegate = nil;
         [self.callAlert dismissWithClickedButtonIndex:0 animated:YES];
         self.callAlert = nil;
-        
-        //self.ringigngLabel.hidden = YES;
-        
         self.ringingPlayer = nil;
         
     }else{
-        [self.delegate callDidStopByUser];
+        [self.videoCallViewController callDidStopByUser];
     }
 }
 
 - (void)chatCallDidStartWithUser:(NSUInteger)userID {
-    [self.delegate callDidStartWithUser];
+    
 }
 
 - (void)didStartUseTURNForVideoChat{
@@ -322,7 +315,8 @@
 #pragma mark -
 #pragma mark UIAlertView
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     switch (buttonIndex) {
             // Reject
         case 0:
@@ -336,7 +330,7 @@
         default:
             break;
     }
-    
     self.callAlert = nil;
 }
+
 @end

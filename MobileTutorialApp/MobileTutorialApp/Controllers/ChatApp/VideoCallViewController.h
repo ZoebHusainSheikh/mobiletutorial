@@ -10,8 +10,13 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UsersListViewController.h"
 
-@interface VideoCallViewController : UIViewController  <VideoChatDelegate>
+@interface VideoCallViewController : UIViewController
 
-@property (nonatomic, strong) QBUUser *receiver;
-@property (nonatomic, strong) UsersListViewController *usersListViewController;
+@property (strong, nonatomic) QBUUser *opponent;
+@property (strong, nonatomic) QBVideoChat *videoChat;
+
+- (void)callAccepted;
+- (void)callRejected;
+- (void)callDidStopByUser;
+
 @end

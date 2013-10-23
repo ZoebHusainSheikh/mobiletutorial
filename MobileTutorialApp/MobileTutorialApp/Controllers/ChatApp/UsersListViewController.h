@@ -8,18 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol VideoChatDelegate <NSObject>
-
-- (void)callAccepted;
-- (void)callRejected;
-- (void)callDidStopByUser;
-- (void)callDidStartWithUser;
-@end
+@class VideoCallViewController;
 
 @interface UsersListViewController : UIViewController <QBActionStatusDelegate, QBChatDelegate, UITextFieldDelegate,UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, AVAudioPlayerDelegate, UIAlertViewDelegate>
 
-@property (weak, nonatomic) QBUUser *currentUser;
-@property (nonatomic, weak) QBVideoChat *videoChat;
-@property (nonatomic, strong) id<VideoChatDelegate> delegate;
+@property (strong, nonatomic) QBVideoChat *videoChat;
+@property (strong, nonatomic) VideoCallViewController *videoCallViewController;
 
 @end

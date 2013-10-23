@@ -10,7 +10,7 @@
 #import "UsersListViewController.h"
 @interface UserDetailViewController : UIViewController
 
-@property (nonatomic, strong) QBUUser *selectedUser;
-@property (nonatomic, strong) UsersListViewController *usersListViewController;
+@property (strong, nonatomic) QBUUser *selectedUser;
+@property (strong, nonatomic) UsersListViewController *usersListViewController;
 
 @end
