@@ -7,7 +7,6 @@
 //
 
 #import "UsersListViewController.h"
-#import "FBService.h"
 #import "User.h"
 #import "UserCell.h"
 #import "UserDetailViewController.h"

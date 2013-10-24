@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
+
 @class UsersListViewController;
 
 @interface LoginViewController : UIViewController <QBChatDelegate, QBActionStatusDelegate, UIAlertViewDelegate>

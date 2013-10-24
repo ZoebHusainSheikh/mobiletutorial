@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Systango. All rights reserved.
 //
 
+/*
 #import <UIKit/UIKit.h>
 #import "Facebook.h"
 #import "FBServiceResultDelegate.h"
@@ -14,4 +15,4 @@
     
 }
 
-@end
+@end*/

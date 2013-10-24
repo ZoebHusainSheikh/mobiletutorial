@@ -21,9 +21,7 @@
     [QBSettings setAuthorizationSecret:@"kauggwxKXQ9Ap4p"];
     [QBSettings setRestAPIVersion:@"1.7.2"];
 
-    [QBAuth createSessionWithDelegate:self];
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] ;
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     AppsListViewController *rootController = [[AppsListViewController alloc]     initWithNibName:@"AppsListViewController" bundle:nil];
     UINavigationController *nav = [[UINavigationController alloc]  initWithRootViewController:rootController];
@@ -53,12 +51,20 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBAppEvents activateApp];
+    // Facebook SDK * login flow *
+    // We need to properly handle activation of the application with regards to SSO
+    //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
+    [FBAppCall handleDidBecomeActive];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    // Facebook SDK * pro-tip *
+    // if the app is going away, we close the session object; this is a good idea because
+    // things may be hanging off the session, that need releasing (completion block, etc.) and
+    // other components in the app may be awaiting close notification in order to do cleanup
+    [FBSession.activeSession close];
 }
 
 @end
