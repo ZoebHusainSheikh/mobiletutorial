@@ -20,6 +20,7 @@
     [QBSettings setAuthorizationKey:@"jKzvFUYT4h7B4wu"];
     [QBSettings setAuthorizationSecret:@"kauggwxKXQ9Ap4p"];
     [QBSettings setRestAPIVersion:@"1.7.2"];
+    [QBAuth createSessionWithDelegate:self];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
@@ -52,10 +53,15 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [FBAppEvents activateApp];
-    // Facebook SDK * login flow *
+    
+    /*
+     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     */
+    
+    // FBSample logic
     // We need to properly handle activation of the application with regards to SSO
     //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
-    [FBAppCall handleDidBecomeActive];
+    [FBAppCall handleDidBecomeActiveWithSession:self.session];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -64,7 +70,64 @@
     // if the app is going away, we close the session object; this is a good idea because
     // things may be hanging off the session, that need releasing (completion block, etc.) and
     // other components in the app may be awaiting close notification in order to do cleanup
-    [FBSession.activeSession close];
+    [ApplicationDelegate.session closeAndClearTokenInformation];
+    [FBSession setActiveSession:nil];
 }
+
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    
+    if ([self.session handleOpenURL:url]) {
+        if (self.session.isOpen) {
+            return YES;
+        }
+        
+    } else {
+        // Facebook SDK * App Linking *
+        // For simplicity, this sample will ignore the link if the session is already
+        // open but a more advanced app could support features like user switching.
+        // Otherwise extract the app link data from the url and open a new active session from it.
+        NSLog(@"Session is not valid");
+        NSString *appID = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"];
+        FBAccessTokenData *appLinkToken = [FBAccessTokenData createTokenFromFacebookURL:url
+                                                                                  appID:appID
+                                                                        urlSchemeSuffix:nil];
+        if (appLinkToken) {
+            if ([FBSession activeSession].isOpen) {
+                NSLog(@"INFO: Ignoring app link because current session is open.");
+            } else {
+                [self handleAppLink:appLinkToken];
+                return YES;
+            }
+        }
+    }
+    return NO;
+    
+}
+
+
+#pragma mark -
+#pragma mark private methods
+
+// Helper method to wrap logic for handling app links.
+- (void)handleAppLink:(FBAccessTokenData *)appLinkToken
+{
+    // Initialize a new blank session instance...
+    ApplicationDelegate.session = [[FBSession alloc] initWithAppID:nil
+                                                       permissions:nil
+                                                   defaultAudience:FBSessionDefaultAudienceNone
+                                                   urlSchemeSuffix:nil
+                                                tokenCacheStrategy:[FBSessionTokenCachingStrategy nullCacheInstance] ];
+    [FBSession setActiveSession:ApplicationDelegate.session];
+    // ... and open it from the App Link's Token.
+    [ApplicationDelegate.session openFromAccessTokenData:appLinkToken
+                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                           //[self startStopActivityIndicator:YES];
+                                       }];
+}
+
 
 @end
