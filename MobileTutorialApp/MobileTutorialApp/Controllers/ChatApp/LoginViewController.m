@@ -42,6 +42,12 @@
 {
     
     [super viewDidLoad];
+    
+    [QBAuth createSessionWithDelegate:self];
+    
+    [ApplicationDelegate.session closeAndClearTokenInformation];
+    [FBSession setActiveSession:nil];
+
     /*[[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(startApplication)
                                                  name:UIApplicationDidBecomeActiveNotification object:nil];*/
@@ -108,32 +114,30 @@
         // users will simply close the app or switch away, without logging out; this will
         // cause the implicit cached-token login to occur on next launch of the application
         [ApplicationDelegate.session closeAndClearTokenInformation];
-        
-    } else {
-        if (ApplicationDelegate.session.state != FBSessionStateCreated) {
-            // Create a new, logged out session.
-            ApplicationDelegate.session = [[FBSession alloc] init];
-        }
-        
-        // if the session isn't open, let's open it now and present the login UX to the user
-        [ApplicationDelegate.session openWithCompletionHandler:^(FBSession *session,
-                                                         FBSessionState status,
-                                                         NSError *error) {
-            // and here we make sure to update our UX according to the new session state
-            NSLog(@"FB Login Success.");
-            
-            switch (status) {
-                case FBSessionStateClosedLoginFailed:
-                    NSLog(@"%@", error.localizedDescription);
-                    break;
-                case FBSessionStateOpen:
-                    [self performSelector:@selector(getUserFBProfile) withObject:nil afterDelay:.5];
-                    break;
-                default:
-                    break;
-            }
-        }];
     }
+    
+    if (ApplicationDelegate.session.state != FBSessionStateCreated) {
+        // Create a new, logged out session.
+        ApplicationDelegate.session = [[FBSession alloc] init];
+    }
+    
+    // if the session isn't open, let's open it now and present the login UX to the user
+    [ApplicationDelegate.session openWithCompletionHandler:^(FBSession *session,
+                                                             FBSessionState status,
+                                                             NSError *error) {
+        // and here we make sure to update our UX according to the new session state
+        switch (status) {
+            case FBSessionStateClosedLoginFailed:
+                NSLog(@"Login error : %@", error.localizedDescription);
+                break;
+            case FBSessionStateOpen:
+                NSLog(@"FB Login Success.");
+                [self performSelector:@selector(getUserFBProfile) withObject:nil afterDelay:.5];
+                break;
+            default:
+                break;
+        }
+    }];
     [self startStopActivityIndicator:YES];
 }
 
@@ -146,7 +150,7 @@
         [[[FBRequest alloc] initWithSession:ApplicationDelegate.session graphPath:@"me"] startWithCompletionHandler:
          ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error)           {
              if (!error) {
-                 NSLog(@"%@& id= %@", user.name, user.id);
+                 NSLog(@"FBUserName= %@ & FBUserId= %@", user.name, user.id);
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  
                  NSLog(@"self.session.accessTokenData.accessToken = %@",ApplicationDelegate.session.accessTokenData.accessToken);
@@ -154,21 +158,13 @@
                  [defaults setObject:user.name forKey:@"FBUserName"];
                  [defaults setObject:user.id forKey:@"FBUserId"];
                  [defaults synchronize];
-                 [User sharedInstance].currentQBUser.facebookID = user.id;
-               
-                 // Authenticate user
-                 // If we are authenticating through Twitter/Facebook - we use token as user's password for Chat module
                  [User sharedInstance].currentQBUser = [[QBUUser alloc] init];
+                 [User sharedInstance].currentQBUser.facebookID = user.id;
+
                  NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
-
-                 //NSString *passwordHash = [NSString stringWithFormat:@"%u", [([BaseService sharedService].token) hash]];
-                 [User sharedInstance].currentQBUser.login = userLogin;
-                 [User sharedInstance].currentQBUser.password = [BaseService sharedService].token;
-                 // Login to Chat
-                 [QBChat instance].delegate = self;
-                 [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
-                 
-
+                 NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
+                 // Authenticate user
+                 [QBUsers logInWithUserLogin:userLogin password:passwordHash delegate:self];
                  // Authenticate user through Facebook
                  //This way working.
                  //[QBUsers logInWithSocialProvider:@"facebook" scope:nil delegate:self];
@@ -193,7 +189,7 @@
     if([User sharedInstance].currentQBUser){
         QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
         extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
-        extendedAuthRequest.userPassword = [NSString stringWithFormat:@"%u", [[User sharedInstance].currentQBUser.password hash]];
+        extendedAuthRequest.userPassword = [User sharedInstance].currentQBUser.facebookID;
         [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
     }
     
@@ -201,9 +197,7 @@
 
 - (void)startApplication
 {
-    
     // QuickBlox application autorization
-    
     [NSTimer scheduledTimerWithTimeInterval:60*60*2-600 // Expiration date of access token is 2 hours. Repeat request for new token every 1 hour and 50 minutes.
                                      target:self
                                    selector:@selector(createSession)
@@ -238,7 +232,9 @@
             
             NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
             [User sharedInstance].currentQBUser.login = userLogin;
-            [User sharedInstance].currentQBUser.password = (__bridge NSString *)contextInfo;
+            //[User sharedInstance].currentQBUser.password = (__bridge NSString *)contextInfo;
+            NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
+            [User sharedInstance].currentQBUser.password = passwordHash;
             // Login to Chat
             [QBChat instance].delegate = self;
             [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
@@ -267,31 +263,38 @@
             NSString *token = ((QBAAuthSessionCreationResult *)result).session.token;
             NSLog(@"token++++++++%@",token);
         }
-
-        } else if([result isKindOfClass:[QBUUserLogInResult class]]){
+        
+    } else if([result isKindOfClass:[QBUUserLogInResult class]]){
 		
         // Success result
         if(result.success){
 
-            // If we are authenticating through Twitter/Facebook - we use token as user's password for Chat module
-            [self completedWithResult:result context:(__bridge void *)([BaseService sharedService].token)];
+            QBUUserLogInResult *res = (QBUUserLogInResult *)result;
+            [User sharedInstance].currentQBUser = res.user;
+            
+            NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
+            [User sharedInstance].currentQBUser.login = userLogin;
+            //[User sharedInstance].currentQBUser.password = (__bridge NSString *)contextInfo;
+            NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
+            [User sharedInstance].currentQBUser.password = passwordHash;
+            // Login to Chat
+            [QBChat instance].delegate = self;
+            [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
+            
         }
         else if(401 == result.status){
             // Register new user
             // Create QBUUser entity
-            QBUUser *user = [[QBUUser alloc] init];
+            QBUUser *user = [User sharedInstance].currentQBUser;
             NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
-            NSString *passwordHash = [NSString stringWithFormat:@"%u", [[[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"] hash]];
-            
+            NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
             user.login = userLogin;
             user.password = passwordHash;
             user.facebookID = userLogin;
             user.tags = [NSMutableArray arrayWithObject:@"Systango"];
-            
             // Create user
             [QBUsers signUp:user delegate:self];
         }
-        
         // Errors
         else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Errors"
@@ -300,7 +303,13 @@
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles: nil];
             [alert show];
-           [self startStopActivityIndicator:NO];
+            [self startStopActivityIndicator:NO];
+        }
+    }
+    else if([result isKindOfClass:[QBUUserResult class]]){
+        // Success result
+        if(result.success){
+            //TODO login to QBchat
         }
     }
 }

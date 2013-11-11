@@ -7,6 +7,7 @@
 //
 
 #import "UsersListViewController.h"
+#import "AppDelegate.h"
 #import "User.h"
 #import "UserCell.h"
 #import "UserDetailViewController.h"
@@ -114,6 +115,8 @@
 		    NSLog(@"LogOut successful.");
             [User sharedInstance].currentQBUser = nil;
             [User sharedInstance].opponent = nil;
+            [ApplicationDelegate.session closeAndClearTokenInformation];
+            [FBSession setActiveSession:nil];
             [self.navigationController popToRootViewControllerAnimated:YES];
 		}else{
             NSLog(@"errors=%@", result.errors);
