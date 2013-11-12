@@ -9,6 +9,7 @@
 
 #import "LoginViewController.h"
 #import "AppDelegate.h"
+#import "FriendsListViewController.h"
 #import "Reachability.h"
 #import "User.h"
 #import "UserDetailViewController.h"
@@ -319,9 +320,8 @@
 
 -(void)chatDidLogin
 {
-    
-    UsersListViewController *usersListViewController = [[UsersListViewController alloc] initWithNibName:@"UsersListViewController" bundle:nil];
-    [self.navigationController pushViewController:usersListViewController animated:YES];
+    FriendsListViewController *friendsListViewController = [[FriendsListViewController alloc] init];
+    [self.navigationController pushViewController:friendsListViewController animated:YES];
     [self startStopActivityIndicator:NO];
 }
 

@@ -41,7 +41,7 @@
 {
     [super viewDidLoad];
     
-    [self.navigationController.navigationBar setHidden:YES];
+    //[self.navigationController.navigationBar setHidden:YES];
     [self.callButton setTitle:@"Call" forState:UIControlStateNormal];
 
     self.opponentVideoView.layer.borderWidth = 1;

@@ -89,6 +89,7 @@
 		8982E2521806F0B5007A3648 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E2511806F0B5007A3648 /* User.m */; };
 		8982E2621807159D007A3648 /* DatetimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E25F1807159D007A3648 /* DatetimeConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E2631807159D007A3648 /* NumberToLetterConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E2611807159D007A3648 /* NumberToLetterConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		8990CA1318320C6A0066DD09 /* FriendsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8990CA1118320C6A0066DD09 /* FriendsListViewController.m */; };
 		899107161807D90C00714FA1 /* profile_pic.png in Resources */ = {isa = PBXBuildFile; fileRef = 899107151807D90C00714FA1 /* profile_pic.png */; };
 		8998D60F180D152500E6B5D9 /* UserDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8998D60E180D152500E6B5D9 /* UserDetailViewController.m */; };
 		8998D613180D155800E6B5D9 /* UserDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8998D612180D155800E6B5D9 /* UserDetailViewController.xib */; };
@@ -277,6 +278,8 @@
 		8982E25F1807159D007A3648 /* DatetimeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatetimeConverter.m; sourceTree = "<group>"; };
 		8982E2601807159D007A3648 /* NumberToLetterConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberToLetterConverter.h; sourceTree = "<group>"; };
 		8982E2611807159D007A3648 /* NumberToLetterConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberToLetterConverter.m; sourceTree = "<group>"; };
+		8990CA1018320C6A0066DD09 /* FriendsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsListViewController.h; sourceTree = "<group>"; };
+		8990CA1118320C6A0066DD09 /* FriendsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsListViewController.m; sourceTree = "<group>"; };
 		899107151807D90C00714FA1 /* profile_pic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_pic.png; sourceTree = "<group>"; };
 		8998D60D180D152500E6B5D9 /* UserDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDetailViewController.h; sourceTree = "<group>"; };
 		8998D60E180D152500E6B5D9 /* UserDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDetailViewController.m; sourceTree = "<group>"; };
@@ -514,6 +517,8 @@
 				8998D60E180D152500E6B5D9 /* UserDetailViewController.m */,
 				8998D614180D158200E6B5D9 /* VideoCallViewController.h */,
 				8998D615180D158200E6B5D9 /* VideoCallViewController.m */,
+				8990CA1018320C6A0066DD09 /* FriendsListViewController.h */,
+				8990CA1118320C6A0066DD09 /* FriendsListViewController.m */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -953,6 +958,7 @@
 				8982E2091806EB47007A3648 /* NSObject+SBJSON.m in Sources */,
 				8982E20A1806EB47007A3648 /* NSString+SBJSON.m in Sources */,
 				8982E20B1806EB47007A3648 /* SBJSON.m in Sources */,
+				8990CA1318320C6A0066DD09 /* FriendsListViewController.m in Sources */,
 				8982E20C1806EB47007A3648 /* SBJsonBase.m in Sources */,
 				8982E20D1806EB47007A3648 /* SBJsonParser.m in Sources */,
 				8982E20E1806EB47007A3648 /* SBJsonWriter.m in Sources */,
