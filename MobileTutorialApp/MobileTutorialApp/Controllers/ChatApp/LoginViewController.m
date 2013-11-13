@@ -6,13 +6,14 @@
 //  Copyright (c) 2013 Systango. All rights reserved.
 //
 
-
 #import "LoginViewController.h"
 #import "AppDelegate.h"
+#import "ChatViewController.h"
 #import "FriendsListViewController.h"
 #import "Reachability.h"
 #import "User.h"
 #import "UserDetailViewController.h"
+#import "UserProfileViewController.h"
 #import "UsersListViewController.h"
 
 @interface LoginViewController ()
@@ -41,52 +42,56 @@
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
-    
-    [QBAuth createSessionWithDelegate:self];
-    
-    [ApplicationDelegate.session closeAndClearTokenInformation];
-    [FBSession setActiveSession:nil];
 
+    //TODO handle QBsession
     /*[[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(startApplication)
-                                                 name:UIApplicationDidBecomeActiveNotification object:nil];*/
-    
-    if (!ApplicationDelegate.session.isOpen) {
-        // create a fresh session object
-        ApplicationDelegate.session = [[FBSession alloc] init];
-        
-        // if we don't have a cached token, a call to open here would cause UX for login to
-        // occur; we don't want that to happen unless the user clicks the login button, and so
-        // we check here to make sure we have a token before calling open
-        if (ApplicationDelegate.session.state == FBSessionStateCreatedTokenLoaded) {
-            // even though we had a cached token, we need to login to make the session usable
-            [ApplicationDelegate.session openWithCompletionHandler:^(FBSession *session,
-                                                             FBSessionState status,
-                                                             NSError *error) {
-                //[self updateView];
-                // and here we make sure to update our UX according to the new session state
-                switch (status) {
-                    case FBSessionStateClosedLoginFailed:
-                        NSLog(@"%@", error.localizedDescription);
-                        break;
-                    case FBSessionStateOpen:
-                    {
-                        ApplicationDelegate.session = session;
-                        //[self getUserFBProfile];
+     selector:@selector(startApplication)
+     name:UIApplicationDidBecomeActiveNotification object:nil];*/
+    if ([Reachability internetConnected]) {
+        [QBAuth createSessionWithDelegate:self];
+        if (!ApplicationDelegate.session.isOpen) {
+            [self showLoginButton:NO];
+            // create a fresh session object
+            ApplicationDelegate.session = [[FBSession alloc] init];
+            
+            // if we don't have a cached token, a call to open here would cause UX for login to
+            // occur; we don't want that to happen unless the user clicks the login button, and so
+            // we check here to make sure we have a token before calling open
+            if (ApplicationDelegate.session.state == FBSessionStateCreatedTokenLoaded) {
+                // even though we had a cached token, we need to login to make the session usable
+                [ApplicationDelegate.session openWithCompletionHandler:^(FBSession *session,
+                                                                         FBSessionState status,
+                                                                         NSError *error) {
+                    
+                    // and here we make sure to update our UX according to the new session state
+                    if (error) {
+                        NSLog(@"Login error : %@", error.localizedDescription);
+                        [self showLoginButton:YES];
+                    } else {
+                        switch (status) {
+                            case FBSessionStateClosedLoginFailed:
+                                NSLog(@"%@", error.localizedDescription);
+                                break;
+                            case FBSessionStateOpen:
+                                [FBSession setActiveSession:ApplicationDelegate.session];
+                                [self getUserFBProfile];
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                        break;
-                    default:
-                        break;
-                }
-            }];
+                }];
+            } else {
+                [self showLoginButton:YES];
+            }
         }
     }
 }
 
--(void) viewWillAppear:(BOOL)animated {
-    [self.activityIndicator setHidden:YES];
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -96,8 +101,8 @@
 
 #pragma mark IBAction
 
-- (IBAction)loginWithFaceBook:(id)sender {
-    
+- (IBAction)loginWithFaceBook:(id)sender
+{
     if (![Reachability internetConnected]) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -108,40 +113,45 @@
         [alert show];
         return;
     }
-    
     if (ApplicationDelegate.session.isOpen) {
         // if a user logs out explicitly, we delete any cached token information, and next
         // time they run the applicaiton they will be presented with log in UX again; most
         // users will simply close the app or switch away, without logging out; this will
         // cause the implicit cached-token login to occur on next launch of the application
         [ApplicationDelegate.session closeAndClearTokenInformation];
-    }
-    
-    if (ApplicationDelegate.session.state != FBSessionStateCreated) {
-        // Create a new, logged out session.
-        ApplicationDelegate.session = [[FBSession alloc] init];
-    }
-    
-    // if the session isn't open, let's open it now and present the login UX to the user
-    [ApplicationDelegate.session openWithCompletionHandler:^(FBSession *session,
-                                                             FBSessionState status,
-                                                             NSError *error) {
-        // and here we make sure to update our UX according to the new session state
-        switch (status) {
-            case FBSessionStateClosedLoginFailed:
-                NSLog(@"Login error : %@", error.localizedDescription);
-                break;
-            case FBSessionStateOpen:
-                NSLog(@"FB Login Success.");
-                [self performSelector:@selector(getUserFBProfile) withObject:nil afterDelay:.5];
-                break;
-            default:
-                break;
+    } else {
+        if (ApplicationDelegate.session.state != FBSessionStateCreated) {
+            // Create a new, logged out session.
+            ApplicationDelegate.session = [[FBSession alloc] init];
         }
-    }];
-    [self startStopActivityIndicator:YES];
+        
+        // if the session isn't open, let's open it now and present the login UX to the user
+        [ApplicationDelegate.session openWithCompletionHandler:^(FBSession *session,
+                                                                 FBSessionState status,
+                                                                 NSError *error) {
+            // and here we make sure to update our UX according to the new session state
+            if (error) {
+                NSLog(@"Login error : %@", error.localizedDescription);
+                [self showLoginButton:NO];
+            } else {
+                switch (status) {
+                    case FBSessionStateClosedLoginFailed:
+                        NSLog(@"Login error : %@", error.localizedDescription);
+                        break;
+                    case FBSessionStateOpen:
+                        NSLog(@"FB Login Success.");
+                        [self performSelector:@selector(getUserFBProfile) withObject:nil afterDelay:.5];
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }];
+    }
+    [self showLoginButton:NO];
 }
 
+#pragma mark Private methods.
 
 - (void)getUserFBProfile
 {
@@ -166,15 +176,38 @@
                  NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
                  // Authenticate user
                  [QBUsers logInWithUserLogin:userLogin password:passwordHash delegate:self];
-                 // Authenticate user through Facebook
-                 //This way working.
-                 //[QBUsers logInWithSocialProvider:@"facebook" scope:nil delegate:self];
-
              }else{
                  NSLog(@"%@", error.localizedDescription);
+                 [self showLoginButton:YES];
              }
          }];
     }
+}
+
+- (void)showTabBarController
+{
+    // Create a tabbar controller and an array to contain the view controllers
+    self.tabBarController = [[UITabBarController alloc] init];
+    
+    //add FriendsListViewController on tab
+    FriendsListViewController *friendsListViewController = [[FriendsListViewController alloc] init];
+    friendsListViewController.title = @"Friends";
+    UINavigationController *frdListNav = [[UINavigationController alloc] initWithRootViewController:friendsListViewController];
+     //add ChatViewController on tab
+    ChatViewController *chatViewController = [[ChatViewController alloc] initWithNibName:@"ChatViewController" bundle:nil];
+    chatViewController.title = @"Chat";
+    UINavigationController *chatNav = [[UINavigationController alloc] initWithRootViewController:chatViewController];
+    
+    //add UserProfileViewController on tab
+    UserProfileViewController *userProfileViewController = [[UserProfileViewController alloc] initWithNibName:@"UserProfileViewController" bundle:nil];
+    userProfileViewController.title = @"Me";
+    UINavigationController *userNav = [[UINavigationController alloc] initWithRootViewController:userProfileViewController];
+
+    NSArray* controllers = [NSArray arrayWithObjects:frdListNav, chatNav, userNav, nil];
+    self.tabBarController.viewControllers = controllers;
+    [self presentViewController:self.tabBarController animated:YES completion:nil];
+    
+    [self showLoginButton:YES];
 }
 
 - (void)createSession
@@ -193,7 +226,6 @@
         extendedAuthRequest.userPassword = [User sharedInstance].currentQBUser.facebookID;
         [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
     }
-    
 }
 
 - (void)startApplication
@@ -204,57 +236,21 @@
                                    selector:@selector(createSession)
                                    userInfo:nil
                                     repeats:YES];
-    
     [self createSessionWithDelegate:self];
 	
 }
 
-- (void)startStopActivityIndicator:(BOOL)start
+- (void)showLoginButton:(BOOL)show
 {
-    [self.activityIndicator setHidden:!start];
-    self.fbLoginButton.userInteractionEnabled = !start;
-    start ? [self.activityIndicator startAnimating] : [self.activityIndicator stopAnimating];
+    self.fbLoginButton.hidden = !show;
+    show ? [self.activityIndicator stopAnimating] : [self.activityIndicator startAnimating];
 }
-
 
 #pragma mark -
 #pragma mark QBActionStatusDelegate
 
-// QuickBlox API queries delegate
--(void)completedWithResult:(Result *)result  context:(void *)contextInfo
+-(void)completedWithResult:(Result *)result
 {
-    if([result isKindOfClass:[QBUUserLogInResult class]]){
-		
-        // Success result
-        if(result.success){
-            // save current user
-            QBUUserLogInResult *res = (QBUUserLogInResult *)result;
-            [User sharedInstance].currentQBUser = res.user;
-            
-            NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
-            [User sharedInstance].currentQBUser.login = userLogin;
-            //[User sharedInstance].currentQBUser.password = (__bridge NSString *)contextInfo;
-            NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
-            [User sharedInstance].currentQBUser.password = passwordHash;
-            // Login to Chat
-            [QBChat instance].delegate = self;
-            [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
-            
-            // Errors
-        }else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Errors"
-                                                            message:[result.errors description]
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles: nil];
-            alert.tag = 1;
-            [alert show];
-            [self startStopActivityIndicator:NO];
-        }
-    }
-}
-
--(void)completedWithResult:(Result *)result{
     
     if([result isKindOfClass:[QBAAuthSessionCreationResult class]]){
         
@@ -262,7 +258,7 @@
         if(result.success){
             
             NSString *token = ((QBAAuthSessionCreationResult *)result).session.token;
-            NSLog(@"token++++++++%@",token);
+            NSLog(@"QBSessiontoken++++++++%@",token);
         }
         
     } else if([result isKindOfClass:[QBUUserLogInResult class]]){
@@ -275,7 +271,6 @@
             
             NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
             [User sharedInstance].currentQBUser.login = userLogin;
-            //[User sharedInstance].currentQBUser.password = (__bridge NSString *)contextInfo;
             NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
             [User sharedInstance].currentQBUser.password = passwordHash;
             // Login to Chat
@@ -304,7 +299,7 @@
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles: nil];
             [alert show];
-            [self startStopActivityIndicator:NO];
+            [self showLoginButton:YES];
         }
     }
     else if([result isKindOfClass:[QBUUserResult class]]){
@@ -320,12 +315,11 @@
 
 -(void)chatDidLogin
 {
-    FriendsListViewController *friendsListViewController = [[FriendsListViewController alloc] init];
-    [self.navigationController pushViewController:friendsListViewController animated:YES];
-    [self startStopActivityIndicator:NO];
+    [self showTabBarController];
 }
 
-- (void)chatDidNotLogin{
+- (void)chatDidNotLogin
+{
     [ApplicationDelegate.session closeAndClearTokenInformation];
     [FBSession setActiveSession:nil];
     
@@ -335,9 +329,8 @@
                                           cancelButtonTitle:@"Ok"
                                           otherButtonTitles: nil];
     [alert show];
-    [self startStopActivityIndicator:NO];
+    [self showLoginButton:YES];
 }
-
 
 @end
 

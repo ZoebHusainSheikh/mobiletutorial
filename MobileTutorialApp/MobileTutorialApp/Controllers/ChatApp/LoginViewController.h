@@ -11,7 +11,8 @@
 
 @class UsersListViewController;
 
-@interface LoginViewController : UIViewController <QBChatDelegate, QBActionStatusDelegate, UIAlertViewDelegate>
+@interface LoginViewController : UIViewController <QBChatDelegate, QBActionStatusDelegate, UIAlertViewDelegate, UITabBarDelegate>
 
+@property (nonatomic, strong) UITabBarController *tabBarController;
 
 @end

@@ -89,6 +89,10 @@
 		8982E2521806F0B5007A3648 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E2511806F0B5007A3648 /* User.m */; };
 		8982E2621807159D007A3648 /* DatetimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E25F1807159D007A3648 /* DatetimeConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E2631807159D007A3648 /* NumberToLetterConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E2611807159D007A3648 /* NumberToLetterConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		898E6B2A183382D00093E85D /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 898E6B28183382D00093E85D /* UserProfileViewController.m */; };
+		898E6B2F1833831D0093E85D /* UserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 898E6B2E1833831D0093E85D /* UserProfileViewController.xib */; };
+		898E6B33183383D70093E85D /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 898E6B31183383D70093E85D /* ChatViewController.m */; };
+		898E6B36183384170093E85D /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 898E6B35183384170093E85D /* ChatViewController.xib */; };
 		8990CA1318320C6A0066DD09 /* FriendsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8990CA1118320C6A0066DD09 /* FriendsListViewController.m */; };
 		899107161807D90C00714FA1 /* profile_pic.png in Resources */ = {isa = PBXBuildFile; fileRef = 899107151807D90C00714FA1 /* profile_pic.png */; };
 		8998D60F180D152500E6B5D9 /* UserDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8998D60E180D152500E6B5D9 /* UserDetailViewController.m */; };
@@ -278,6 +282,12 @@
 		8982E25F1807159D007A3648 /* DatetimeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatetimeConverter.m; sourceTree = "<group>"; };
 		8982E2601807159D007A3648 /* NumberToLetterConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberToLetterConverter.h; sourceTree = "<group>"; };
 		8982E2611807159D007A3648 /* NumberToLetterConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberToLetterConverter.m; sourceTree = "<group>"; };
+		898E6B27183382D00093E85D /* UserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileViewController.h; sourceTree = "<group>"; };
+		898E6B28183382D00093E85D /* UserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileViewController.m; sourceTree = "<group>"; };
+		898E6B2E1833831D0093E85D /* UserProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileViewController.xib; sourceTree = "<group>"; };
+		898E6B30183383D70093E85D /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		898E6B31183383D70093E85D /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		898E6B35183384170093E85D /* ChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
 		8990CA1018320C6A0066DD09 /* FriendsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsListViewController.h; sourceTree = "<group>"; };
 		8990CA1118320C6A0066DD09 /* FriendsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsListViewController.m; sourceTree = "<group>"; };
 		899107151807D90C00714FA1 /* profile_pic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_pic.png; sourceTree = "<group>"; };
@@ -519,6 +529,10 @@
 				8998D615180D158200E6B5D9 /* VideoCallViewController.m */,
 				8990CA1018320C6A0066DD09 /* FriendsListViewController.h */,
 				8990CA1118320C6A0066DD09 /* FriendsListViewController.m */,
+				898E6B27183382D00093E85D /* UserProfileViewController.h */,
+				898E6B28183382D00093E85D /* UserProfileViewController.m */,
+				898E6B30183383D70093E85D /* ChatViewController.h */,
+				898E6B31183383D70093E85D /* ChatViewController.m */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -751,11 +765,13 @@
 		8982E2331806EC13007A3648 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				898E6B35183384170093E85D /* ChatViewController.xib */,
 				8998D626180D173F00E6B5D9 /* LoginViewController.xib */,
 				8998D612180D155800E6B5D9 /* UserDetailViewController.xib */,
 				8982E2341806EC14007A3648 /* SignUpViewController.xib */,
 				899BAC6E1807D1FD00236472 /* UsersListViewController.xib */,
 				89601E0418085A830029DEDD /* UserCell.xib */,
+				898E6B2E1833831D0093E85D /* UserProfileViewController.xib */,
 				8998D617180D159200E6B5D9 /* VideoCallViewController.xib */,
 			);
 			path = ChatApp;
@@ -914,6 +930,7 @@
 			files = (
 				8957461917FD9AE40073CCBE /* Images.xcassets in Resources */,
 				8957460817FD9AE40073CCBE /* InfoPlist.strings in Resources */,
+				898E6B36183384170093E85D /* ChatViewController.xib in Resources */,
 				894BEABC17FD9FBC00E16CFD /* Default-568h@2x.png in Resources */,
 				8982E2351806EC14007A3648 /* facebook_login.png in Resources */,
 				8982E2361806EC14007A3648 /* SignUpViewController.xib in Resources */,
@@ -921,6 +938,7 @@
 				899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */,
 				899107161807D90C00714FA1 /* profile_pic.png in Resources */,
 				89601E0518085A830029DEDD /* UserCell.xib in Resources */,
+				898E6B2F1833831D0093E85D /* UserProfileViewController.xib in Resources */,
 				8998D613180D155800E6B5D9 /* UserDetailViewController.xib in Resources */,
 				8998D618180D159200E6B5D9 /* VideoCallViewController.xib in Resources */,
 				8998D61C180D15E900E6B5D9 /* callAccept.jpg in Resources */,
@@ -986,6 +1004,7 @@
 				8982E2241806EB47007A3648 /* DDXMLNode.m in Sources */,
 				8982E2261806EB47007A3648 /* DDList.m in Sources */,
 				8982E2271806EB47007A3648 /* GCDMulticastDelegate.m in Sources */,
+				898E6B2A183382D00093E85D /* UserProfileViewController.m in Sources */,
 				8982E2281806EB47007A3648 /* LibIDN.m in Sources */,
 				8982E2291806EB47007A3648 /* RFImageToDataTransformer.m in Sources */,
 				8982E22A1806EB47007A3648 /* XMPPDigestAuthentication.m in Sources */,
@@ -999,6 +1018,7 @@
 				89601E03180859930029DEDD /* UserCell.m in Sources */,
 				8998D60F180D152500E6B5D9 /* UserDetailViewController.m in Sources */,
 				8998D616180D158200E6B5D9 /* VideoCallViewController.m in Sources */,
+				898E6B33183383D70093E85D /* ChatViewController.m in Sources */,
 				8998D640180D1C3E00E6B5D9 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

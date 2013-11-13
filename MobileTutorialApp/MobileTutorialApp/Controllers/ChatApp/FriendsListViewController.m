@@ -31,16 +31,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController.navigationBar setHidden:YES];
 
-    
-    UIButton *backButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 60.0f, 30.0f)];
-    UIImage *backImage = [[UIImage imageNamed:@""] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 12.0f, 0, 12.0f)];
-    [backButton setBackgroundImage:backImage  forState:UIControlStateNormal];
-    [backButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(facebookViewControllerCancelWasPressed:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    self.navigationItem.leftBarButtonItem = backButtonItem;
-    
     NSMutableDictionary *videoChatConfiguration = [[QBSettings videoChatConfiguration] mutableCopy];
     [videoChatConfiguration setObject:@20 forKey:kQBVideoChatCallTimeout];
     [videoChatConfiguration setObject:AVCaptureSessionPresetLow forKey:kQBVideoChatFrameQualityPreset];
@@ -54,13 +46,11 @@
     [QBChat instance].delegate = self;
     [NSTimer scheduledTimerWithTimeInterval:30 target:[QBChat instance] selector:@selector(sendPresence) userInfo:nil repeats:YES];
     
-    self.title = @"Pick Friend";
     self.allowsMultipleSelection =  NO;
     NSSet *fields = [NSSet setWithObjects:@"installed", nil];
-   // self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(facebookViewControllerCancelWasPressed:)];
+    self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(facebookViewControllerCancelWasPressed:)];
     self.delegate = self;
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Call" style:UIBarButtonItemStyleDone target:self action:@selector(facebookViewControllerDoneWasPressed:)];
-    
     
     self.fieldsForRequest = fields;
     [self loadData];
@@ -96,7 +86,7 @@
 
 - (void)facebookViewControllerCancelWasPressed:(id)sender
 {
-    [self logoutMe:nil];
+    [self logoutMe];
 }
 
 -(BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
@@ -137,7 +127,7 @@
             [User sharedInstance].opponent = nil;
             [ApplicationDelegate.session closeAndClearTokenInformation];
             [FBSession setActiveSession:nil];
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
 		}else{
             NSLog(@"errors=%@", result.errors);
 		}
@@ -200,7 +190,7 @@
 
 #pragma mark Private methods.
 
-- (IBAction)logoutMe:(id)sender
+- (void)logoutMe
 {
     // logout user
     if ([[QBChat instance] isLoggedIn]) {
@@ -226,7 +216,8 @@
     self.ringingPlayer = nil;
 }
 
-- (void)hideCallAlert{
+- (void)hideCallAlert
+{
     [self.callAlert dismissWithClickedButtonIndex:-1 animated:YES];
     self.callAlert = nil;
 }

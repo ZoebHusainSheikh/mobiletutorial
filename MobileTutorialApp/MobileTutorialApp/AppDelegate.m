@@ -123,7 +123,6 @@
     // ... and open it from the App Link's Token.
     [ApplicationDelegate.session openFromAccessTokenData:appLinkToken
                                        completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                           //[self startStopActivityIndicator:YES];
                                        }];
 }
 
