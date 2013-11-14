@@ -40,7 +40,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     //[self.navigationController.navigationBar setHidden:YES];
     [self.callButton setTitle:@"Call" forState:UIControlStateNormal];
 
@@ -55,7 +54,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    self.navBar.topItem.title = [User sharedInstance].opponent.login;
+    self.navBar.topItem.title = [User sharedInstance].opponent.fullName;
 }
 
 

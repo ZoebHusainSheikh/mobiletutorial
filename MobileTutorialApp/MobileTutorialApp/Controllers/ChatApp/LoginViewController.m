@@ -74,7 +74,6 @@
                                 NSLog(@"%@", error.localizedDescription);
                                 break;
                             case FBSessionStateOpen:
-                                [FBSession setActiveSession:ApplicationDelegate.session];
                                 [self getUserFBProfile];
                                 break;
                             default:
@@ -151,27 +150,26 @@
     [self showLoginButton:NO];
 }
 
-#pragma mark Private methods.
-
 - (void)getUserFBProfile
 {
     if (ApplicationDelegate.session.isOpen) {
         
         [FBSession setActiveSession:ApplicationDelegate.session];
         [[[FBRequest alloc] initWithSession:ApplicationDelegate.session graphPath:@"me"] startWithCompletionHandler:
-         ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error)           {
+         ^(FBRequestConnection *connection, NSMutableDictionary<FBGraphUser> *user, NSError *error)           {
              if (!error) {
                  NSLog(@"FBUserName= %@ & FBUserId= %@", user.name, user.id);
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  
                  NSLog(@"self.session.accessTokenData.accessToken = %@",ApplicationDelegate.session.accessTokenData.accessToken);
                  [defaults setObject:ApplicationDelegate.session.accessTokenData.accessToken forKey:@"FBAccessTokenKey"];
+                 //TODO do not save facebook username and id remove it.
                  [defaults setObject:user.name forKey:@"FBUserName"];
                  [defaults setObject:user.id forKey:@"FBUserId"];
                  [defaults synchronize];
                  [User sharedInstance].currentQBUser = [[QBUUser alloc] init];
                  [User sharedInstance].currentQBUser.facebookID = user.id;
-
+                 [User sharedInstance].currentFBUser = user;
                  NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
                  NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
                  // Authenticate user
@@ -184,31 +182,6 @@
     }
 }
 
-- (void)showTabBarController
-{
-    // Create a tabbar controller and an array to contain the view controllers
-    self.tabBarController = [[UITabBarController alloc] init];
-    
-    //add FriendsListViewController on tab
-    FriendsListViewController *friendsListViewController = [[FriendsListViewController alloc] init];
-    friendsListViewController.title = @"Friends";
-    UINavigationController *frdListNav = [[UINavigationController alloc] initWithRootViewController:friendsListViewController];
-     //add ChatViewController on tab
-    ChatViewController *chatViewController = [[ChatViewController alloc] initWithNibName:@"ChatViewController" bundle:nil];
-    chatViewController.title = @"Chat";
-    UINavigationController *chatNav = [[UINavigationController alloc] initWithRootViewController:chatViewController];
-    
-    //add UserProfileViewController on tab
-    UserProfileViewController *userProfileViewController = [[UserProfileViewController alloc] initWithNibName:@"UserProfileViewController" bundle:nil];
-    userProfileViewController.title = @"Me";
-    UINavigationController *userNav = [[UINavigationController alloc] initWithRootViewController:userProfileViewController];
-
-    NSArray* controllers = [NSArray arrayWithObjects:frdListNav, chatNav, userNav, nil];
-    self.tabBarController.viewControllers = controllers;
-    [self presentViewController:self.tabBarController animated:YES completion:nil];
-    
-    [self showLoginButton:YES];
-}
 
 - (void)createSession
 {
@@ -228,6 +201,56 @@
     }
 }
 
+- (void)loginToQBChat:(Result *)result
+{
+    QBUUserLogInResult *res = (QBUUserLogInResult *)result;
+    [User sharedInstance].currentQBUser = res.user;
+    NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
+    [User sharedInstance].currentQBUser.login = userLogin;
+    NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
+    [User sharedInstance].currentQBUser.password = passwordHash;
+    // Login to Chat
+    [QBChat instance].delegate = self;
+    [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
+}
+
+
+- (void)showLoginButton:(BOOL)show
+{
+    self.fbLoginButton.hidden = !show;
+    show ? [self.activityIndicator stopAnimating] : [self.activityIndicator startAnimating];
+}
+
+
+- (void)showTabBarController
+{
+    // Create a tabbar controller and an array to contain the view controllers
+    self.tabBarController = [[UITabBarController alloc] init];
+    
+    //add FriendsListViewController on tab
+    //FriendsListViewController *friendsListViewController = [[FriendsListViewController alloc] init];
+    FriendsListViewController *friendsListViewController = [[FriendsListViewController alloc] initWithNibName:@"FriendsListViewController" bundle:nil];
+    friendsListViewController.title = @"Friends";
+    //UINavigationController *frdListNav = [[UINavigationController alloc] initWithRootViewController:friendsListViewController];
+
+    //add ChatViewController on tab
+    ChatViewController *chatViewController = [[ChatViewController alloc] initWithNibName:@"ChatViewController" bundle:nil];
+    chatViewController.title = @"Chat";
+    //UINavigationController *chatNav = [[UINavigationController alloc] initWithRootViewController:chatViewController];
+    
+    //add UserProfileViewController on tab
+    UserProfileViewController *userProfileViewController = [[UserProfileViewController alloc] initWithNibName:@"UserProfileViewController" bundle:nil];
+    userProfileViewController.title = @"Me";
+    //UINavigationController *userNav = [[UINavigationController alloc] initWithRootViewController:userProfileViewController];
+    
+    //NSArray* controllers = [NSArray arrayWithObjects:frdListNav, chatNav, userNav, nil];
+    NSArray* controllers = [NSArray arrayWithObjects:friendsListViewController, chatViewController, userProfileViewController, nil];
+    self.tabBarController.viewControllers = controllers;
+    [self presentViewController:self.tabBarController animated:YES completion:nil];
+    [self showLoginButton:YES];
+}
+
+
 - (void)startApplication
 {
     // QuickBlox application autorization
@@ -238,12 +261,6 @@
                                     repeats:YES];
     [self createSessionWithDelegate:self];
 	
-}
-
-- (void)showLoginButton:(BOOL)show
-{
-    self.fbLoginButton.hidden = !show;
-    show ? [self.activityIndicator stopAnimating] : [self.activityIndicator startAnimating];
 }
 
 #pragma mark -
@@ -265,28 +282,19 @@
 		
         // Success result
         if(result.success){
-
-            QBUUserLogInResult *res = (QBUUserLogInResult *)result;
-            [User sharedInstance].currentQBUser = res.user;
-            
-            NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
-            [User sharedInstance].currentQBUser.login = userLogin;
-            NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
-            [User sharedInstance].currentQBUser.password = passwordHash;
-            // Login to Chat
-            [QBChat instance].delegate = self;
-            [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
-            
+            [self loginToQBChat:result];
         }
         else if(401 == result.status){
             // Register new user
             // Create QBUUser entity
             QBUUser *user = [User sharedInstance].currentQBUser;
-            NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
-            NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
-            user.login = userLogin;
+            NSMutableDictionary *fbUser = [User sharedInstance].currentFBUser;
+            // NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
+            user.facebookID = [fbUser objectForKey:@"id"];
+            NSString *passwordHash = [NSString stringWithFormat:@"%u", [user.facebookID hash]];
+            user.fullName = [fbUser objectForKey:@"name"];
+            user.login = [fbUser objectForKey:@"id"];
             user.password = passwordHash;
-            user.facebookID = userLogin;
             user.tags = [NSMutableArray arrayWithObject:@"Systango"];
             // Create user
             [QBUsers signUp:user delegate:self];
@@ -303,9 +311,8 @@
         }
     }
     else if([result isKindOfClass:[QBUUserResult class]]){
-        // Success result
         if(result.success){
-            //TODO login to QBchat
+            [self loginToQBChat:result];
         }
     }
 }

@@ -95,6 +95,7 @@
 		898E6B36183384170093E85D /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 898E6B35183384170093E85D /* ChatViewController.xib */; };
 		8990CA1318320C6A0066DD09 /* FriendsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8990CA1118320C6A0066DD09 /* FriendsListViewController.m */; };
 		899107161807D90C00714FA1 /* profile_pic.png in Resources */ = {isa = PBXBuildFile; fileRef = 899107151807D90C00714FA1 /* profile_pic.png */; };
+		89963B851835134E00E2E011 /* FriendsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89963B841835134E00E2E011 /* FriendsListViewController.xib */; };
 		8998D60F180D152500E6B5D9 /* UserDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8998D60E180D152500E6B5D9 /* UserDetailViewController.m */; };
 		8998D613180D155800E6B5D9 /* UserDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8998D612180D155800E6B5D9 /* UserDetailViewController.xib */; };
 		8998D616180D158200E6B5D9 /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8998D615180D158200E6B5D9 /* VideoCallViewController.m */; };
@@ -291,6 +292,7 @@
 		8990CA1018320C6A0066DD09 /* FriendsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsListViewController.h; sourceTree = "<group>"; };
 		8990CA1118320C6A0066DD09 /* FriendsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsListViewController.m; sourceTree = "<group>"; };
 		899107151807D90C00714FA1 /* profile_pic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_pic.png; sourceTree = "<group>"; };
+		89963B841835134E00E2E011 /* FriendsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsListViewController.xib; sourceTree = "<group>"; };
 		8998D60D180D152500E6B5D9 /* UserDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDetailViewController.h; sourceTree = "<group>"; };
 		8998D60E180D152500E6B5D9 /* UserDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDetailViewController.m; sourceTree = "<group>"; };
 		8998D612180D155800E6B5D9 /* UserDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserDetailViewController.xib; sourceTree = "<group>"; };
@@ -773,6 +775,7 @@
 				89601E0418085A830029DEDD /* UserCell.xib */,
 				898E6B2E1833831D0093E85D /* UserProfileViewController.xib */,
 				8998D617180D159200E6B5D9 /* VideoCallViewController.xib */,
+				89963B841835134E00E2E011 /* FriendsListViewController.xib */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -943,6 +946,7 @@
 				8998D618180D159200E6B5D9 /* VideoCallViewController.xib in Resources */,
 				8998D61C180D15E900E6B5D9 /* callAccept.jpg in Resources */,
 				8998D61D180D15EA00E6B5D9 /* callReject.jpg in Resources */,
+				89963B851835134E00E2E011 /* FriendsListViewController.xib in Resources */,
 				8998D61E180D15EA00E6B5D9 /* person.png in Resources */,
 				8998D622180D164700E6B5D9 /* ringing.wav in Resources */,
 				8998D627180D173F00E6B5D9 /* LoginViewController.xib in Resources */,

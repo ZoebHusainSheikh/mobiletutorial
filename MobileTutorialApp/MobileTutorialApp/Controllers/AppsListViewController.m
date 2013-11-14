@@ -33,7 +33,6 @@
 {
     [super viewDidLoad];
     self.navigationItem.title = @"Mobile Tutorial";
-    
 }
 
 - (void)didReceiveMemoryWarning

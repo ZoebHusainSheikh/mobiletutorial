@@ -17,8 +17,11 @@
 @interface FriendsListViewController ()
 
 @property (strong, nonatomic) UIAlertView *callAlert;
+@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (strong, nonatomic) AVAudioPlayer *ringingPlayer;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) NSMutableArray *searchUsers;
+//@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) NSArray *users;
 @property (weak, nonatomic)   UITableView *usersTable;
 
@@ -31,8 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setHidden:YES];
-
+    [self.navigationController.navigationBar setHidden:NO];
     NSMutableDictionary *videoChatConfiguration = [[QBSettings videoChatConfiguration] mutableCopy];
     [videoChatConfiguration setObject:@20 forKey:kQBVideoChatCallTimeout];
     [videoChatConfiguration setObject:AVCaptureSessionPresetLow forKey:kQBVideoChatFrameQualityPreset];
@@ -45,14 +47,21 @@
     //
     [QBChat instance].delegate = self;
     [NSTimer scheduledTimerWithTimeInterval:30 target:[QBChat instance] selector:@selector(sendPresence) userInfo:nil repeats:YES];
-    
+
+    self.delegate = self;
     self.allowsMultipleSelection =  NO;
     NSSet *fields = [NSSet setWithObjects:@"installed", nil];
+    self.fieldsForRequest = fields;
     self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(facebookViewControllerCancelWasPressed:)];
-    self.delegate = self;
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Call" style:UIBarButtonItemStyleDone target:self action:@selector(facebookViewControllerDoneWasPressed:)];
     
-    self.fieldsForRequest = fields;
+    /*self.segmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Friends", @"Invite Friends", nil]];
+    [self.segmentedControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+    self.segmentedControl.frame = CGRectMake(80, 15, 70, 30);
+    [self.segmentedControl sizeToFit];
+    [self.segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+    self.segmentedControl.selectedSegmentIndex = 0;
+    [self.view addSubview:self.segmentedControl];*/
     [self loadData];
     [self clearSelection];
 }
@@ -70,6 +79,21 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark Private methods.
+
+- (IBAction)segmentedControlValueChanged:(id)sender
+{
+    if(self.segmentedControl.selectedSegmentIndex == 0) {
+        self.allowsMultipleSelection =  NO;
+    } else {
+        self.allowsMultipleSelection =  YES;
+    }
+    [self loadData];
+    [self clearSelection];
+}
+
+#pragma mark - FBFriendPickerDelegate methods
 
 - (void)facebookViewControllerDoneWasPressed:(id)sender
 {
@@ -91,9 +115,16 @@
 
 -(BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
 {
- BOOL installed = [user objectForKey:@"installed"] != nil;
+    BOOL installed;
+    if(self.segmentedControl.selectedSegmentIndex == 0)
+    {
+        installed = [user objectForKey:@"installed"] != nil;
+
+    } else {
+        installed = [user objectForKey:@"installed"] == nil;
+    }
  return installed;
- }
+}
 
 
 #pragma mark -QuickBlox API queries delegate
@@ -137,56 +168,6 @@
     }
     
 }
-
-
-#pragma mark -
-#pragma mark TableViewDataSource & TableViewDelegate
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    // show user details
-    /*UserDetailViewController *userDetailViewController = [[UserDetailViewController alloc] initWithNibName:@"UserDetailViewController" bundle:nil];
-    userDetailViewController.selectedUser = [self.searchUsers objectAtIndex:[indexPath row]];
-    userDetailViewController.usersListViewController = self;
-    [self.navigationController pushViewController:userDetailViewController animated:YES];*/
-    
-    //[tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-/*
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.searchUsers count];
-}
-
-
-// Making table view using custom cells
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"UserCell";
-    
-	UserCell *cell = (UserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-	if (cell == nil) {
-		NSArray *nibObjects;
-        nibObjects = [[NSBundle mainBundle] loadNibNamed:@"UserCell"
-                                                   owner:self
-                                                 options:nil];
-		cell = [nibObjects objectAtIndex:0];
-	}
-    
-    QBUUser *obtainedUser = [self.searchUsers objectAtIndex:[indexPath row]];
-    
-    if(obtainedUser.login != nil) {
-        cell.userName.text = obtainedUser.login;
-    }
-    else{
-        cell.userName.text = obtainedUser.email;
-    }
-    
-    return cell;
-}*/
 
 #pragma mark Private methods.
 
