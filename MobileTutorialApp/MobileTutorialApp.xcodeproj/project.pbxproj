@@ -95,6 +95,11 @@
 		898E6B36183384170093E85D /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 898E6B35183384170093E85D /* ChatViewController.xib */; };
 		8990CA1318320C6A0066DD09 /* FriendsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8990CA1118320C6A0066DD09 /* FriendsListViewController.m */; };
 		899107161807D90C00714FA1 /* profile_pic.png in Resources */ = {isa = PBXBuildFile; fileRef = 899107151807D90C00714FA1 /* profile_pic.png */; };
+		8991AD2E18362BDB005261A8 /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 8991AD2D18362BDB005261A8 /* Common.m */; };
+		8991AD3518363769005261A8 /* friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 8991AD3118363769005261A8 /* friends.png */; };
+		8991AD3618363769005261A8 /* friends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8991AD3218363769005261A8 /* friends@2x.png */; };
+		8991AD3718363769005261A8 /* me.png in Resources */ = {isa = PBXBuildFile; fileRef = 8991AD3318363769005261A8 /* me.png */; };
+		8991AD3818363769005261A8 /* me@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8991AD3418363769005261A8 /* me@2x.png */; };
 		89963B851835134E00E2E011 /* FriendsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89963B841835134E00E2E011 /* FriendsListViewController.xib */; };
 		8998D60F180D152500E6B5D9 /* UserDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8998D60E180D152500E6B5D9 /* UserDetailViewController.m */; };
 		8998D613180D155800E6B5D9 /* UserDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8998D612180D155800E6B5D9 /* UserDetailViewController.xib */; };
@@ -292,6 +297,12 @@
 		8990CA1018320C6A0066DD09 /* FriendsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsListViewController.h; sourceTree = "<group>"; };
 		8990CA1118320C6A0066DD09 /* FriendsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsListViewController.m; sourceTree = "<group>"; };
 		899107151807D90C00714FA1 /* profile_pic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_pic.png; sourceTree = "<group>"; };
+		8991AD2C18362BDB005261A8 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		8991AD2D18362BDB005261A8 /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
+		8991AD3118363769005261A8 /* friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friends.png; sourceTree = "<group>"; };
+		8991AD3218363769005261A8 /* friends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friends@2x.png"; sourceTree = "<group>"; };
+		8991AD3318363769005261A8 /* me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = me.png; sourceTree = "<group>"; };
+		8991AD3418363769005261A8 /* me@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "me@2x.png"; sourceTree = "<group>"; };
 		89963B841835134E00E2E011 /* FriendsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsListViewController.xib; sourceTree = "<group>"; };
 		8998D60D180D152500E6B5D9 /* UserDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDetailViewController.h; sourceTree = "<group>"; };
 		8998D60E180D152500E6B5D9 /* UserDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDetailViewController.m; sourceTree = "<group>"; };
@@ -746,6 +757,10 @@
 		8982E2301806EC13007A3648 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				8991AD3118363769005261A8 /* friends.png */,
+				8991AD3218363769005261A8 /* friends@2x.png */,
+				8991AD3318363769005261A8 /* me.png */,
+				8991AD3418363769005261A8 /* me@2x.png */,
 				8998D619180D15E900E6B5D9 /* callAccept.jpg */,
 				8998D61A180D15E900E6B5D9 /* callReject.jpg */,
 				8998D61B180D15E900E6B5D9 /* person.png */,
@@ -799,6 +814,8 @@
 		8982E23A1806ECB2007A3648 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8991AD2C18362BDB005261A8 /* Common.h */,
+				8991AD2D18362BDB005261A8 /* Common.m */,
 				8982E23B1806ECB2007A3648 /* ChatApp */,
 			);
 			path = Models;
@@ -935,7 +952,11 @@
 				8957460817FD9AE40073CCBE /* InfoPlist.strings in Resources */,
 				898E6B36183384170093E85D /* ChatViewController.xib in Resources */,
 				894BEABC17FD9FBC00E16CFD /* Default-568h@2x.png in Resources */,
+				8991AD3518363769005261A8 /* friends.png in Resources */,
+				8991AD3718363769005261A8 /* me.png in Resources */,
 				8982E2351806EC14007A3648 /* facebook_login.png in Resources */,
+				8991AD3818363769005261A8 /* me@2x.png in Resources */,
+				8991AD3618363769005261A8 /* friends@2x.png in Resources */,
 				8982E2361806EC14007A3648 /* SignUpViewController.xib in Resources */,
 				8982E23D1806ED81007A3648 /* AppsListViewController.xib in Resources */,
 				899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */,
@@ -989,6 +1010,7 @@
 				8982E2111806EB47007A3648 /* NSNumber+XMPP.m in Sources */,
 				8982E2121806EB47007A3648 /* NSXMLElement+XMPP.m in Sources */,
 				8982E2131806EB47007A3648 /* GCDAsyncSocket.m in Sources */,
+				8991AD2E18362BDB005261A8 /* Common.m in Sources */,
 				8982E2141806EB47007A3648 /* DDAbstractDatabaseLogger.m in Sources */,
 				8982E2151806EB47007A3648 /* DDASLLogger.m in Sources */,
 				8982E2161806EB47007A3648 /* DDFileLogger.m in Sources */,

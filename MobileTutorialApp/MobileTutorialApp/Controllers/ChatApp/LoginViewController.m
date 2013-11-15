@@ -98,7 +98,7 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark IBAction
+#pragma mark IBAction methods
 
 - (IBAction)loginWithFaceBook:(id)sender
 {
@@ -190,9 +190,7 @@
 
 - (void)createSessionWithDelegate:(id)delegate
 {
-    //
     // Create extended session request with user authorization
-    //
     if([User sharedInstance].currentQBUser){
         QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
         extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
@@ -228,22 +226,18 @@
     self.tabBarController = [[UITabBarController alloc] init];
     
     //add FriendsListViewController on tab
-    //FriendsListViewController *friendsListViewController = [[FriendsListViewController alloc] init];
+
     FriendsListViewController *friendsListViewController = [[FriendsListViewController alloc] initWithNibName:@"FriendsListViewController" bundle:nil];
     friendsListViewController.title = @"Friends";
-    //UINavigationController *frdListNav = [[UINavigationController alloc] initWithRootViewController:friendsListViewController];
 
     //add ChatViewController on tab
     ChatViewController *chatViewController = [[ChatViewController alloc] initWithNibName:@"ChatViewController" bundle:nil];
     chatViewController.title = @"Chat";
-    //UINavigationController *chatNav = [[UINavigationController alloc] initWithRootViewController:chatViewController];
     
     //add UserProfileViewController on tab
     UserProfileViewController *userProfileViewController = [[UserProfileViewController alloc] initWithNibName:@"UserProfileViewController" bundle:nil];
     userProfileViewController.title = @"Me";
-    //UINavigationController *userNav = [[UINavigationController alloc] initWithRootViewController:userProfileViewController];
     
-    //NSArray* controllers = [NSArray arrayWithObjects:frdListNav, chatNav, userNav, nil];
     NSArray* controllers = [NSArray arrayWithObjects:friendsListViewController, chatViewController, userProfileViewController, nil];
     self.tabBarController.viewControllers = controllers;
     [self presentViewController:self.tabBarController animated:YES completion:nil];
@@ -289,7 +283,6 @@
             // Create QBUUser entity
             QBUUser *user = [User sharedInstance].currentQBUser;
             NSMutableDictionary *fbUser = [User sharedInstance].currentFBUser;
-            // NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
             user.facebookID = [fbUser objectForKey:@"id"];
             NSString *passwordHash = [NSString stringWithFormat:@"%u", [user.facebookID hash]];
             user.fullName = [fbUser objectForKey:@"name"];

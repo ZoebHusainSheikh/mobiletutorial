@@ -106,7 +106,6 @@
     return NO;
 }
 
-
 #pragma mark -
 #pragma mark private methods
 
@@ -125,6 +124,5 @@
                                        completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
                                        }];
 }
-
 
 @end

@@ -101,7 +101,7 @@
     }
 }
 
-#pragma mark IBAction
+#pragma mark IBAction methods
 
 - (IBAction)back:(id)sender
 {

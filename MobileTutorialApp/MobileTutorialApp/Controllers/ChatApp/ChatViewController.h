@@ -2,7 +2,7 @@
 //  ChatViewController.h
 //  MobileTutorialApp
 //
-//  Created by MAC1 on 11/13/13.
+//  Created by Systango on 11/13/13.
 //  Copyright (c) 2013 Systango. All rights reserved.
 //
 

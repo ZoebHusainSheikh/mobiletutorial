@@ -38,7 +38,6 @@
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.140189705" green="0.77317605190000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
