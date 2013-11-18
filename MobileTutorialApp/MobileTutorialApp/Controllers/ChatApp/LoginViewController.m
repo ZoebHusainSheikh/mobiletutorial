@@ -162,7 +162,7 @@
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  
                  NSLog(@"self.session.accessTokenData.accessToken = %@",ApplicationDelegate.session.accessTokenData.accessToken);
-                 [defaults setObject:ApplicationDelegate.session.accessTokenData.accessToken forKey:@"FBAccessTokenKey"];
+                 //[defaults setObject:ApplicationDelegate.session.accessTokenData.accessToken forKey:@"FBAccessTokenKey"];
                  //TODO do not save facebook username and id remove it.
                  [defaults setObject:user.name forKey:@"FBUserName"];
                  [defaults setObject:user.id forKey:@"FBUserId"];

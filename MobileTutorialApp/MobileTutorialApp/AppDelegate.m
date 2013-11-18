@@ -53,10 +53,6 @@
 {
     [FBAppEvents activateApp];
     
-    /*
-     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-     */
-    
     // FBSample logic
     // We need to properly handle activation of the application with regards to SSO
     //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
@@ -65,12 +61,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Facebook SDK * pro-tip *
-    // if the app is going away, we close the session object; this is a good idea because
-    // things may be hanging off the session, that need releasing (completion block, etc.) and
-    // other components in the app may be awaiting close notification in order to do cleanup
-    [ApplicationDelegate.session closeAndClearTokenInformation];
-    [FBSession setActiveSession:nil];
+    [self.session close];
 }
 
 

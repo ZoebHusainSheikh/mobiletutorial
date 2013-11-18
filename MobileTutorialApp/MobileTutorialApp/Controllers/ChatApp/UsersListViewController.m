@@ -112,7 +112,7 @@
 		QBUUserLogOutResult *res = (QBUUserLogOutResult *)result;
         
 		if(res.success){
-		    NSLog(@"LogOut successful.");
+		    NSLog(@"Logout successful.");
             [User sharedInstance].currentQBUser = nil;
             [User sharedInstance].opponent = nil;
             [ApplicationDelegate.session closeAndClearTokenInformation];

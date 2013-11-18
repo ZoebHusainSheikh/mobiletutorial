@@ -18,6 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendButton;
 @property (strong, nonatomic) UIAlertView *callAlert;
+@property (strong, nonatomic) NSString *friendsIdString;
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (strong, nonatomic) AVAudioPlayer *ringingPlayer;
 @property (strong, nonatomic) NSMutableArray *searchUsers;
@@ -82,8 +83,45 @@
 #pragma mark IBAction methods
 - (IBAction)inviteFriends:(id)sender
 {
+    NSMutableString *text = [[NSMutableString alloc] init];
+    // we pick up the users from the selection, and create a string that we use to tag them in post
+    if (self.selection.count == 0){
+        [Common showAlertWithTitle:@"Hey!" description:@"Please select friends from the list before Inviting."];
+        return ;
+    }
+    for (id<FBGraphUser> user in self.selection) {
+        if ([text length]) {
+            [text appendString:@","];
+        }
+        [text appendString:user.id];
+    }
+    self.friendsIdString = text;
+
+    //To avoid reauthorize error
+    FBSession.activeSession = ApplicationDelegate.session;
+    if ([FBSession activeSession].isOpen)
+    {
+        //[FBSession openActiveSessionWithAllowLoginUI:NO];
+        if ([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {
+            // if we don't already have the permission, then we request it now
+            [FBSession.activeSession requestNewPublishPermissions:@[@"publish_actions"]
+                                                  defaultAudience:FBSessionDefaultAudienceFriends
+                                                completionHandler:^(FBSession *session, NSError *error) {
+                                                    if (!error) {
+                                                        [self fbPostSettings];
+                                                    }else{
+                                                        NSLog(@"Facebook Error:%@", error.localizedDescription);
+                                                        [Common showAlertWithTitle:@"Facebook Error" description:error.localizedDescription];
+                                                    }
+                                                    //For this example, ignore errors (such as if user cancels).
+                                                }];
+        } else {
+            [self fbPostSettings];
+        }
+    }
     
 }
+
 
 - (IBAction)logoutMe:(id)sender
 {
@@ -129,7 +167,6 @@
     if(self.segmentedControl.selectedSegmentIndex == 0)
     {
         installed = [user objectForKey:@"installed"] != nil;
-
     } else {
         installed = [user objectForKey:@"installed"] == nil;
     }
@@ -163,6 +200,38 @@
 {
     [self.callAlert dismissWithClickedButtonIndex:-1 animated:YES];
     self.callAlert = nil;
+}
+
+- (void)fbPostSettings
+{
+    NSDictionary * facebookParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                      @"https://www.google.co.in/",     @"link",
+                                     @"Video Chat App",                 @"name",
+                                       @"Your friend has invited you to join Video chat app!",  @"caption",
+                                      
+                                      @"",                              @"description",
+                                      self.friendsIdString,             @"tags",
+                                      @"155021662189",                  @"place",
+                                      @"",                              @"picture",
+                                                                                    nil];
+    [FBRequestConnection startWithGraphPath:@"me/feed"
+                                 parameters:facebookParams
+                                 HTTPMethod:@"POST"
+                          completionHandler:^(FBRequestConnection *connection,
+                                              id result,
+                                              NSError *error) {
+                              
+                              if (error) {
+                                  NSLog(@"Facebook Error:%@", error.localizedDescription);
+                                  [Common showAlertWithTitle:@"Facebook Error" description:error.localizedDescription];
+                              } else {
+                                 NSLog(@"Success Posted action and id = %@",self.friendsIdString);
+                                 UIAlertView *popupAlert = [[UIAlertView alloc] initWithTitle:@"Your FB friends are notified on their timeline." message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                                  [popupAlert show];
+                              }
+                              
+                          }];
+    
 }
 
 - (void)reject
