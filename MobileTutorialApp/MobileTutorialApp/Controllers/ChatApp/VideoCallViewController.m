@@ -93,13 +93,13 @@
         self.opponentVideoView.layer.borderWidth = 1;
         self.callButton.selected = NO;
     }
-    //self.callButton.selected = (self.callButton.tag == 101);
 }
 
 #pragma mark Public methods.
 
 - (void)videoCallSetUp
 {
+    NSLog(@"%s",__FUNCTION__);
     self.opponentVideoView = nil;
     self.myVideoView = nil;
     //self.opponentProfilePictureView.profileID = [User sharedInstance].opponent.facebookID;
@@ -110,6 +110,7 @@
 
 - (void)callAccepted
 {
+    NSLog(@"%s",__FUNCTION__);
   // [self videoCallSetUp];
 //[self.view setNeedsDisplay];
     //self.opponentProfilePictureView.hidden = YES;
@@ -126,6 +127,7 @@
 
 - (void)callDidStopByUser
 {
+    NSLog(@"%s",__FUNCTION__);
     self.myVideoView.hidden = YES;
     self.navBar.userInteractionEnabled = YES;
     //self.opponentProfilePictureView.hidden = NO;
@@ -142,6 +144,7 @@
 
 - (void)callRejected
 {
+    NSLog(@"%s",__FUNCTION__);
     self.callButton.hidden = NO;
     self.navBar.userInteractionEnabled = YES;
     self.ringigngLabel.hidden = YES;

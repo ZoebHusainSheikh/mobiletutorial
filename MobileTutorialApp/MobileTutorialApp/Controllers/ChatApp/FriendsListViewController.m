@@ -42,6 +42,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.delegate = self;
+    self.allowsMultipleSelection =  NO;
+    self.fieldsForRequest = [NSSet setWithObjects:@"installed", nil];
+    [self loadData];
+
     NSMutableDictionary *videoChatConfiguration = [[QBSettings videoChatConfiguration] mutableCopy];
     [videoChatConfiguration setObject:@20 forKey:kQBVideoChatCallTimeout];
     [videoChatConfiguration setObject:AVCaptureSessionPresetLow forKey:kQBVideoChatFrameQualityPreset];
@@ -50,10 +55,6 @@
     
     self.videoChat = [[QBChat instance] createAndRegisterVideoChatInstance];
     
-    self.delegate = self;
-    self.allowsMultipleSelection =  NO;
-    self.fieldsForRequest = [NSSet setWithObjects:@"installed", nil];
-    [self loadData];
     // Start sending chat presence
     [QBChat instance].delegate = self;
     [NSTimer scheduledTimerWithTimeInterval:30 target:[QBChat instance] selector:@selector(sendPresence) userInfo:nil repeats:YES];
@@ -175,7 +176,7 @@
 
 - (void)accept
 {
-    if (![self.navigationController.visibleViewController isKindOfClass:[VideoCallViewController class]]) {
+   /* if (![self.navigationController.visibleViewController isKindOfClass:[VideoCallViewController class]]) {
         self.videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
         self.videoCallViewController.videoChat = self.videoChat;
         [self presentViewController:self.videoCallViewController animated:YES completion:nil];
@@ -183,14 +184,22 @@
     // Accept call
     [self.videoChat acceptCall];
     [self.videoCallViewController callAccepted];
-    self.ringingPlayer = nil;
+    self.ringingPlayer = nil;*/
+    
+    if (self.videoCallViewController.isViewLoaded && self.videoCallViewController.view.window) {
+        // videoCallViewController is visible dismiss it
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    self.videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
+    self.videoCallViewController.videoChat = self.videoChat;
+    [self presentViewController:self.videoCallViewController animated:YES completion:^{
+        // Accept call
+        [self.videoChat acceptCall];
+        [self.videoCallViewController callAccepted];
+        self.ringingPlayer = nil;
+    }];
 }
 
-- (void)hideCallAlert
-{
-    [self.callAlert dismissWithClickedButtonIndex:-1 animated:YES];
-    self.callAlert = nil;
-}
 
 - (void)fbPostSettings
 {
@@ -222,6 +231,12 @@
                               
                           }];
     
+}
+
+- (void)hideCallAlert
+{
+    [self.callAlert dismissWithClickedButtonIndex:-1 animated:YES];
+    self.callAlert = nil;
 }
 
 - (void)reject
@@ -285,7 +300,7 @@
 // Called in case when anyone is calling to you
 -(void)chatDidReceiveCallRequestFromUser:(NSUInteger)userID conferenceType:(enum QBVideoChatConferenceType)conferenceType customParameters:(NSDictionary *)customParameters
 {
-    NSLog(@"chatDidReceiveCallRequestFromUser %d", userID);
+    NSLog(@"%s , userID: %d",__FUNCTION__,userID);
     if (![User sharedInstance].opponent) {
         [User sharedInstance].opponent = [[QBUUser alloc] init];
     }
@@ -303,7 +318,7 @@
     
     // hide call alert if caller has canceled call
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideCallAlert) object:nil];
-    [self performSelector:@selector(hideCallAlert) withObject:nil afterDelay:3];
+    //[self performSelector:@selector(hideCallAlert) withObject:nil afterDelay:3];
     // play call music
     if(self.ringingPlayer == nil){
         NSString *path =[[NSBundle mainBundle] pathForResource:@"ringing" ofType:@"wav"];
@@ -318,7 +333,7 @@
 // Called in case when you are calling to user, but he hasn't answered
 -(void)chatCallUserDidNotAnswer:(NSUInteger)userID
 {
-    NSLog(@"chatCallUserDidNotAnswer %d", userID);
+    NSLog(@"%s , userID: %d",__FUNCTION__,userID);
     
     [self.videoCallViewController callRejected];
     
@@ -328,7 +343,7 @@
 
 -(void)chatCallDidRejectByUser:(NSUInteger)userID
 {
-    NSLog(@"chatCallDidRejectByUser %d", userID);
+    NSLog(@"%s , userID: %d",__FUNCTION__,userID);
     [self.videoCallViewController callRejected];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Systango VideoChat" message:@"User has rejected your call." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -337,13 +352,13 @@
 
 -(void)chatCallDidAcceptByUser:(NSUInteger)userID
 {
-    NSLog(@"chatCallDidAcceptByUser %d", userID);
-    //[self.videoCallViewController callAccepted];
+    NSLog(@"%s , userID: %d",__FUNCTION__,userID);
+    [self.videoCallViewController callAccepted];
 }
 
 -(void)chatCallDidStopByUser:(NSUInteger)userID status:(NSString *)status
 {
-    NSLog(@"chatCallDidStopByUser %d purpose %@", userID, status);
+    NSLog(@"%s, %d purpose %@",__FUNCTION__, userID, status);
     
     if([status isEqualToString:kStopVideoChatCallStatus_OpponentDidNotAnswer]){
         self.callAlert.delegate = nil;
@@ -358,11 +373,12 @@
 
 - (void)chatCallDidStartWithUser:(NSUInteger)userID
 {
-    
+    NSLog(@"%s , userID: %d",__FUNCTION__,userID);
 }
 
 - (void)didStartUseTURNForVideoChat
 {
+    NSLog(@"%s",__FUNCTION__);
     NSLog(@"_____TURN_____TURN_____");
 }
 
