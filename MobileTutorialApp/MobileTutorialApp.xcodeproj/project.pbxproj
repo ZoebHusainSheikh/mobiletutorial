@@ -15,6 +15,8 @@
 		890C5DEC1803F45E002F6BCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DEB1803F45E002F6BCB /* AVFoundation.framework */; };
 		890C5DEE1803F48C002F6BCB /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DED1803F48C002F6BCB /* libz.1.1.3.dylib */; };
 		890C5DF01803F49E002F6BCB /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 890C5DEF1803F49E002F6BCB /* libresolv.dylib */; };
+		8921E1CE183B3D4A005BF05E /* end_call_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 8921E1CC183B3D4A005BF05E /* end_call_button.png */; };
+		8921E1D2183B51E1005BF05E /* call_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 8921E1D1183B51E0005BF05E /* call_button.png */; };
 		894BEABC17FD9FBC00E16CFD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 894BEABB17FD9FBC00E16CFD /* Default-568h@2x.png */; };
 		895745FE17FD9AE40073CCBE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895745FD17FD9AE40073CCBE /* Foundation.framework */; };
 		8957460017FD9AE40073CCBE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895745FF17FD9AE40073CCBE /* CoreGraphics.framework */; };
@@ -150,6 +152,8 @@
 		890C5DEB1803F45E002F6BCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		890C5DED1803F48C002F6BCB /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
 		890C5DEF1803F49E002F6BCB /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
+		8921E1CC183B3D4A005BF05E /* end_call_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = end_call_button.png; sourceTree = "<group>"; };
+		8921E1D1183B51E0005BF05E /* call_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_button.png; sourceTree = "<group>"; };
 		894BEABB17FD9FBC00E16CFD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		895745FA17FD9AE40073CCBE /* MobileTutorialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileTutorialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		895745FD17FD9AE40073CCBE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -371,6 +375,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8921E1CA183B3D4A005BF05E /* VideoCallView */ = {
+			isa = PBXGroup;
+			children = (
+				8921E1D1183B51E0005BF05E /* call_button.png */,
+				8921E1CC183B3D4A005BF05E /* end_call_button.png */,
+			);
+			path = VideoCallView;
+			sourceTree = "<group>";
+		};
 		895745F117FD9AE30073CCBE = {
 			isa = PBXGroup;
 			children = (
@@ -757,6 +770,7 @@
 		8982E2301806EC13007A3648 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				8921E1CA183B3D4A005BF05E /* VideoCallView */,
 				8991AD3118363769005261A8 /* friends.png */,
 				8991AD3218363769005261A8 /* friends@2x.png */,
 				8991AD3318363769005261A8 /* me.png */,
@@ -952,11 +966,13 @@
 				8957460817FD9AE40073CCBE /* InfoPlist.strings in Resources */,
 				898E6B36183384170093E85D /* ChatViewController.xib in Resources */,
 				894BEABC17FD9FBC00E16CFD /* Default-568h@2x.png in Resources */,
+				8921E1CE183B3D4A005BF05E /* end_call_button.png in Resources */,
 				8991AD3518363769005261A8 /* friends.png in Resources */,
 				8991AD3718363769005261A8 /* me.png in Resources */,
 				8982E2351806EC14007A3648 /* facebook_login.png in Resources */,
 				8991AD3818363769005261A8 /* me@2x.png in Resources */,
 				8991AD3618363769005261A8 /* friends@2x.png in Resources */,
+				8921E1D2183B51E1005BF05E /* call_button.png in Resources */,
 				8982E2361806EC14007A3648 /* SignUpViewController.xib in Resources */,
 				8982E23D1806ED81007A3648 /* AppsListViewController.xib in Resources */,
 				899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */,

@@ -7,16 +7,18 @@
 //
 
 #import "VideoCallViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 #import "User.h"
 
 @interface VideoCallViewController ()
 
-@property (nonatomic, weak) IBOutlet UIButton *callButton;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *callingActivityIndicator;
-@property (nonatomic, weak) IBOutlet UIImageView *myVideoView;
-@property (nonatomic, weak) IBOutlet UINavigationBar *navBar;
+@property (weak ,nonatomic) IBOutlet UIButton *callButton;
+@property (weak ,nonatomic) IBOutlet UIActivityIndicatorView *callingActivityIndicator;
+@property (weak ,nonatomic) IBOutlet UIImageView *myVideoView;
+@property (weak ,nonatomic) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, weak) IBOutlet UIImageView *opponentVideoView;
-@property (nonatomic, weak) IBOutlet UILabel *ringigngLabel;
+//@property (weak ,nonatomic) IBOutlet FBProfilePictureView *opponentProfilePictureView;
+@property (weak ,nonatomic) IBOutlet UILabel *ringigngLabel;
 
 - (IBAction)call:(id)sender;
 
@@ -40,15 +42,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    /*[self.callButton setTitle:@"Call" forState:UIControlStateNormal];
-
-    self.opponentVideoView.layer.borderWidth = 1;
-    self.opponentVideoView.layer.borderColor = [[UIColor grayColor] CGColor];
-    self.opponentVideoView.layer.cornerRadius = 5;
-    // Setup video chat
-    self.videoChat.viewToRenderOpponentVideoStream = self.opponentVideoView;
-    self.videoChat.viewToRenderOwnVideoStream = self.myVideoView;*/
-    [self.callButton setTitle:@"Call" forState:UIControlStateNormal];
+    
+    //[self.callButton setTitle:@"Call" forState:UIControlStateNormal];
     self.opponentVideoView.layer.borderWidth = 1;
     self.opponentVideoView.layer.borderColor = [[UIColor grayColor] CGColor];
     self.opponentVideoView.layer.cornerRadius = 5;
@@ -79,7 +74,7 @@
     // Call
     if(self.callButton.tag == 101) {
         // Call user by ID
-       [self.videoChat callUser:[[NSNumber numberWithInt:[User sharedInstance].opponent.ID] integerValue] conferenceType:QBVideoChatConferenceTypeAudioAndVideo customParameters:[NSDictionary dictionaryWithObject:[User sharedInstance].currentQBUser.fullName forKey:@"name"]];
+        [self.videoChat callUser:[[NSNumber numberWithInt:[User sharedInstance].opponent.ID] integerValue] conferenceType:QBVideoChatConferenceTypeAudioAndVideo customParameters:[NSDictionary dictionaryWithObjectsAndKeys:[User sharedInstance].currentQBUser.fullName, @"name", [User sharedInstance].currentQBUser.facebookID, @"facebookID", nil]];
         self.callButton.tag = 102;
         self.callButton.hidden = YES;
         self.ringigngLabel.text = @"Calling...";
@@ -94,9 +89,11 @@
         self.myVideoView.hidden = YES;
         self.navBar.userInteractionEnabled = YES;
         self.opponentVideoView.layer.contents = (id)[[UIImage imageNamed:@"person.png"] CGImage];
-        [self.callButton setTitle:@"Call" forState:UIControlStateNormal];
+        //[self.callButton setTitle:@"Call" forState:UIControlStateNormal];
         self.opponentVideoView.layer.borderWidth = 1;
+        self.callButton.selected = NO;
     }
+    //self.callButton.selected = (self.callButton.tag == 101);
 }
 
 #pragma mark Public methods.
@@ -105,6 +102,7 @@
 {
     self.opponentVideoView = nil;
     self.myVideoView = nil;
+    //self.opponentProfilePictureView.profileID = [User sharedInstance].opponent.facebookID;
     self.videoChat.viewToRenderOpponentVideoStream = self.opponentVideoView;
     self.videoChat.viewToRenderOwnVideoStream = self.myVideoView;
     self.navBar.topItem.title = [User sharedInstance].opponent.fullName;
@@ -112,23 +110,34 @@
 
 - (void)callAccepted
 {
+  // [self videoCallSetUp];
+//[self.view setNeedsDisplay];
+    //self.opponentProfilePictureView.hidden = YES;
+    //self.opponentVideoView.hidden = NO;
     self.ringigngLabel.hidden = YES;
     self.callingActivityIndicator.hidden = YES;
     self.callButton.hidden = NO;
-    [self.callButton setTitle:@"Hang up" forState:UIControlStateNormal];
+    //[self.callButton setTitle:@"Hang up" forState:UIControlStateNormal];
     self.callButton.tag = 102;
     self.opponentVideoView.layer.borderWidth = 0;
     self.myVideoView.hidden = NO;
+    self.callButton.selected = YES;
 }
 
 - (void)callDidStopByUser
 {
     self.myVideoView.hidden = YES;
     self.navBar.userInteractionEnabled = YES;
+    //self.opponentProfilePictureView.hidden = NO;
+    //self.opponentVideoView.hidden = YES;
     self.opponentVideoView.layer.contents = (id)[[UIImage imageNamed:@"person.png"] CGImage];
     self.opponentVideoView.layer.borderWidth = 1;
-    [self.callButton setTitle:@"Call" forState:UIControlStateNormal];
+    //[self.callButton setTitle:@"Call" forState:UIControlStateNormal];
+    self.callButton.hidden = NO;
     self.callButton.tag = 101;
+    self.callButton.selected = NO;
+    self.callingActivityIndicator.hidden = YES;
+    self.ringigngLabel.hidden = YES;
 }
 
 - (void)callRejected

@@ -16,10 +16,8 @@
 
 @interface FriendsListViewController ()
 
-@property (weak, nonatomic) IBOutlet UIButton *inviteFriendButton;
 @property (strong, nonatomic) UIAlertView *callAlert;
 @property (strong, nonatomic) NSString *friendsIdString;
-@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (strong, nonatomic) AVAudioPlayer *ringingPlayer;
 @property (strong, nonatomic) NSMutableArray *searchUsers;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
@@ -81,49 +79,18 @@
 }
 
 #pragma mark IBAction methods
-- (IBAction)inviteFriends:(id)sender
-{
-    NSMutableString *text = [[NSMutableString alloc] init];
-    // we pick up the users from the selection, and create a string that we use to tag them in post
-    if (self.selection.count == 0){
-        [Common showAlertWithTitle:@"Hey!" description:@"Please select friends from the list before Inviting."];
-        return ;
-    }
-    for (id<FBGraphUser> user in self.selection) {
-        if ([text length]) {
-            [text appendString:@","];
-        }
-        [text appendString:user.id];
-    }
-    self.friendsIdString = text;
 
-    //To avoid reauthorize error
-    FBSession.activeSession = ApplicationDelegate.session;
-    if ([FBSession activeSession].isOpen)
-    {
-        //[FBSession openActiveSessionWithAllowLoginUI:NO];
-        if ([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {
-            // if we don't already have the permission, then we request it now
-            [FBSession.activeSession requestNewPublishPermissions:@[@"publish_actions"]
-                                                  defaultAudience:FBSessionDefaultAudienceFriends
-                                                completionHandler:^(FBSession *session, NSError *error) {
-                                                    if (!error) {
-                                                        [self fbPostSettings];
-                                                    }else{
-                                                        NSLog(@"Facebook Error:%@", error.localizedDescription);
-                                                        [Common showAlertWithTitle:@"Facebook Error" description:error.localizedDescription];
-                                                    }
-                                                    //For this example, ignore errors (such as if user cancels).
-                                                }];
-        } else {
-            [self fbPostSettings];
-        }
-    }
-    
+- (IBAction)segmentedControlValueChanged:(id)sender
+{
+    self.allowsMultipleSelection = self.segmentedControl.selectedSegmentIndex != 0;
+    //self.inviteFriendButton.hidden = self.segmentedControl.selectedSegmentIndex == 0;
+    self.doneButton.enabled = self.segmentedControl.selectedSegmentIndex == 1;
+    [self updateView];
 }
 
+#pragma mark - FBFriendPickerDelegate methods
 
-- (IBAction)logoutMe:(id)sender
+- (void)facebookViewControllerCancelWasPressed:(id)sender
 {
     // logout user
     [self clearSelection];
@@ -134,21 +101,44 @@
     [QBUsers logOutWithDelegate:self];
 }
 
-- (IBAction)segmentedControlValueChanged:(id)sender
-{
-    self.allowsMultipleSelection = self.segmentedControl.selectedSegmentIndex != 0;
-    self.inviteFriendButton.hidden = self.segmentedControl.selectedSegmentIndex == 0;
-    [self updateView];
-}
-
-#pragma mark - FBFriendPickerDelegate methods
-
 - (void)facebookViewControllerDoneWasPressed:(id)sender
 {
-    //Get QBuser from selected facebook user
-    for (id<FBGraphUser> user in self.selection) {
-        if(self.segmentedControl.selectedSegmentIndex == 0) {
-            [QBUsers userWithFacebookID:user.id delegate:self];
+    if (self.segmentedControl.selectedSegmentIndex == 1){
+        NSMutableString *text = [[NSMutableString alloc] init];
+        // we pick up the users from the selection, and create a string that we use to tag them in post
+        if (self.selection.count == 0){
+            [Common showAlertWithTitle:@"Hey!" description:@"Please select friends from the list before Inviting."];
+            return ;
+        }
+        for (id<FBGraphUser> user in self.selection) {
+            if ([text length]) {
+                [text appendString:@","];
+            }
+            [text appendString:user.id];
+        }
+        self.friendsIdString = text;
+        
+        //To avoid reauthorize error
+        FBSession.activeSession = ApplicationDelegate.session;
+        if ([FBSession activeSession].isOpen)
+        {
+            //[FBSession openActiveSessionWithAllowLoginUI:NO];
+            if ([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {
+                // if we don't already have the permission, then we request it now
+                [FBSession.activeSession requestNewPublishPermissions:@[@"publish_actions"]
+                                                      defaultAudience:FBSessionDefaultAudienceFriends
+                                                    completionHandler:^(FBSession *session, NSError *error) {
+                                                        if (!error) {
+                                                            [self fbPostSettings];
+                                                        }else{
+                                                            NSLog(@"Facebook Error:%@", error.localizedDescription);
+                                                            [Common showAlertWithTitle:@"Facebook Error" description:error.localizedDescription];
+                                                        }
+                                                        //For this example, ignore errors (such as if user cancels).
+                                                    }];
+            } else {
+                [self fbPostSettings];
+            }
         }
     }
 }
@@ -178,7 +168,7 @@
 {
     NSLog(@"%@",error);
     [Common showAlertWithTitle:@"Error" description:error.description];
-    [self logoutMe:nil];
+    [self facebookViewControllerCancelWasPressed:nil];
 }
 
 #pragma mark Private methods.
@@ -207,7 +197,7 @@
     NSDictionary * facebookParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                       @"https://www.google.co.in/",     @"link",
                                      @"Video Chat App",                 @"name",
-                                       @"Your friend has invited you to join Video chat app!",  @"caption",
+                                      @"Your friend has invited you to join Video chat app!", @"caption",
                                       
                                       @"",                              @"description",
                                       self.friendsIdString,             @"tags",
@@ -301,10 +291,13 @@
     }
     [User sharedInstance].opponent.ID = userID;
     [User sharedInstance].opponent.fullName = [customParameters objectForKey:@"name"];
+    [User sharedInstance].opponent.facebookID = [customParameters objectForKey:@"facebookID"];
+
     // show call alert
     if (self.callAlert == nil) {
         NSString *message = [NSString stringWithFormat:@"%@ is calling. Would you like to answer?",[User sharedInstance].opponent.fullName];
         self.callAlert = [[UIAlertView alloc] initWithTitle:@"Call" message:message delegate:self cancelButtonTitle:@"Decline" otherButtonTitles:@"Accept", nil];
+        self.callAlert.delegate = self;
         [self.callAlert show];
     }
     
