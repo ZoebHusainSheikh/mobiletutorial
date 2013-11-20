@@ -17,7 +17,7 @@
 @property (weak ,nonatomic) IBOutlet UIImageView *myVideoView;
 @property (weak ,nonatomic) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, weak) IBOutlet UIImageView *opponentVideoView;
-//@property (weak ,nonatomic) IBOutlet FBProfilePictureView *opponentProfilePictureView;
+@property (weak ,nonatomic) IBOutlet FBProfilePictureView *opponentProfilePictureView;
 @property (weak ,nonatomic) IBOutlet UILabel *ringigngLabel;
 
 - (IBAction)call:(id)sender;
@@ -92,6 +92,8 @@
         //[self.callButton setTitle:@"Call" forState:UIControlStateNormal];
         self.opponentVideoView.layer.borderWidth = 1;
         self.callButton.selected = NO;
+        self.opponentProfilePictureView.hidden = NO;
+        self.opponentVideoView.hidden = YES;
     }
 }
 
@@ -100,9 +102,9 @@
 - (void)videoCallSetUp
 {
     NSLog(@"%s",__FUNCTION__);
-    self.opponentVideoView = nil;
-    self.myVideoView = nil;
-    //self.opponentProfilePictureView.profileID = [User sharedInstance].opponent.facebookID;
+    //self.opponentVideoView = nil;
+    //self.myVideoView = nil;
+    self.opponentProfilePictureView.profileID = [User sharedInstance].opponent.facebookID;
     self.videoChat.viewToRenderOpponentVideoStream = self.opponentVideoView;
     self.videoChat.viewToRenderOwnVideoStream = self.myVideoView;
     self.navBar.topItem.title = [User sharedInstance].opponent.fullName;
@@ -113,8 +115,8 @@
     NSLog(@"%s",__FUNCTION__);
   // [self videoCallSetUp];
 //[self.view setNeedsDisplay];
-    //self.opponentProfilePictureView.hidden = YES;
-    //self.opponentVideoView.hidden = NO;
+    self.opponentProfilePictureView.hidden = YES;
+    self.opponentVideoView.hidden = NO;
     self.ringigngLabel.hidden = YES;
     self.callingActivityIndicator.hidden = YES;
     self.callButton.hidden = NO;
@@ -130,8 +132,6 @@
     NSLog(@"%s",__FUNCTION__);
     self.myVideoView.hidden = YES;
     self.navBar.userInteractionEnabled = YES;
-    //self.opponentProfilePictureView.hidden = NO;
-    //self.opponentVideoView.hidden = YES;
     self.opponentVideoView.layer.contents = (id)[[UIImage imageNamed:@"person.png"] CGImage];
     self.opponentVideoView.layer.borderWidth = 1;
     //[self.callButton setTitle:@"Call" forState:UIControlStateNormal];
@@ -140,6 +140,8 @@
     self.callButton.selected = NO;
     self.callingActivityIndicator.hidden = YES;
     self.ringigngLabel.hidden = YES;
+    self.opponentProfilePictureView.hidden = NO;
+    self.opponentVideoView.hidden = YES;
 }
 
 - (void)callRejected

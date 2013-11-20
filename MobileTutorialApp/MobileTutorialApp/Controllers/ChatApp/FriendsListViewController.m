@@ -57,7 +57,8 @@
     
     // Start sending chat presence
     [QBChat instance].delegate = self;
-    [NSTimer scheduledTimerWithTimeInterval:30 target:[QBChat instance] selector:@selector(sendPresence) userInfo:nil repeats:YES];
+    //[NSTimer scheduledTimerWithTimeInterval:30 target:[QBChat instance] selector:@selector(sendPresence) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(sendPresence) userInfo:nil repeats:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -176,7 +177,7 @@
 
 - (void)accept
 {
-   /* if (![self.navigationController.visibleViewController isKindOfClass:[VideoCallViewController class]]) {
+    if (![self.navigationController.visibleViewController isKindOfClass:[VideoCallViewController class]]) {
         self.videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
         self.videoCallViewController.videoChat = self.videoChat;
         [self presentViewController:self.videoCallViewController animated:YES completion:nil];
@@ -184,9 +185,9 @@
     // Accept call
     [self.videoChat acceptCall];
     [self.videoCallViewController callAccepted];
-    self.ringingPlayer = nil;*/
+    self.ringingPlayer = nil;
     
-    if (self.videoCallViewController.isViewLoaded && self.videoCallViewController.view.window) {
+   /* if (self.videoCallViewController.isViewLoaded && self.videoCallViewController.view.window) {
         // videoCallViewController is visible dismiss it
         [self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -197,7 +198,7 @@
         [self.videoChat acceptCall];
         [self.videoCallViewController callAccepted];
         self.ringingPlayer = nil;
-    }];
+    }];*/
 }
 
 
@@ -245,6 +246,11 @@
     [self.videoChat rejectCall];
     [self.videoCallViewController callRejected];
     self.ringingPlayer = nil;
+}
+
+- (void)sendPresence
+{
+    [[QBChat instance] sendPresence];
 }
 
 #pragma mark -
@@ -312,13 +318,13 @@
     if (self.callAlert == nil) {
         NSString *message = [NSString stringWithFormat:@"%@ is calling. Would you like to answer?",[User sharedInstance].opponent.fullName];
         self.callAlert = [[UIAlertView alloc] initWithTitle:@"Call" message:message delegate:self cancelButtonTitle:@"Decline" otherButtonTitles:@"Accept", nil];
-        self.callAlert.delegate = self;
+        //self.callAlert.delegate = self;
         [self.callAlert show];
     }
     
     // hide call alert if caller has canceled call
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideCallAlert) object:nil];
-    //[self performSelector:@selector(hideCallAlert) withObject:nil afterDelay:3];
+    [self performSelector:@selector(hideCallAlert) withObject:nil afterDelay:3];
     // play call music
     if(self.ringingPlayer == nil){
         NSString *path =[[NSBundle mainBundle] pathForResource:@"ringing" ofType:@"wav"];
