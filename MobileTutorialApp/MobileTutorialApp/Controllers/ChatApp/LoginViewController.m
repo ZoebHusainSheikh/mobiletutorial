@@ -9,6 +9,8 @@
 #import "LoginViewController.h"
 #import "AppDelegate.h"
 #import "ChatViewController.h"
+#import "Common.h"
+#import "Constants.h"
 #import "FriendsListViewController.h"
 #import "Reachability.h"
 #import "User.h"
@@ -26,6 +28,8 @@
 @end
 
 @implementation LoginViewController
+
+static BOOL isReloginCall;
 
 #pragma mark init method
 
@@ -102,6 +106,7 @@
 
 - (IBAction)loginWithFaceBook:(id)sender
 {
+    isReloginCall = NO;
     if (![Reachability internetConnected]) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -150,6 +155,8 @@
     [self showLoginButton:NO];
 }
 
+#pragma mark Private methods.
+
 - (void)getUserFBProfile
 {
     if (ApplicationDelegate.session.isOpen) {
@@ -162,15 +169,11 @@
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  
                  NSLog(@"self.session.accessTokenData.accessToken = %@",ApplicationDelegate.session.accessTokenData.accessToken);
-                 //[defaults setObject:ApplicationDelegate.session.accessTokenData.accessToken forKey:@"FBAccessTokenKey"];
-                 //TODO do not save facebook username and id remove it.
-                 [defaults setObject:user.name forKey:@"FBUserName"];
-                 [defaults setObject:user.id forKey:@"FBUserId"];
                  [defaults synchronize];
                  [User sharedInstance].currentQBUser = [[QBUUser alloc] init];
                  [User sharedInstance].currentQBUser.facebookID = user.id;
                  [User sharedInstance].currentFBUser = user;
-                 NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
+                 NSString *userLogin = [User sharedInstance].currentQBUser.facebookID;
                  NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
                  // Authenticate user
                  [QBUsers logInWithUserLogin:userLogin password:passwordHash delegate:self];
@@ -203,7 +206,7 @@
 {
     QBUUserLogInResult *res = (QBUUserLogInResult *)result;
     [User sharedInstance].currentQBUser = res.user;
-    NSString *userLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"FBUserId"];
+    NSString *userLogin = [User sharedInstance].currentQBUser.facebookID;
     [User sharedInstance].currentQBUser.login = userLogin;
     NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
     [User sharedInstance].currentQBUser.password = passwordHash;
@@ -211,7 +214,6 @@
     [QBChat instance].delegate = self;
     [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
 }
-
 
 - (void)showLoginButton:(BOOL)show
 {
@@ -244,7 +246,6 @@
     [self showLoginButton:YES];
 }
 
-
 - (void)startApplication
 {
     // QuickBlox application autorization
@@ -257,24 +258,34 @@
 	
 }
 
+
+#pragma mark Public methods.
+
++ (void)qbChatRelogin
+{
+    if ([User sharedInstance].currentQBUser && [Reachability internetConnected]) {
+        // Login to Chat
+        isReloginCall = YES;
+        //TODO initialize chat delegate
+        //[QBChat instance].delegate = nil;
+        //[QBChat instance].delegate = self;
+        [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
+    }
+}
+
 #pragma mark -
 #pragma mark QBActionStatusDelegate
 
 -(void)completedWithResult:(Result *)result
 {
-    
+    NSLog(@"%s",__FUNCTION__);
     if([result isKindOfClass:[QBAAuthSessionCreationResult class]]){
-        
         // Success result
         if(result.success){
-            
-            NSString *token = ((QBAAuthSessionCreationResult *)result).session.token;
-            NSLog(@"QBSessiontoken++++++++%@",token);
+            NSLog(@"QBSessiontoken++++++++%@", ((QBAAuthSessionCreationResult *)result).session.token);
         }
-        
     } else if([result isKindOfClass:[QBUUserLogInResult class]]){
-		
-        // Success result
+		        // Success result
         if(result.success){
             [self loginToQBChat:result];
         }
@@ -292,21 +303,17 @@
             // Create user
             [QBUsers signUp:user delegate:self];
         }
-        // Errors
-        else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Errors"
-                                                            message:[result.errors description]
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles: nil];
-            [alert show];
-            [self showLoginButton:YES];
-        }
     }
-    else if([result isKindOfClass:[QBUUserResult class]]){
-        if(result.success){
+    else if([result isKindOfClass:[QBUUserResult class]] && result.success){
             [self loginToQBChat:result];
-        }
+    }
+    if (result.errors.count && (401 != result.status))
+    {
+        NSLog(@"QBErrors: %@",result.errors);
+        [ApplicationDelegate.session closeAndClearTokenInformation];
+        [FBSession setActiveSession:nil];
+        [Common showAlertWithTitle:QBError description:[result.errors description]];
+        [self showLoginButton:YES];
     }
 }
 
@@ -315,20 +322,18 @@
 
 -(void)chatDidLogin
 {
-    [self showTabBarController];
+    NSLog(@"%s",__FUNCTION__);
+    if (!isReloginCall) {
+        [self showTabBarController];
+    }
 }
 
 - (void)chatDidNotLogin
 {
+    NSLog(@"%s",__FUNCTION__);
     [ApplicationDelegate.session closeAndClearTokenInformation];
     [FBSession setActiveSession:nil];
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Chat Authentification Fail"
-                                                    message:nil
-                                                   delegate:self
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles: nil];
-    [alert show];
+    [Common showAlertWithTitle:@"Chat Authentification Fail" description:nil];
     [self showLoginButton:YES];
 }
 

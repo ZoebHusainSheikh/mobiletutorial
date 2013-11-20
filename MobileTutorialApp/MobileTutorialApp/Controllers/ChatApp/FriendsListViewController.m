@@ -9,6 +9,9 @@
 #import "FriendsListViewController.h"
 #import "AppDelegate.h"
 #import "Common.h"
+#import "Constants.h"
+#import "LoginViewController.h"
+#import "Reachability.h"
 #import "User.h"
 #import "UserCell.h"
 #import "UserDetailViewController.h"
@@ -57,7 +60,6 @@
     
     // Start sending chat presence
     [QBChat instance].delegate = self;
-    //[NSTimer scheduledTimerWithTimeInterval:30 target:[QBChat instance] selector:@selector(sendPresence) userInfo:nil repeats:YES];
     [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(sendPresence) userInfo:nil repeats:YES];
 }
 
@@ -101,6 +103,12 @@
         [[QBChat instance] logout];
     }
     [QBUsers logOutWithDelegate:self];
+    
+    [User sharedInstance].currentQBUser = nil;
+    [User sharedInstance].opponent = nil;
+    [ApplicationDelegate.session closeAndClearTokenInformation];
+    [FBSession setActiveSession:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)facebookViewControllerDoneWasPressed:(id)sender
@@ -152,6 +160,9 @@
             [QBUsers userWithFacebookID:[[friendPicker.selection objectAtIndex:0] id] delegate:self];
     }
 }
+
+#pragma mark -
+#pragma mark QBChatDelegate
 
 - (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
 {
@@ -228,6 +239,7 @@
                                  NSLog(@"Success Posted action and id = %@",self.friendsIdString);
                                  UIAlertView *popupAlert = [[UIAlertView alloc] initWithTitle:@"Your FB friends are notified on their timeline." message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
                                   [popupAlert show];
+                                  [self clearSelection];
                               }
                               
                           }];
@@ -250,7 +262,10 @@
 
 - (void)sendPresence
 {
-    [[QBChat instance] sendPresence];
+    if (![[QBChat instance] sendPresence]) {
+       // relogin in chat
+        //[LoginViewController qbChatRelogin];
+    }
 }
 
 #pragma mark -
@@ -260,7 +275,6 @@
 {
     self.ringingPlayer = nil;
 }
-
 
 #pragma mark -QuickBlox API queries delegate
 
@@ -273,14 +287,28 @@
         if (result.success)
         {
             QBUUserResult *selectedUser = (QBUUserResult *)result;
-            [User sharedInstance].opponent = selectedUser.user;
-            VideoCallViewController *videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
-            videoCallViewController.videoChat = self.videoChat;
-            self.videoCallViewController = videoCallViewController;
-            [self presentViewController:self.videoCallViewController animated:YES completion:nil];
+            
+            //Check user online status
+            NSInteger currentTimeInterval = [[NSDate date] timeIntervalSince1970];
+            NSInteger userLastRequestAtTimeInterval   = [[selectedUser.user lastRequestAt] timeIntervalSince1970];
+            // if user didn't do anything last 5 minutes (5*60 seconds)
+            if((currentTimeInterval - userLastRequestAtTimeInterval) <= 5*60){
+                // user is online now
+                [User sharedInstance].opponent = selectedUser.user;
+                VideoCallViewController *videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
+                videoCallViewController.videoChat = self.videoChat;
+                self.videoCallViewController = videoCallViewController;
+                [self presentViewController:self.videoCallViewController animated:YES completion:nil];
+            } else {
+                // user is offline now
+                NSString *message = [NSString stringWithFormat:@"%@ is now offline.", selectedUser.user.fullName];
+                [Common showAlertWithTitle:@"Offline" description:message];
+                [self clearSelection];
+            }
             // Errors
         }else{
             NSLog(@"Errors=%@", result.errors);
+            [Common showAlertWithTitle:QBError  description:@"This is user has been removed."];
         }
         
     }else if([result isKindOfClass:[QBUUserLogOutResult class]]){
@@ -289,13 +317,10 @@
         
 		if(res.success){
 		    NSLog(@"Successfully Logout.");
-            [User sharedInstance].currentQBUser = nil;
-            [User sharedInstance].opponent = nil;
-            [ApplicationDelegate.session closeAndClearTokenInformation];
-            [FBSession setActiveSession:nil];
-            [self dismissViewControllerAnimated:YES completion:nil];
 		}else{
             NSLog(@"errors=%@", result.errors);
+            [Common showAlertWithTitle:QBError description:result.errors.description];
+
 		}
 	}
 }
@@ -387,6 +412,22 @@
     NSLog(@"%s",__FUNCTION__);
     NSLog(@"_____TURN_____TURN_____");
 }
+
+- (void)chatTURNServerDidDisconnect
+{
+    NSLog(@"%s",__FUNCTION__);
+}
+
+- (void)chatTURNServerdidFailWithError:(NSError *)error
+{
+    NSLog(@"%s ,error:%@  ",__FUNCTION__,error);
+}
+
+- (void)chatDidEexceedWriteAudioQueueMaxOperationsThresholdWithCount:(int)operationsInQueue
+{
+    NSLog(@"%s",__FUNCTION__);
+}
+
 
 #pragma mark -
 #pragma mark UIAlertView

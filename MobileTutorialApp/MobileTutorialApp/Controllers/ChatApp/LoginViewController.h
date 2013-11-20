@@ -15,4 +15,6 @@
 
 @property (nonatomic, strong) UITabBarController *tabBarController;
 
++ (void)qbChatRelogin;
+
 @end

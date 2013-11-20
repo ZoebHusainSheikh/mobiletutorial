@@ -29,7 +29,6 @@
     self = [super init];
     if (self) {
         self.currentFBUser = nil;
-        self.currentFBUserId = nil;
         self.currentQBUser = nil;
         /*historyConversation = [[NSMutableDictionary alloc] init];
          
@@ -63,7 +62,6 @@
     // reset user
     self.currentFBUser = nil;
     self.currentQBUser = nil;
-    self.currentFBUserId = nil;
 }
 
 - (NSDictionary *)fbUserTokenAndDate

@@ -21,3 +21,6 @@
 #define kReceivedOnlineStatus @"kReceivedOnlineStatus"
 
 #define appName @"MobileTutorialApp"
+#define QBError @"QuickBlox Error."
+#define FBError @"Facebook Error."
+

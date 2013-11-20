@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "AppsListViewController.h"
+#import "LoginViewController.h"
 
 @implementation AppDelegate
 
@@ -57,6 +58,7 @@
     // We need to properly handle activation of the application with regards to SSO
     //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
     [FBAppCall handleDidBecomeActiveWithSession:self.session];
+    [LoginViewController qbChatRelogin];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
