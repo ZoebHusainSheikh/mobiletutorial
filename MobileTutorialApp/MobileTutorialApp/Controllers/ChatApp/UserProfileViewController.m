@@ -7,8 +7,13 @@
 //
 
 #import "UserProfileViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
+#import "User.h"
 
 @interface UserProfileViewController ()
+
+@property (weak, nonatomic) IBOutlet UILabel *userName;
+@property (weak ,nonatomic) IBOutlet FBProfilePictureView *profilePictureView;
 
 @end
 
@@ -27,6 +32,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.profilePictureView.profileID = [User sharedInstance].currentQBUser.facebookID;
+    self.userName.text = [User sharedInstance].currentQBUser.fullName;
 }
 
 - (void)didReceiveMemoryWarning

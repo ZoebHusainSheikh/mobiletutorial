@@ -43,10 +43,11 @@
 {
     [super viewDidLoad];
     
-    //[self.callButton setTitle:@"Call" forState:UIControlStateNormal];
     self.opponentVideoView.layer.borderWidth = 1;
     self.opponentVideoView.layer.borderColor = [[UIColor grayColor] CGColor];
     self.opponentVideoView.layer.cornerRadius = 5;
+    self.videoChat.viewToRenderOpponentVideoStream = self.opponentVideoView;
+    self.videoChat.viewToRenderOwnVideoStream = self.myVideoView;
     [self videoCallSetUp];
 }
 
@@ -89,7 +90,6 @@
         self.myVideoView.hidden = YES;
         self.navBar.userInteractionEnabled = YES;
         self.opponentVideoView.layer.contents = (id)[[UIImage imageNamed:@"person.png"] CGImage];
-        //[self.callButton setTitle:@"Call" forState:UIControlStateNormal];
         self.opponentVideoView.layer.borderWidth = 1;
         self.callButton.selected = NO;
         self.opponentProfilePictureView.hidden = NO;
@@ -102,25 +102,19 @@
 - (void)videoCallSetUp
 {
     NSLog(@"%s",__FUNCTION__);
-    //self.opponentVideoView = nil;
-    //self.myVideoView = nil;
     self.opponentProfilePictureView.profileID = [User sharedInstance].opponent.facebookID;
-    self.videoChat.viewToRenderOpponentVideoStream = self.opponentVideoView;
-    self.videoChat.viewToRenderOwnVideoStream = self.myVideoView;
     self.navBar.topItem.title = [User sharedInstance].opponent.fullName;
 }
 
 - (void)callAccepted
 {
     NSLog(@"%s",__FUNCTION__);
-  // [self videoCallSetUp];
-//[self.view setNeedsDisplay];
+    [self videoCallSetUp];
     self.opponentProfilePictureView.hidden = YES;
     self.opponentVideoView.hidden = NO;
     self.ringigngLabel.hidden = YES;
     self.callingActivityIndicator.hidden = YES;
     self.callButton.hidden = NO;
-    //[self.callButton setTitle:@"Hang up" forState:UIControlStateNormal];
     self.callButton.tag = 102;
     self.opponentVideoView.layer.borderWidth = 0;
     self.myVideoView.hidden = NO;
@@ -134,7 +128,6 @@
     self.navBar.userInteractionEnabled = YES;
     self.opponentVideoView.layer.contents = (id)[[UIImage imageNamed:@"person.png"] CGImage];
     self.opponentVideoView.layer.borderWidth = 1;
-    //[self.callButton setTitle:@"Call" forState:UIControlStateNormal];
     self.callButton.hidden = NO;
     self.callButton.tag = 101;
     self.callButton.selected = NO;

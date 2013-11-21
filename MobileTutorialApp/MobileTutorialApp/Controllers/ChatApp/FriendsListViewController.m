@@ -21,6 +21,7 @@
 
 @property (strong, nonatomic) UIAlertView *callAlert;
 @property (strong, nonatomic) NSString *friendsIdString;
+@property (strong, nonatomic) NSTimer *presenceTimer;
 @property (strong, nonatomic) AVAudioPlayer *ringingPlayer;
 @property (strong, nonatomic) NSMutableArray *searchUsers;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
@@ -60,7 +61,7 @@
     
     // Start sending chat presence
     [QBChat instance].delegate = self;
-    [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(sendPresence) userInfo:nil repeats:YES];
+    self.presenceTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(sendPresence) userInfo:nil repeats:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -105,6 +106,10 @@
         [[QBChat instance] unregisterVideoChatInstance: self.videoChat];
         [[QBChat instance] logout];
     }
+    
+    [self.presenceTimer invalidate];
+    self.presenceTimer = nil;
+    
     [QBUsers logOutWithDelegate:self];
     
     [User sharedInstance].currentQBUser = nil;
@@ -136,7 +141,7 @@
         }
         self.friendsIdString = text;
         
-        //To avoid reauthorize error
+        //To avoid facebook reauthorize error
         FBSession.activeSession = ApplicationDelegate.session;
         if ([FBSession activeSession].isOpen)
         {
@@ -201,28 +206,14 @@
 
 - (void)accept
 {
-    if (![self.navigationController.visibleViewController isKindOfClass:[VideoCallViewController class]]) {
+    if (!(self.videoCallViewController.isViewLoaded && self.videoCallViewController.view.window)) {
         self.videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
         self.videoCallViewController.videoChat = self.videoChat;
         [self presentViewController:self.videoCallViewController animated:YES completion:nil];
     }
-    // Accept call
     [self.videoChat acceptCall];
     [self.videoCallViewController callAccepted];
     self.ringingPlayer = nil;
-    
-   /* if (self.videoCallViewController.isViewLoaded && self.videoCallViewController.view.window) {
-        // videoCallViewController is visible dismiss it
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    self.videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
-    self.videoCallViewController.videoChat = self.videoChat;
-    [self presentViewController:self.videoCallViewController animated:YES completion:^{
-        // Accept call
-        [self.videoChat acceptCall];
-        [self.videoCallViewController callAccepted];
-        self.ringingPlayer = nil;
-    }];*/
 }
 
 - (void)fbPostSettings
