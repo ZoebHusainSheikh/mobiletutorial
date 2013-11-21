@@ -310,7 +310,7 @@
             // Errors
         }else{
             NSLog(@"Errors=%@", result.errors);
-            [Common showAlertWithTitle:QBError  description:@"This is user has been removed."];
+            [Common showAlertWithTitle:QBError  description:result.errors.description];
         }
         
     }else if([result isKindOfClass:[QBUUserLogOutResult class]]){
@@ -418,6 +418,7 @@
 - (void)chatTURNServerDidDisconnect
 {
     NSLog(@"%s",__FUNCTION__);
+    [self.videoCallViewController endVideoCall];
 }
 
 - (void)chatTURNServerdidFailWithError:(NSError *)error

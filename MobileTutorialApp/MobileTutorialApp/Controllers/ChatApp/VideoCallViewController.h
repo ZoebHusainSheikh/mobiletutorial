@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import "UsersListViewController.h"
 
 @interface VideoCallViewController : UIViewController
 
@@ -16,7 +15,8 @@
 @property (strong, nonatomic) QBVideoChat *videoChat;
 
 - (void)callAccepted;
-- (void)callRejected;
 - (void)callDidStopByUser;
+- (void)endVideoCall;
+- (void)callRejected;
 
 @end

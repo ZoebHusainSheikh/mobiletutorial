@@ -8,7 +8,6 @@
 
 #import "AppsListViewController.h"
 #import "LoginViewController.h"
-#import "SignUpViewController.h"
 
 #define kNumberOfAppsInTutorial 1;
 

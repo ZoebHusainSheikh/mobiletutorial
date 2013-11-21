@@ -84,20 +84,26 @@
         self.navBar.userInteractionEnabled = NO;
         
     }else {
-        // Finish call
-        [self.videoChat finishCall];
-        self.callButton.tag = 101;
-        self.myVideoView.hidden = YES;
-        self.navBar.userInteractionEnabled = YES;
-        self.opponentVideoView.layer.contents = (id)[[UIImage imageNamed:@"person.png"] CGImage];
-        self.opponentVideoView.layer.borderWidth = 1;
-        self.callButton.selected = NO;
-        self.opponentProfilePictureView.hidden = NO;
-        self.opponentVideoView.hidden = YES;
+        [self endVideoCall];
     }
 }
 
 #pragma mark Public methods.
+
+- (void)endVideoCall
+{
+    // Finish call
+    [self.videoChat finishCall];
+    //TODO mange code because of code redundency on call start and end
+    self.callButton.tag = 101;
+    self.myVideoView.hidden = YES;
+    self.navBar.userInteractionEnabled = YES;
+    self.opponentVideoView.layer.contents = (id)[[UIImage imageNamed:@"person.png"] CGImage];
+    self.opponentVideoView.layer.borderWidth = 1;
+    self.callButton.selected = NO;
+    self.opponentProfilePictureView.hidden = NO;
+    self.opponentVideoView.hidden = YES;
+}
 
 - (void)videoCallSetUp
 {
@@ -110,8 +116,8 @@
 {
     NSLog(@"%s",__FUNCTION__);
     [self videoCallSetUp];
-    self.opponentProfilePictureView.hidden = YES;
     self.opponentVideoView.hidden = NO;
+    self.opponentProfilePictureView.hidden = YES;
     self.ringigngLabel.hidden = YES;
     self.callingActivityIndicator.hidden = YES;
     self.callButton.hidden = NO;

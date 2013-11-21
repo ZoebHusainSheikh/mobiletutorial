@@ -110,11 +110,11 @@
 
 - (IBAction)callButtonPressed:(id)sender {
     
-    VideoCallViewController *videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
+    /*VideoCallViewController *videoCallViewController = [[VideoCallViewController alloc] initWithNibName:@"VideoCallViewController" bundle:nil];
     [User sharedInstance].opponent = self.selectedUser;
     videoCallViewController.videoChat = self.usersListViewController.videoChat;
     self.usersListViewController.videoCallViewController = videoCallViewController;
-    [self.navigationController pushViewController:videoCallViewController animated:YES];
+    [self.navigationController pushViewController:videoCallViewController animated:YES];*/
 }
 
 

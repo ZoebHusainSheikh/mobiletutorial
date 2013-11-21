@@ -16,7 +16,6 @@
 #import "User.h"
 #import "UserDetailViewController.h"
 #import "UserProfileViewController.h"
-#import "UsersListViewController.h"
 
 @interface LoginViewController ()
 

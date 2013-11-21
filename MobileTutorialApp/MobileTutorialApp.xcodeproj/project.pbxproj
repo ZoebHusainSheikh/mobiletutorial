@@ -40,14 +40,12 @@
 		8957465617FDB4A40073CCBE /* libRestKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8957464F17FDB1830073CCBE /* libRestKit.a */; };
 		895F8CAD18192DFA0028E841 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895F8CAC18192DFA0028E841 /* FacebookSDK.framework */; };
 		89601E03180859930029DEDD /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 89601E02180859930029DEDD /* UserCell.m */; };
-		89601E0518085A830029DEDD /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89601E0418085A830029DEDD /* UserCell.xib */; };
 		8982E1801806E7C3007A3648 /* NSArray+convert.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E1771806E7C3007A3648 /* NSArray+convert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E1811806E7C3007A3648 /* NSObject+performer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E1791806E7C3007A3648 /* NSObject+performer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E1821806E7C3007A3648 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E17B1806E7C3007A3648 /* NSString+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E1831806E7C3007A3648 /* UIColor+hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E17D1806E7C3007A3648 /* UIColor+hex.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E1841806E7C3007A3648 /* UIImage+ImageExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E17F1806E7C3007A3648 /* UIImage+ImageExtension.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E18B1806EAB7007A3648 /* AppsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E1871806EAB7007A3648 /* AppsListViewController.m */; };
-		8982E18C1806EAB7007A3648 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E18A1806EAB7007A3648 /* SignUpViewController.m */; };
 		8982E2091806EB47007A3648 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E1A51806EB46007A3648 /* NSObject+SBJSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E20A1806EB47007A3648 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E1A71806EB46007A3648 /* NSString+SBJSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E20B1806EB47007A3648 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E1A91806EB46007A3648 /* SBJSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -86,7 +84,6 @@
 		8982E22C1806EB47007A3648 /* XMPPSRVResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E1FE1806EB46007A3648 /* XMPPSRVResolver.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E22D1806EB47007A3648 /* XMPPXFacebookPlatformAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E2001806EB47007A3648 /* XMPPXFacebookPlatformAuthentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8982E2351806EC14007A3648 /* facebook_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 8982E2311806EC13007A3648 /* facebook_login.png */; };
-		8982E2361806EC14007A3648 /* SignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8982E2341806EC14007A3648 /* SignUpViewController.xib */; };
 		8982E23D1806ED81007A3648 /* AppsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8982E23C1806ED81007A3648 /* AppsListViewController.xib */; };
 		8982E2521806F0B5007A3648 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E2511806F0B5007A3648 /* User.m */; };
 		8982E2621807159D007A3648 /* DatetimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8982E25F1807159D007A3648 /* DatetimeConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -114,8 +111,6 @@
 		8998D627180D173F00E6B5D9 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8998D626180D173F00E6B5D9 /* LoginViewController.xib */; };
 		8998D640180D1C3E00E6B5D9 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8998D63F180D1C3D00E6B5D9 /* LoginViewController.m */; };
 		8998D647180D269F00E6B5D9 /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8998D641180D231D00E6B5D9 /* libc++.1.dylib */; };
-		899BAC6F1807D1FD00236472 /* UsersListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 899BAC6D1807D1FD00236472 /* UsersListViewController.m */; };
-		899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 899BAC6E1807D1FD00236472 /* UsersListViewController.xib */; };
 		89A01F591803ECA30083F780 /* Quickblox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89A01F581803ECA30083F780 /* Quickblox.framework */; };
 /* End PBXBuildFile section */
 
@@ -184,7 +179,6 @@
 		895F8CAC18192DFA0028E841 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		89601E01180859930029DEDD /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		89601E02180859930029DEDD /* UserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
-		89601E0418085A830029DEDD /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		8982E1761806E7C3007A3648 /* NSArray+convert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+convert.h"; sourceTree = "<group>"; };
 		8982E1771806E7C3007A3648 /* NSArray+convert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+convert.m"; sourceTree = "<group>"; };
 		8982E1781806E7C3007A3648 /* NSObject+performer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+performer.h"; sourceTree = "<group>"; };
@@ -197,8 +191,6 @@
 		8982E17F1806E7C3007A3648 /* UIImage+ImageExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageExtension.m"; sourceTree = "<group>"; };
 		8982E1861806EAB7007A3648 /* AppsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsListViewController.h; sourceTree = "<group>"; };
 		8982E1871806EAB7007A3648 /* AppsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppsListViewController.m; sourceTree = "<group>"; };
-		8982E1891806EAB7007A3648 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
-		8982E18A1806EAB7007A3648 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		8982E1A31806EB46007A3648 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		8982E1A41806EB46007A3648 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		8982E1A51806EB46007A3648 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -283,7 +275,6 @@
 		8982E1FF1806EB47007A3648 /* XMPPXFacebookPlatformAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMPPXFacebookPlatformAuthentication.h; sourceTree = "<group>"; };
 		8982E2001806EB47007A3648 /* XMPPXFacebookPlatformAuthentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMPPXFacebookPlatformAuthentication.m; sourceTree = "<group>"; };
 		8982E2311806EC13007A3648 /* facebook_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_login.png; sourceTree = "<group>"; };
-		8982E2341806EC14007A3648 /* SignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpViewController.xib; sourceTree = "<group>"; };
 		8982E2391806ECA5007A3648 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		8982E23C1806ED81007A3648 /* AppsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppsListViewController.xib; sourceTree = "<group>"; };
 		8982E2501806F0B5007A3648 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -324,9 +315,6 @@
 		8998D641180D231D00E6B5D9 /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "usr/lib/libc++.1.dylib"; sourceTree = SDKROOT; };
 		8998D643180D23AC00E6B5D9 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		8998D645180D24DF00E6B5D9 /* libc++abi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++abi.dylib"; path = "usr/lib/libc++abi.dylib"; sourceTree = SDKROOT; };
-		899BAC6C1807D1FD00236472 /* UsersListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersListViewController.h; sourceTree = "<group>"; };
-		899BAC6D1807D1FD00236472 /* UsersListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersListViewController.m; sourceTree = "<group>"; };
-		899BAC6E1807D1FD00236472 /* UsersListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UsersListViewController.xib; path = ../../../Controllers/ChatApp/UsersListViewController.xib; sourceTree = "<group>"; };
 		89A01F581803ECA30083F780 /* Quickblox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Quickblox.framework; sourceTree = "<group>"; };
 		89A01F62180403EF0083F780 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -545,10 +533,6 @@
 			children = (
 				8998D63E180D1C3D00E6B5D9 /* LoginViewController.h */,
 				8998D63F180D1C3D00E6B5D9 /* LoginViewController.m */,
-				8982E1891806EAB7007A3648 /* SignUpViewController.h */,
-				8982E18A1806EAB7007A3648 /* SignUpViewController.m */,
-				899BAC6C1807D1FD00236472 /* UsersListViewController.h */,
-				899BAC6D1807D1FD00236472 /* UsersListViewController.m */,
 				8998D60D180D152500E6B5D9 /* UserDetailViewController.h */,
 				8998D60E180D152500E6B5D9 /* UserDetailViewController.m */,
 				8998D614180D158200E6B5D9 /* VideoCallViewController.h */,
@@ -799,9 +783,6 @@
 				898E6B35183384170093E85D /* ChatViewController.xib */,
 				8998D626180D173F00E6B5D9 /* LoginViewController.xib */,
 				8998D612180D155800E6B5D9 /* UserDetailViewController.xib */,
-				8982E2341806EC14007A3648 /* SignUpViewController.xib */,
-				899BAC6E1807D1FD00236472 /* UsersListViewController.xib */,
-				89601E0418085A830029DEDD /* UserCell.xib */,
 				898E6B2E1833831D0093E85D /* UserProfileViewController.xib */,
 				8998D617180D159200E6B5D9 /* VideoCallViewController.xib */,
 				89963B841835134E00E2E011 /* FriendsListViewController.xib */,
@@ -973,11 +954,8 @@
 				8991AD3818363769005261A8 /* me@2x.png in Resources */,
 				8991AD3618363769005261A8 /* friends@2x.png in Resources */,
 				8921E1D2183B51E1005BF05E /* call_button.png in Resources */,
-				8982E2361806EC14007A3648 /* SignUpViewController.xib in Resources */,
 				8982E23D1806ED81007A3648 /* AppsListViewController.xib in Resources */,
-				899BAC701807D1FD00236472 /* UsersListViewController.xib in Resources */,
 				899107161807D90C00714FA1 /* profile_pic.png in Resources */,
-				89601E0518085A830029DEDD /* UserCell.xib in Resources */,
 				898E6B2F1833831D0093E85D /* UserProfileViewController.xib in Resources */,
 				8998D613180D155800E6B5D9 /* UserDetailViewController.xib in Resources */,
 				8998D618180D159200E6B5D9 /* VideoCallViewController.xib in Resources */,
@@ -1013,7 +991,6 @@
 				8982E1831806E7C3007A3648 /* UIColor+hex.m in Sources */,
 				8982E1841806E7C3007A3648 /* UIImage+ImageExtension.m in Sources */,
 				8982E18B1806EAB7007A3648 /* AppsListViewController.m in Sources */,
-				8982E18C1806EAB7007A3648 /* SignUpViewController.m in Sources */,
 				8982E2091806EB47007A3648 /* NSObject+SBJSON.m in Sources */,
 				8982E20A1806EB47007A3648 /* NSString+SBJSON.m in Sources */,
 				8982E20B1806EB47007A3648 /* SBJSON.m in Sources */,
@@ -1056,7 +1033,6 @@
 				8982E2521806F0B5007A3648 /* User.m in Sources */,
 				8982E2621807159D007A3648 /* DatetimeConverter.m in Sources */,
 				8982E2631807159D007A3648 /* NumberToLetterConverter.m in Sources */,
-				899BAC6F1807D1FD00236472 /* UsersListViewController.m in Sources */,
 				89601E03180859930029DEDD /* UserCell.m in Sources */,
 				8998D60F180D152500E6B5D9 /* UserDetailViewController.m in Sources */,
 				8998D616180D158200E6B5D9 /* VideoCallViewController.m in Sources */,
