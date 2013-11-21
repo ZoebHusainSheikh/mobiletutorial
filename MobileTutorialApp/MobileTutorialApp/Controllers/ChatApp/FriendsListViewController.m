@@ -87,7 +87,6 @@
 - (IBAction)segmentedControlValueChanged:(id)sender
 {
     self.allowsMultipleSelection = self.segmentedControl.selectedSegmentIndex != 0;
-    //self.inviteFriendButton.hidden = self.segmentedControl.selectedSegmentIndex == 0;
     self.doneButton.enabled = self.segmentedControl.selectedSegmentIndex == 1;
     [self updateView];
 }
@@ -96,6 +95,10 @@
 
 - (void)facebookViewControllerCancelWasPressed:(id)sender
 {
+    if (![Reachability internetConnected]){
+        [Common showNetworkErrorAlert];
+        return;
+    }
     // logout user
     [self clearSelection];
     if ([[QBChat instance] isLoggedIn]) {
@@ -113,6 +116,11 @@
 
 - (void)facebookViewControllerDoneWasPressed:(id)sender
 {
+    if (![Reachability internetConnected]){
+        [Common showNetworkErrorAlert];
+        return;
+    }
+    
     if (self.segmentedControl.selectedSegmentIndex == 1){
         NSMutableString *text = [[NSMutableString alloc] init];
         // we pick up the users from the selection, and create a string that we use to tag them in post
@@ -155,9 +163,14 @@
 
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
+    if (![Reachability internetConnected] && friendPicker.selection.count){
+        [self clearSelection];
+        [Common showNetworkErrorAlert];
+        return;
+    }
     //Get QBuser from selected facebook user
     if ((self.segmentedControl.selectedSegmentIndex == 0) && friendPicker.selection.count) {
-            [QBUsers userWithFacebookID:[[friendPicker.selection objectAtIndex:0] id] delegate:self];
+        [QBUsers userWithFacebookID:[[friendPicker.selection objectAtIndex:0] id] delegate:self];
     }
 }
 
@@ -212,7 +225,6 @@
     }];*/
 }
 
-
 - (void)fbPostSettings
 {
     NSDictionary * facebookParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -263,8 +275,7 @@
 - (void)sendPresence
 {
     if (![[QBChat instance] sendPresence]) {
-       // relogin in chat
-        //[LoginViewController qbChatRelogin];
+       // TODO relogin in chat if needed
     }
 }
 

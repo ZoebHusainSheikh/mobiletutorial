@@ -12,5 +12,5 @@
 @interface Common : NSObject
 
 + (void)showAlertWithTitle:(NSString *)title description:(NSString *)description;
-
++ (void)showNetworkErrorAlert;
 @end

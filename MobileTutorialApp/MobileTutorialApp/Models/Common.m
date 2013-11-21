@@ -22,4 +22,13 @@
     
 }
 
++ (void)showNetworkErrorAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Network Connection"
+                                                    message:@"Please check your internet/Wifi connection."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 @end

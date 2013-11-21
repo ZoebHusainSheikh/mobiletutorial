@@ -47,48 +47,15 @@ static BOOL isReloginCall;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     //TODO handle QBsession
     /*[[NSNotificationCenter defaultCenter] addObserver:self
      selector:@selector(startApplication)
      name:UIApplicationDidBecomeActiveNotification object:nil];*/
     if ([Reachability internetConnected]) {
+        [self showLoginButton:NO];
         [QBAuth createSessionWithDelegate:self];
-        if (!ApplicationDelegate.session.isOpen) {
-            [self showLoginButton:NO];
-            // create a fresh session object
-            ApplicationDelegate.session = [[FBSession alloc] init];
-            
-            // if we don't have a cached token, a call to open here would cause UX for login to
-            // occur; we don't want that to happen unless the user clicks the login button, and so
-            // we check here to make sure we have a token before calling open
-            if (ApplicationDelegate.session.state == FBSessionStateCreatedTokenLoaded) {
-                // even though we had a cached token, we need to login to make the session usable
-                [ApplicationDelegate.session openWithCompletionHandler:^(FBSession *session,
-                                                                         FBSessionState status,
-                                                                         NSError *error) {
-                    
-                    // and here we make sure to update our UX according to the new session state
-                    if (error) {
-                        NSLog(@"Login error : %@", error.localizedDescription);
-                        [self showLoginButton:YES];
-                    } else {
-                        switch (status) {
-                            case FBSessionStateClosedLoginFailed:
-                                NSLog(@"%@", error.localizedDescription);
-                                break;
-                            case FBSessionStateOpen:
-                                [self getUserFBProfile];
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }];
-            } else {
-                [self showLoginButton:YES];
-            }
-        }
+    } else {
+        [Common showNetworkErrorAlert];
     }
 }
 
@@ -106,17 +73,11 @@ static BOOL isReloginCall;
 
 - (IBAction)loginWithFaceBook:(id)sender
 {
-    isReloginCall = NO;
     if (![Reachability internetConnected]) {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"No internet connection."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert show];
+        [Common showNetworkErrorAlert];
         return;
     }
+    isReloginCall = NO;
     if (ApplicationDelegate.session.isOpen) {
         // if a user logs out explicitly, we delete any cached token information, and next
         // time they run the applicaiton they will be presented with log in UX again; most
@@ -157,6 +118,22 @@ static BOOL isReloginCall;
 
 #pragma mark Private methods.
 
+- (void)createSession
+{
+    [self createSessionWithDelegate:nil];
+}
+
+- (void)createSessionWithDelegate:(id)delegate
+{
+    // Create extended session request with user authorization
+    if([User sharedInstance].currentQBUser){
+        QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
+        extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
+        extendedAuthRequest.userPassword = [User sharedInstance].currentQBUser.facebookID;
+        [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
+    }
+}
+
 - (void)getUserFBProfile
 {
     if (ApplicationDelegate.session.isOpen) {
@@ -185,20 +162,47 @@ static BOOL isReloginCall;
     }
 }
 
-
-- (void)createSession
+- (void)loginToFacebook
 {
-    [self createSessionWithDelegate:nil];
-}
+    if (![Reachability internetConnected]){
+        [self showLoginButton:YES];
+        [Common showNetworkErrorAlert];
+        return;
+    }
 
-- (void)createSessionWithDelegate:(id)delegate
-{
-    // Create extended session request with user authorization
-    if([User sharedInstance].currentQBUser){
-        QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
-        extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
-        extendedAuthRequest.userPassword = [User sharedInstance].currentQBUser.facebookID;
-        [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
+    if (!ApplicationDelegate.session.isOpen) {
+        // create a fresh session object
+        ApplicationDelegate.session = [[FBSession alloc] init];
+        
+        // if we don't have a cached token, a call to open here would cause UX for login to
+        // occur; we don't want that to happen unless the user clicks the login button, and so
+        // we check here to make sure we have a token before calling open
+        if (ApplicationDelegate.session.state == FBSessionStateCreatedTokenLoaded) {
+            // even though we had a cached token, we need to login to make the session usable
+            [ApplicationDelegate.session openWithCompletionHandler:^(FBSession *session,
+                                                                     FBSessionState status,
+                                                                     NSError *error) {
+                
+                // and here we make sure to update our UX according to the new session state
+                if (error) {
+                    NSLog(@"Login error : %@", error.localizedDescription);
+                    [self showLoginButton:YES];
+                } else {
+                    switch (status) {
+                        case FBSessionStateClosedLoginFailed:
+                            NSLog(@"%@", error.localizedDescription);
+                            break;
+                        case FBSessionStateOpen:
+                            [self getUserFBProfile];
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }];
+        } else {
+            [self showLoginButton:YES];
+        }
     }
 }
 
@@ -263,7 +267,7 @@ static BOOL isReloginCall;
 
 + (void)qbChatRelogin
 {
-    if ([User sharedInstance].currentQBUser && [Reachability internetConnected]) {
+    if ([User sharedInstance].currentQBUser && [Reachability internetConnected] && [[QBChat instance] sendPresence]) {
         // Login to Chat
         isReloginCall = YES;
         //TODO initialize chat delegate
@@ -283,6 +287,7 @@ static BOOL isReloginCall;
         // Success result
         if(result.success){
             NSLog(@"QBSessiontoken++++++++%@", ((QBAAuthSessionCreationResult *)result).session.token);
+            [self loginToFacebook];
         }
     } else if([result isKindOfClass:[QBUUserLogInResult class]]){
 		        // Success result
