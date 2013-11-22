@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) UITabBarController *tabBarController;
 
-+ (void)qbChatRelogin;
++ (LoginViewController *)sharedInstance;
+- (void)qbChatRelogin;
 
 @end

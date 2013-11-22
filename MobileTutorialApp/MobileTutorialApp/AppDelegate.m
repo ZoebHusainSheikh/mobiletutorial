@@ -58,7 +58,7 @@
     // We need to properly handle activation of the application with regards to SSO
     //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
     [FBAppCall handleDidBecomeActiveWithSession:self.session];
-    [LoginViewController qbChatRelogin];
+    [[LoginViewController sharedInstance] qbChatRelogin];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

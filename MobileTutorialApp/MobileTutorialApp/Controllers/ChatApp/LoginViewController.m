@@ -21,6 +21,9 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *fbLoginButton;
+@property (assign, nonatomic) BOOL isReloginCall;
+@property (strong, nonatomic) NSTimer *presenceTimer;
+@property (strong, nonatomic) NSTimer *sessionTimer;
 
 - (IBAction)loginWithFaceBook:(id)sender;
 
@@ -28,15 +31,35 @@
 
 @implementation LoginViewController
 
-static BOOL isReloginCall;
 
 #pragma mark init method
+
+
++ (LoginViewController *)sharedInstance
+{
+    static LoginViewController* singleton = nil;
+    
+    @synchronized (self) {
+        if (!singleton) {
+            singleton = [[LoginViewController alloc] init];
+        }
+    }
+    return singleton;
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        //Do initialization
+    }
+    return self;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -46,16 +69,17 @@ static BOOL isReloginCall;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //TODO handle QBsession
-    /*[[NSNotificationCenter defaultCenter] addObserver:self
-     selector:@selector(startApplication)
-     name:UIApplicationDidBecomeActiveNotification object:nil];*/
     if ([Reachability internetConnected]) {
         [self showLoginButton:NO];
-        [QBAuth createSessionWithDelegate:self];
+        [self startApplication];
     } else {
         [Common showNetworkErrorAlert];
     }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationLogout object:nil];
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -76,7 +100,7 @@ static BOOL isReloginCall;
         [Common showNetworkErrorAlert];
         return;
     }
-    isReloginCall = NO;
+    self.isReloginCall = NO;
     if (ApplicationDelegate.session.isOpen) {
         // if a user logs out explicitly, we delete any cached token information, and next
         // time they run the applicaiton they will be presented with log in UX again; most
@@ -124,12 +148,49 @@ static BOOL isReloginCall;
 
 - (void)createSessionWithDelegate:(id)delegate
 {
+    NSLog(@"%s",__FUNCTION__);
     // Create extended session request with user authorization
+    QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
     if([User sharedInstance].currentQBUser){
-        QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
-        extendedAuthRequest.userLogin = [User sharedInstance].currentQBUser.facebookID;
-        extendedAuthRequest.userPassword = [User sharedInstance].currentQBUser.facebookID;
-        [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
+        NSString *userLogin = [User sharedInstance].currentQBUser.facebookID;
+        NSString *passwordHash = [NSString stringWithFormat:@"%u", [userLogin hash]];
+        extendedAuthRequest.userLogin = userLogin;
+        extendedAuthRequest.userPassword = passwordHash;
+    }
+    [QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
+}
+
+- (void)invalidateTimer:(NSTimer *)timer
+{
+    if ([timer isValid]) {
+        [timer invalidate];
+        timer = nil;
+    }
+}
+
+//Perform logout
+- (void)logoutDone
+{
+    NSLog(@"%s",__FUNCTION__);
+   [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationLogout object:nil];
+
+    [self invalidateTimer:self.presenceTimer];
+    [self invalidateTimer:self.sessionTimer];
+    if ([[QBChat instance] isLoggedIn]) {
+        [[QBChat instance] logout];
+    }
+    
+    if ([User sharedInstance].currentQBUser) {
+        [QBUsers logOutWithDelegate:self];
+        [User sharedInstance].currentFBUser = nil;
+        [User sharedInstance].currentQBUser = nil;
+        [User sharedInstance].opponent = nil;
+    }
+    [ApplicationDelegate.session closeAndClearTokenInformation];
+    [FBSession setActiveSession:nil];
+    [self showLoginButton:YES];
+    if (![self.navigationController.visibleViewController isKindOfClass:[LoginViewController class]]){
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -218,6 +279,13 @@ static BOOL isReloginCall;
     [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
 }
 
+- (void)sendPresence
+{
+    if (![[QBChat instance] sendPresence]) {
+        [self qbChatRelogin];
+    }
+}
+
 - (void)showLoginButton:(BOOL)show
 {
     self.fbLoginButton.hidden = !show;
@@ -251,27 +319,29 @@ static BOOL isReloginCall;
 
 - (void)startApplication
 {
+    NSLog(@"%s",__FUNCTION__);
     // QuickBlox application autorization
-    [NSTimer scheduledTimerWithTimeInterval:60*60*2-600 // Expiration date of access token is 2 hours. Repeat request for new token every 1 hour and 50 minutes.
+    self.sessionTimer = [NSTimer scheduledTimerWithTimeInterval:60*60*2-600 // Expiration date of access token is 2 hours. Repeat request for new token every 1 hour and 50 minutes.
                                      target:self
                                    selector:@selector(createSession)
                                    userInfo:nil
                                     repeats:YES];
     [self createSessionWithDelegate:self];
-	
 }
 
 
 #pragma mark Public methods.
 
-+ (void)qbChatRelogin
+- (void)qbChatRelogin
 {
-    if ([User sharedInstance].currentQBUser && [Reachability internetConnected] && [[QBChat instance] sendPresence]) {
+    NSLog(@"%s",__FUNCTION__);
+    if ([User sharedInstance].currentQBUser && [Reachability internetConnected] && ![[QBChat instance] sendPresence]) {
+        
+        [self invalidateTimer:self.presenceTimer];
         // Login to Chat
-        isReloginCall = YES;
-        //TODO initialize chat delegate
-        //[QBChat instance].delegate = nil;
-        //[QBChat instance].delegate = self;
+        self.isReloginCall = YES;
+        [QBChat instance].delegate = nil;
+        [QBChat instance].delegate = self;
         [[QBChat instance] loginWithUser:[User sharedInstance].currentQBUser];
     }
 }
@@ -282,14 +352,14 @@ static BOOL isReloginCall;
 -(void)completedWithResult:(Result *)result
 {
     NSLog(@"%s",__FUNCTION__);
-    if([result isKindOfClass:[QBAAuthSessionCreationResult class]]){
+    if([result isKindOfClass:[QBAAuthSessionCreationResult class]] && result.success){
         // Success result
-        if(result.success){
-            NSLog(@"QBSessiontoken++++++++%@", ((QBAAuthSessionCreationResult *)result).session.token);
+        NSLog(@"QBSessiontoken++++++++%@", ((QBAAuthSessionCreationResult *)result).session.token);
+        if ([self.navigationController.visibleViewController isKindOfClass:[LoginViewController class]]){
             [self loginToFacebook];
         }
     } else if([result isKindOfClass:[QBUUserLogInResult class]]){
-		        // Success result
+        // Success result
         if(result.success){
             [self loginToQBChat:result];
         }
@@ -309,15 +379,15 @@ static BOOL isReloginCall;
         }
     }
     else if([result isKindOfClass:[QBUUserResult class]] && result.success){
-            [self loginToQBChat:result];
-    }
+        [self loginToQBChat:result];
+    } else if([result isKindOfClass:[QBUUserLogOutResult class]] && result.success){
+        NSLog(@"Successfully Logout.");
+	}
     if (result.errors.count && (401 != result.status))
     {
         NSLog(@"QBErrors: %@",result.errors);
-        [ApplicationDelegate.session closeAndClearTokenInformation];
-        [FBSession setActiveSession:nil];
+        [self logoutDone];
         [Common showAlertWithTitle:QBError description:[result.errors description]];
-        [self showLoginButton:YES];
     }
 }
 
@@ -327,18 +397,19 @@ static BOOL isReloginCall;
 -(void)chatDidLogin
 {
     NSLog(@"%s",__FUNCTION__);
-    if (!isReloginCall) {
+    if (!self.isReloginCall) {
         [self showTabBarController];
+        // logout
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutDone) name:kNotificationLogout object:nil];
     }
+    self.presenceTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(sendPresence) userInfo:nil repeats:YES];
 }
 
 - (void)chatDidNotLogin
 {
     NSLog(@"%s",__FUNCTION__);
-    [ApplicationDelegate.session closeAndClearTokenInformation];
-    [FBSession setActiveSession:nil];
+    [self logoutDone];
     [Common showAlertWithTitle:@"Chat Authentification Fail" description:nil];
-    [self showLoginButton:YES];
 }
 
 @end

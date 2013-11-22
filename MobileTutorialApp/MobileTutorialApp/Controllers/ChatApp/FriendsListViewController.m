@@ -21,7 +21,6 @@
 
 @property (strong, nonatomic) UIAlertView *callAlert;
 @property (strong, nonatomic) NSString *friendsIdString;
-@property (strong, nonatomic) NSTimer *presenceTimer;
 @property (strong, nonatomic) AVAudioPlayer *ringingPlayer;
 @property (strong, nonatomic) NSMutableArray *searchUsers;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
@@ -47,6 +46,7 @@
 {
     [super viewDidLoad];
     self.delegate = self;
+    [QBChat instance].delegate = self;
     self.allowsMultipleSelection =  NO;
     self.fieldsForRequest = [NSSet setWithObjects:@"installed", nil];
     [self loadData];
@@ -58,10 +58,6 @@
     [QBSettings setVideoChatConfiguration:videoChatConfiguration];
     
     self.videoChat = [[QBChat instance] createAndRegisterVideoChatInstance];
-    
-    // Start sending chat presence
-    [QBChat instance].delegate = self;
-    self.presenceTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(sendPresence) userInfo:nil repeats:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -94,29 +90,18 @@
 
 #pragma mark - FBFriendPickerDelegate methods
 
+// logout user
 - (void)facebookViewControllerCancelWasPressed:(id)sender
 {
     if (![Reachability internetConnected]){
         [Common showNetworkErrorAlert];
         return;
     }
-    // logout user
     [self clearSelection];
-    if ([[QBChat instance] isLoggedIn]) {
-        [[QBChat instance] unregisterVideoChatInstance: self.videoChat];
-        [[QBChat instance] logout];
-    }
-    
-    [self.presenceTimer invalidate];
-    self.presenceTimer = nil;
-    
-    [QBUsers logOutWithDelegate:self];
-    
-    [User sharedInstance].currentQBUser = nil;
-    [User sharedInstance].opponent = nil;
-    [ApplicationDelegate.session closeAndClearTokenInformation];
-    [FBSession setActiveSession:nil];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [[QBChat instance] unregisterVideoChatInstance: self.videoChat];
+
+    // notify
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationLogout object:nil];
 }
 
 - (void)facebookViewControllerDoneWasPressed:(id)sender
@@ -263,13 +248,6 @@
     self.ringingPlayer = nil;
 }
 
-- (void)sendPresence
-{
-    if (![[QBChat instance] sendPresence]) {
-       // TODO relogin in chat if needed
-    }
-}
-
 #pragma mark -
 #pragma mark AVAudioPlayerDelegate
 
@@ -307,24 +285,13 @@
                 [Common showAlertWithTitle:@"Offline" description:message];
                 [self clearSelection];
             }
-            // Errors
-        }else{
-            NSLog(@"Errors=%@", result.errors);
-            [Common showAlertWithTitle:QBError  description:result.errors.description];
         }
-        
-    }else if([result isKindOfClass:[QBUUserLogOutResult class]]){
-        
-		QBUUserLogOutResult *res = (QBUUserLogOutResult *)result;
-        
-		if(res.success){
-		    NSLog(@"Successfully Logout.");
-		}else{
-            NSLog(@"errors=%@", result.errors);
-            [Common showAlertWithTitle:QBError description:result.errors.description];
-
-		}
-	}
+    }
+    if(result.errors.count)
+    {
+        NSLog(@"errors=%@", result.errors);
+        [Common showAlertWithTitle:QBError description:result.errors.description];
+    }
 }
 
 #pragma mark -
